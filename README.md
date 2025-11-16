@@ -3,4 +3,4 @@
 Includes:
 - Comprehensive HTML page for visitors
 - QR code pointing to GitHub Pages
-- Scan QR code to get all important information
+- Scan QR code to get all important information specially for Foriegn Guest
