@@ -1,0 +1,9 @@
+body {font-family: Arial; margin: 0; padding: 0;}
+header {background: #00274d; color: white; padding: 10px; text-align: center;}
+.logo {height: 50px;}
+section {padding: 15px; border-bottom: 1px solid #ccc;}
+button {margin: 5px; padding: 10px; background: #004080; color: white; border: none; cursor: pointer;}
+table {width: 100%; border-collapse: collapse;}
+th, td {border: 1px solid #ccc; padding: 8px; text-align: left;}
+.quick-links img {width: 64px; height: 64px; margin: 10px;}
+footer {background: #f0f0f0; padding: 10px; text-align: center;}
