@@ -1,69 +1,84 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BMWTechWorks Pune - Visitor Information</title>
-<link rel="stylesheet" href="style.css">
+style.css
+<style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { background-color: #003366; color: white; text-align: center; padding: 15px; }
+    header h1 { margin: 10px 0; }
+    .lang-toggle { margin-top: 10px; }
+    .lang-toggle button { margin: 5px; padding: 8px 12px; background-color: #fff; color: #003366; border: none; cursor: pointer; font-weight: bold; }
+    section { padding: 15px; border-bottom: 1px solid #ccc; }
+    table { width: 100%; border-collapse: collapse; }
+    table th, table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    footer { background-color: #f2f2f2; text-align: center; padding: 15px; font-size: 14px; color: #333; }
+    .developer { font-size: 12px; color: #666; margin-top: 5px; }
+</style>
 </head>
 <body>
 <header>
-    <img src="bmw_logo.png" alt="BMW Logo" class="logo">
-    <h1>BMWTechWorks Pune - Visitor Information</h1>
+    <h1 id="page-title">BMWTechWorks Pune - Visitor Information</h1>
     <div class="lang-toggle">
         <button onclick="setLanguage('en')">English</button>
         <button onclick="setLanguage('de')">Deutsch</button>
     </div>
 </header>
+
 <section>
-    <h2>BMW TechWorks India Emergency Contacts</h2>
-    <p><strong>Reception:</strong> +91-XXXXXXXXXX</p>
-    <p><strong>Address:</strong> BMW TechWorks India,1st Floor, Amar Tech Park,PatilNagar,Balewadi, Pune,Maharashtra 411045</p>
-    <p><strong>Emergency FirstAid & Restroom:</strong> Floor No. 6 | <strong> BMW Techworks Parking:</strong> Floor No. 3 | <strong>General Canteen:</strong> Terrace</p>
+    <h2 id="emergency-title">BMW TechWorks India Emergency Contacts</h2>
+    <p id="reception"><strong>Reception:</strong> +91-XXXXXXXXXX</p>
+    <p id="address"><strong>Address:</strong> BMW TechWorks India,1st Floor, Amar Tech Park,PatilNagar,Balewadi, Pune,Maharashtra 411045</p>
+    <p id="facilities"><strong>Emergency FirstAid & Restroom:</strong> Floor No. 6 | <strong> BMW Techworks Parking:</strong> Floor No. 3 | <strong>General Canteen:</strong> Terrace</p>
 </section>
+
 <section>
-    <h2>Company Layout & Location</h2>
-    <button onclick="window.open('https://maps.app.goo.gl/BYkbvW1AjfjMWCiy6?g_st=ipc')">View on Google Maps</button>
-    <button>Download Building Layout (PDF)</button>
+    <h2 id="layout-title">Company Layout & Location</h2>
+    <button id="map-btn" onclick="window.open('https://maps.app.goo.gl/BYkbvW1AjfjMWCiy6?g_st=ipc')">View on Google Maps</button>
+    <button id="pdf-btn">Download Building Layout (PDF)</button>
 </section>
+
 <section>
-    <h2>Nearby Emergency</h2>
+    <h2 id="nearby-title">Nearby Emergency</h2>
     <table>
-        <tr><th>Category</th><th>Name & Details</th><th>Google Map Link</th></tr>
-        <tr><td>Location</td><td>Amar Tech Park Office Location, Balewadi Pune 411045</td><td><a href='https://maps.app.goo.gl/BYkbvW1AjfjMWCiy6?g_st=ipc' target='_blank'>View</a></td></tr>
-        <tr><td>Hospital</td><td>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency</td><td><a href='https://maps.app.goo.gl/cMBfuzuQExXohu8VA?g_st=ipc' target='_blank'>View</a></td></tr>
-        <tr><td>Hospital</td><td>Accord Hospital, Baner 2 km – Multispeciality</td><td><a href='https://maps.app.goo.gl/Nes49fGqayziF9BN9?g_st=ipc' target='_blank'>View</a></td></tr>
-        <tr><td>Hospital</td><td>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</td><td><a href='https://maps.app.goo.gl/SN7As6kyDPkvMz366?g_st=ipc' target='_blank'>View</a></td></tr>
+        <tr><th id="cat-th">Category</th><th id="details-th">Name & Details</th><th id="link-th">Google Map Link</th></tr>
+        <tr><td>Location</td><td>Amar Tech Park Office Location, Balewadi Pune 411045</td><td>https://maps.app.goo.gl/BYkbvW1AjfjMWCiy6?g_st=ipcView</a></td></tr>
+        <tr><td>Hospital</td><td>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency</td><td>https://maps.app.goo.gl/cMBfuzuQExXohu8VA?g_st=ipcView</a></td></tr>
+        <tr><td>Hospital</td><td>Accord Hospital, Baner 2 km – Multispeciality</td><td><a href='https://maps.app.goo.gl/Nes49fGqayziF9BN9?g_st=ipc' target='_       <tr><td>Hospital</td><td>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</td><td><a href='https://maps.app.goo.gl/SN7As6kyDPkvMz366?iew</a></td></tr>
         <tr><td>Ambulance</td><td>Jupiter Hospital Ambulance 24x7 Ambulance – 020 2799 2799</td></tr>
         <tr><td>Ambulance</td><td>Maniapl Ambulance 24x7 Ambulance – 1800-210-9888</td></tr>
         <tr><td>Ambulance</td><td>Shinde Ambulance 08971815843</td></tr>
         <tr><td>Ambulance</td><td>Nucare Ambulance Contact – 90966 67656</td></tr>
-        
-         <tr><td>Important Safety-Police</td><td>Baner Police Station Ambulance Contact – +91 9850158810  Emergency- 100</td></tr>
-        
-        <tr><td>Hotel</td><td>Holiday Inn Express Hinjewadi 3-star hotel near Balewadi</td><td><a href='holidayinnhttps://maps.app.goo.gl/aPHsvdNCU1czoet37?g_st=ipc' target='_blank'>View</a></td></tr>
-        <tr><td>Hotel</td><td>The Orchid Hotel 4-star hotel, Balewadi Stadium</td><td><a href='https://maps.app.goo.gl/3GcSzVeJBFFRULc26?g_st=ipc' target='_blank'>View</a></td></tr>
-        <tr><td>Hotel</td><td>Sadanand Regency Budget hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/EePcq8Ej3w6jnXyN9?g_st=ipc' target='_blank'>View</a></td></tr>
+        <tr><td>Important Safety-Police</td><td>Baner Police Station Contact – +91 9850158810 Emergency- 100</td></tr>
+        <tr><td>Hotel</td><td>Holiday Inn Express Hinjewadi 3-star hotel near Balewadi</td><td>https://maps.app.goo.gl/aPHsvdNCU1czoet37?g_st=ipcView</a></td></tr>
+        <tr><td>Hotel</td><td>The Orchid Hotel 4-star hotel, Balewadi Stadium</td><td>https://maps.app.goo.gl/3GcSzVeJBFFRULc26?g_st=ipcView</a></td></tr>
+        <tr><td>Hotel</td><td>Sadanand Regency Budget hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/E6jnXyN9?g_st=ipcView</a></td></tr>
     </table>
 </section>
+
 <section>
-    <h2>Quick Links</h2>
+    <h2 id="quick-links-title">Quick Links</h2>
     <div class="quick-links">
-        <h3>Cab Travel</h3>
-        <a href="https://www.olacabs.com" target="_blank"><img src="ola.png" alt="Ola"></a>
-        <a href="https://www.uber.com" target="_blank"><img src="uber.png" alt="Uber"></a>
-        <h3>Food Ordering</h3>
-        <a href="https://www.zomato.com" target="_blank"><img src="zomato.png" alt="Zomato"></a>
-        <a href="https://www.swiggy.com" target="_blank"><img src="swiggy.png" alt="Swiggy"></a>
+        <h3 id="cab-title">Cab Travel</h3>
+        https://www.olacabs.comola.png</a>
+        https://www.uber.com<img src="a>
+        <h3 id="food-title">Food Ordering</h3>
+        https://www.zomato.com
+        https://www.swiggy.comswiggy.png</a>
     </div>
 </section>
+
 <section>
-    <h2>Company Info</h2>
-    <p><a href="https://www.bmwgroup.com">Visit Website</a></p>
-    <p><a href="https://www.linkedin.com/company/bmwgroup">BMWTechWorks India LinkedIn</a></p>
+    <h2 id="company-info-title">Company Info</h2>
+    <p>https://www.bmwgroup.comVisit Website</a></p>
+    <p>https://www.linkedin.com/company/bmwgroupBMWTechWorks India LinkedIn</a></p>
 </section>
+
 <section>
-    <h2>Basic German to English Phrases</h2>
+    <h2 id="phrases-title">Basic German to English Phrases</h2>
     <table>
         <tr><th>German</th><th>English</th></tr>
         <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
@@ -78,11 +93,70 @@
         <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
     </table>
 </section>
+
 <footer>
-    <p><strong>Wi-Fi:</strong> Request access at reception</p>
+    <p id="wifi-text"><strong>Wi-Fi:</strong> Request access at reception</p>
+    <p class="developer">Developed by BTI-DigitalCar-Pune-2025</p>
 </footer>
+
 <script>
-function setLanguage(lang){alert('Language switched to '+lang);}
+const translations = {
+    en: {
+        pageTitle: "BMWTechWorks Pune - Visitor Information",
+        emergencyTitle: "BMW TechWorks India Emergency Contacts",
+        reception: "Reception: +91-XXXXXXXXXX",
+        address: "Address: BMW TechWorks India,1st Floor, Amar Tech Park,PatilNagar,Balewadi, Pune,Maharashtra 411045",
+        facilities: "Emergency FirstAid & Restroom: Floor No. 6 | BMW Techworks Parking: Floor No. 3 | General Canteen: Terrace",
+        layoutTitle: "Company Layout & Location",
+        mapBtn: "View on Google Maps",
+        pdfBtn: "Download Building Layout (PDF)",
+        nearbyTitle: "Nearby Emergency",
+        catTh: "Category", detailsTh: "Name & Details", linkTh: "Google Map Link",
+        quickLinksTitle: "Quick Links", cabTitle: "Cab Travel", foodTitle: "Food Ordering",
+        companyInfoTitle: "Company Info", visitLink: "Visit Website", linkedinLink: "BMWTechWorks India LinkedIn",
+        phrasesTitle: "Basic German to English Phrases",
+        wifi: "Wi-Fi: Request access at reception"
+    },
+    de: {
+        pageTitle: "BMWTechWorks Pune - Besucherinformationen",
+        emergencyTitle: "BMW TechWorks Indien Notfallkontakte",
+        reception: "Rezeption: +91-XXXXXXXXXX",
+        address: "Adresse: BMW TechWorks Indien, 1. Stock, Amar Tech Park, PatilNagar, Balewadi, Pune, Maharashtra 411045",
+        facilities: "Notfall Erste Hilfe & WC: Etage Nr. 6 | BMW Techworks Parkplatz: Etage Nr. 3 | Allgemeine Kantine: Terrasse",
+        layoutTitle: "Firmenlayout & Standort",
+        mapBtn: "Auf Google Maps ansehen",
+        pdfBtn: "Gebäudeplan herunterladen (PDF)",
+        nearbyTitle: "Notfall in der Nähe",
+        catTh: "Kategorie", detailsTh: "Name & Details", linkTh: "Google Maps Link",
+        quickLinksTitle: "Schnellzugriffe", cabTitle: "Taxi Fahrt", foodTitle: "Essensbestellung",
+        companyInfoTitle: "Unternehmensinformationen", visitLink: "Webseite besuchen", linkedinLink: "BMWTechWorks Indien LinkedIn",
+        phrasesTitle: "Grundlegende deutsche zu englische Phrasen",
+        wifi: "WLAN: Zugang an der Rezeption anfordern"
+    }
+};
+
+function setLanguage(lang) {
+    document.getElementById('page-title').textContent = translations[lang].pageTitle;
+    document.getElementById('emergency-title').textContent = translations[lang].emergencyTitle;
+    document.getElementById('reception').textContent = translations[lang].reception;
+    document.getElementById('address').textContent = translations[lang].address;
+    document.getElementById('facilities').textContent = translations[lang].facilities;
+    document.getElementById('layout-title').textContent = translations[lang].layoutTitle;
+    document.getElementById('map-btn').textContent = translations[lang].mapBtn;
+    document.getElementById('pdf-btn').textContent = translations[lang].pdfBtn;
+    document.getElementById('nearby-title').textContent = translations[lang].nearbyTitle;
+    document.getElementById('cat-th').textContent = translations[lang].catTh;
+    document.getElementById('details-th').textContent = translations[lang].detailsTh;
+    document.getElementById('link-th').textContent = translations[lang].linkTh;
+    document.getElementById('quick-links-title').textContent = translations[lang].quickLinksTitle;
+    document.getElementById('cab-title').textContent = translations[lang].cabTitle;
+    document.getElementById('food-title').textContent = translations[lang].foodTitle;
+    document.getElementById('company-info-title').textContent = translations[lang].companyInfoTitle;
+    document.getElementById('visit-link').textContent = translations[lang].visitLink;
+    document.getElementById('linkedin-link').textContent = translations[lang].linkedinLink;
+    document.getElementById('phrases-title').textContent = translations[lang].phrasesTitle;
+    document.getElementById('wifi-text').textContent = translations[lang].wifi;
+}
 </script>
 </body>
 </html>
