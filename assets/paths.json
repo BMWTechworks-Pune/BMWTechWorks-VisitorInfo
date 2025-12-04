@@ -1,0 +1,182 @@
+{
+  "paths": {
+    "EXIT1": {
+      "color": "#22c55e",
+      "width": 6,
+      "points": [
+        [
+          220,
+          220
+        ],
+        [
+          220,
+          380
+        ],
+        [
+          360,
+          520
+        ],
+        [
+          640,
+          520
+        ],
+        [
+          900,
+          500
+        ],
+        [
+          1180,
+          420
+        ],
+        [
+          1560,
+          180
+        ]
+      ]
+    },
+    "EXIT2": {
+      "color": "#22c55e",
+      "width": 6,
+      "points": [
+        [
+          620,
+          260
+        ],
+        [
+          620,
+          420
+        ],
+        [
+          760,
+          560
+        ],
+        [
+          980,
+          560
+        ],
+        [
+          1200,
+          500
+        ],
+        [
+          1560,
+          180
+        ]
+      ]
+    },
+    "EXIT3": {
+      "color": "#22c55e",
+      "width": 6,
+      "points": [
+        [
+          980,
+          400
+        ],
+        [
+          980,
+          520
+        ],
+        [
+          1100,
+          640
+        ],
+        [
+          1300,
+          640
+        ],
+        [
+          1480,
+          600
+        ],
+        [
+          1560,
+          180
+        ]
+      ]
+    },
+    "EXIT4": {
+      "color": "#22c55e",
+      "width": 6,
+      "points": [
+        [
+          1340,
+          660
+        ],
+        [
+          1200,
+          640
+        ],
+        [
+          1040,
+          620
+        ],
+        [
+          860,
+          600
+        ],
+        [
+          700,
+          560
+        ],
+        [
+          520,
+          520
+        ],
+        [
+          360,
+          480
+        ],
+        [
+          220,
+          380
+        ],
+        [
+          220,
+          220
+        ]
+      ]
+    },
+    "EXIT5": {
+      "color": "#22c55e",
+      "width": 8,
+      "points": [
+        [
+          800,
+          140
+        ],
+        [
+          1000,
+          140
+        ],
+        [
+          1200,
+          160
+        ],
+        [
+          1400,
+          160
+        ],
+        [
+          1560,
+          180
+        ]
+      ]
+    }
+  },
+  "phrases": {
+    "EN": {
+      "EXIT1": "Exit 1: Walk straight, turn right at the corridor, then follow the green route to the main exit.",
+      "EXIT2": "Exit 2: Proceed straight, keep left at the junction, and continue along the green route to the main exit.",
+      "EXIT3": "Exit 3: Head towards the corridor, keep right, and follow the green markers to the exit door.",
+      "EXIT4": "Exit 4: Return through the corridor, keep right, and continue to the main exit.",
+      "EXIT5": "Main EXIT: Follow this highlighted path to reach the exit door safely."
+    },
+    "DE": {
+      "EXIT1": "Ausgang 1: Gehen Sie geradeaus, biegen Sie rechts im Flur ab und folgen Sie der grünen Route zum Haupteingang.",
+      "EXIT2": "Ausgang 2: Gehen Sie geradeaus, halten Sie sich an der Kreuzung links und folgen Sie der grünen Route zum Haupteingang.",
+      "EXIT3": "Ausgang 3: Gehen Sie zum Flur, halten Sie sich rechts und folgen Sie den grünen Markierungen zur Tür.",
+      "EXIT4": "Ausgang 4: Gehen Sie durch den Flur zurück, halten Sie sich rechts und weiter zum Haupteingang.",
+      "EXIT5": "Hauptausgang: Folgen Sie diesem hervorgehobenen Weg, um sicher zur Ausgangstür zu gelangen."
+    }
+  }
+}
