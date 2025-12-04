@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>BMWTechWorks Pune – Visitor Info (Final Mobile)</title>
+  <meta name="theme-color" content="#0e3a61" />
+  <style>
+    :root { --brand:#0e3a61; --accent:#0fa8ff; --bg:#f5f7fa; --text:#0b1220; --sel:#ff3b30; --muted:#4b5e78; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "DejaVu Sans", Arial, sans-serif; background: var(--bg); color: var(--text); }
+    header { position: sticky; top: 0; background: var(--brand); color: white; padding: 14px 16px; z-index: 1000; }
+    header h1 { margin: 0; font-size: 18px; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 12px; }
+    nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    nav a { background: #ffffff22; color: white; padding: 8px 12px; border-radius: 999px; text-decoration: none; font-size: 13px; }
+
+    section { background: white; border: 1px solid #e5eaf0; border-radius: 12px; padding: 12px; margin: 12px 0; }
+    section h2 { margin: 0 0 8px; font-size: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .card { background: #f9fbff; border: 1px solid #e5edf5; border-radius: 10px; padding: 10px; }
+    .pill { padding: 6px 10px; border-radius: 999px; border: 1px solid #e0e6ee; background:#fff; color:var(--brand); font-weight:600; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    #planWrap { position: relative; height: 60vh; min-height: 360px; border: 1px solid #d9e3ef; border-radius: 10px; overflow: hidden; background: #fff; }
+    #planLayer { position: absolute; left: 0; top: 0; transform-origin: 0 0; user-select:none; touch-action:none; }
+    #planImg { display:block; width:100%; height:auto; }
+    #routeSvg { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
+    #planControls { display:flex; gap:8px; position:absolute; left:8px; bottom:8px; background:#ffffffcc; backdrop-filter:blur(6px); padding:6px; border-radius:999px; border:1px solid #e0e6ee; }
+    #planControls button { padding: 8px 10px; border-radius: 999px; border: 1px solid #d0d8e2; background: white; color: var(--brand); font-weight: 600; }
+    .marker { fill:#2e7d32; stroke:#fff; stroke-width:1.5; }
+    .marker.sel { fill: var(--sel); }
+    .label { font: 12px "DejaVu Sans", Arial; fill:#002a4f; stroke:#fff; stroke-width:0.5; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BMWTechWorks Pune – Visitor Information</h1>
+    <nav>
+      <a href="#org">Overview</a>
+      <a href="#features">BTI Features</a>
+    </nav>
+  </header>
+  <main class="wrap">
+
+<section id="org">
+  <h2>Overview</h2>
+  <p class="muted">English · Deutsch · Quick links, contacts, layout & visitor protocol included.</p>
+  <div class="grid">
+    <div class="card"><strong>Quick Links:</strong> <a href="https://www.olacabs.com/" target="_blank">Ola</a> · <a href="https://www.uber.com/in/en/" target="_blank">Uber</a> · <a href="https://www.zomato.com/" target="_blank">Zomato</a> · <a href="https://www.swiggy.com/" target="_blank">Swiggy</a> · <a href="https://www.xe.com/currencyconverter/" target="_blank">INR→EUR</a> · <a href="https://www.tripadvisor.in/Attractions-g297654-Activities-Pune_Maharashtra.html" target="_blank">Sightseeing</a></div>
+    <div class="card"><strong>Company:</strong> <a href="https://www.bmwgroup.com/en.html" target="_blank">Website</a> · <a href="https://www.linkedin.com/company/bmwgroup/" target="_blank">LinkedIn</a></div>
+    <div class="card"><strong>Emergency:</strong> Reception +91-XXXXXXXXXX · Ambulance 108 · Emergency +91- 9769317569</div>
+    <div class="card"><strong>Location:</strong> BMWTechWorks India, Amar Tech Park, Balewadi, Pune 411045 · <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank">Google Maps</a></div>
+  </div>
+</section>
+<section id="Nearby Emergency">
+<h2>Nearby Emergency</h2>
+        <table>
+            <tr><th>Category</th><th>Name & Details</th><th>Google Map Link</th></tr>
+            <tr><td>Location</td><td>Amar Tech Park Office Location, Balewadi Pune 411045</td><td><a href='https://maps.app.goo.gl/AmarTechParkLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency</td><td><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Accord Hospital, Baner 2 km – Multispeciality</td><td><a href='https://maps.app.goo.gl/AccordHospitalLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</td><td><a href='https://maps.app.goo.gl/AshwiniHospitalLink' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Jupiter Hospital Ambulance 24x7 Ambulance – 020 2799 2799</td><td><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Mai Ambulance Services Local Ambulance – Fast service</td><td><a href='https://maps.app.goo.gl/MaiAmbulanceLink' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Nucare Ambulance Contact – 9096667656</td><td><a href='https://maps.app.goo.gl/NucareAmbulanceLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>Holiday Inn Express Hinjewadi 3-star hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/HolidayInnLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>The Orchid Hotel 4-star hotel, Balewadi Stadium</td><td><a href='https://maps.app.goo.gl/OrchidHotelLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>Sadanand Regency Budget hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/SadanandRegencyLink' target='_blank'>View</a></td></tr>
+        </table>
+  <h2>Basic German to English Phrases</h2>
+        <table>
+            <tr><th>German</th><th>English</th></tr>
+            <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
+            <tr><td>Ich möchte zu diesem Ort gehen</td><td>I want to go to this place</td></tr>
+            <tr><td>Wie viel kostet das?</td><td>How much money?</td></tr>
+            <tr><td>Danke</td><td>Thanks</td></tr>
+            <tr><td>Ich möchte das</td><td>I want this</td></tr>
+            <tr><td>Guten Morgen</td><td>Good Morning</td></tr>
+            <tr><td>Gute Nacht</td><td>Good Night</td></tr>
+            <tr><td>Wo ist die Toilette?</td><td>Where is the restroom?</td></tr>
+            <tr><td>Können Sie mir helfen?</td><td>Can you help me?</td></tr>
+            <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
+        </table>      
+        
+</section>
+<section id="Exit Plan">
+  <header>
+    <h1>BTI Pune – Visitor Information</h1>
+    <p class="muted">Zoomable exit plan • Tap-to-play audio • Room route finder • QR share</p>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <section class="card">
+        <h2>Exit Plan (Zoom • Pan • Fullscreen)</h2>
+        <div class="content">
+          <div class="zoom-wrap" id="zoomWrap">
+            <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan" />
+            <svg id="overlay"></svg>
+            <div class="zoom-hint">Scroll/pinch to zoom • Drag to pan • Double‑tap to reset</div>
+          </div>
+
+          <div class="tools">
+            <button class="btn" id="btnSpeak">🔊 Play Audio Guidance</button>
+            <button class="btn" id="btnStop">⏹ Stop</button>
+            <button class="btn" id="btnReset">↺ Reset</button>
+            <button class="btn" id="btnZoomIn">➕ Zoom In</button>
+            <button class="btn" id="btnZoomOut">➖ Zoom Out</button>
+            <button class="btn" id="btnFullscreen">⛶ Fullscreen</button>
+          </div>
+
+          <div class="route-tools">
+            <select id="fromRoom" class="select"></select>
+            <select id="toRoom" class="select"></select>
+            <button class="btn" id="btnRoute">🧭 Show Route</button>
+            <button class="btn" id="btnClear">🧹 Clear</button>
+          </div>
+          <p class="muted" id="routeText"></p>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Quick References & QR</h2>
+        <div class="content">
+          <div style="display:grid; grid-template-columns:1fr; gap:12px;">
+            <div class="img-item"><img src="r5.png" alt="Lanyards" style="width:100%; border-radius:8px"/><p class="muted">Lanyards: Employee • Contractor • Visitor • BMW Employee</p></div>
+            <div class="img-item"><img src="r2.png" alt="Access Zones" style="width:100%; border-radius:8px"/><p class="muted">Access policy map: A–G zones with restrictions.</p></div>
+            <div class="img-item"><img src="r3.png" alt="Rooms & Areas" style="width:100%; border-radius:8px"/><p class="muted">Rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p></div>
+          </div>
+
+          <hr style="margin:16px 0; border-color:#1f3f74"/>
+
+          <p><strong>Share via QR:</strong></p>
+          <img src="updated_qr.png" alt="QR" style="max-width:240px; border:1px solid #214a8a; border-radius:8px; background:#0a264e; padding:8px"/>
+          <div class="tools">
+            <a class="btn" download="BTI_Pune_QR.png" href="updated_qr.png">⬇️ Download QR</a>
+            <button class="btn" id="btnPrint">🖨️ Print</button>
+          </div>
+          <p class="muted">URL: <a href="https://bmwtechworks-pune.github.io/BMWTechWorks-VisitorInfo/" target="_blank">Open site</a></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:18px; color:var(--muted)">© BTI Pune — Visitor Info.</footer>
+
+  <script>
+    // --- Zoom & Pan with smooth animation ---
+    (function(){
+      const wrap = document.getElementById('zoomWrap');
+      const img = document.getElementById('zoomImg');
+      let scale = 1, min=1, max=6; let ox=0, oy=0; let down=false, sx=0, sy=0;
+      function apply(){ img.style.transform = `translate(${ox}px, ${oy}px) scale(${scale})`; }
+      function clamp(){ const bw=wrap.clientWidth, bh=wrap.clientHeight; const iw=img.naturalWidth, ih=img.naturalHeight; const vw=iw*scale, vh=ih*scale; const minX=Math.min(0,bw-vw), minY=Math.min(0,bh-vh); ox=Math.max(minX, Math.min(ox, 0)); oy=Math.max(minY, Math.min(oy, 0)); }
+      wrap.addEventListener('wheel', (e)=>{ e.preventDefault(); const rect=wrap.getBoundingClientRect(); const mx=e.clientX-rect.left, my=e.clientY-rect.top; const prev=scale; const delta=e.deltaY<0?1.12:0.9; scale=Math.min(max,Math.max(min, scale*delta)); ox=mx-(mx-ox)*(scale/prev); oy=my-(my-oy)*(scale/prev); clamp(); apply(); }, {passive:false});
+      wrap.addEventListener('mousedown', (e)=>{ down=true; sx=e.clientX-ox; sy=e.clientY-oy; img.classList.add('dragging'); });
+      window.addEventListener('mouseup', ()=>{ down=false; img.classList.remove('dragging'); });
+      window.addEventListener('mousemove', (e)=>{ if(!down) return; ox=e.clientX-sx; oy=e.clientY-sy; clamp(); apply(); });
+      // Touch support
+      let lastX=0,lastY=0,pinchDist=0,pinchStart=1;
+      wrap.addEventListener('touchstart',(e)=>{ if(e.touches.length===2){ const dx=e.touches[0].clientX-e.touches[1].clientX; const dy=e.touches[0].clientY-e.touches[1].clientY; pinchDist=Math.hypot(dx,dy); pinchStart=scale; } else if(e.touches.length===1){ lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; } },{passive:true});
+      wrap.addEventListener('touchmove',(e)=>{ if(e.touches.length===2){ const dx=e.touches[0].clientX-e.touches[1].clientX; const dy=e.touches[0].clientY-e.touches[1].clientY; const dist=Math.hypot(dx,dy); scale=Math.min(max,Math.max(min,pinchStart*(dist/pinchDist))); apply(); } else if(e.touches.length===1){ const nx=e.touches[0].clientX, ny=e.touches[0].clientY; ox+=(nx-lastX); oy+=(ny-lastY); lastX=nx; lastY=ny; clamp(); apply(); } },{passive:true});
+      // Buttons
+      document.getElementById('btnReset').addEventListener('click',()=>{ scale=1; ox=0; oy=0; apply(); });
+      document.getElementById('btnZoomIn').addEventListener('click',()=>{ scale=Math.min(max, scale*1.2); apply(); });
+      document.getElementById('btnZoomOut').addEventListener('click',()=>{ scale=Math.max(min, scale/1.2); apply(); });
+      document.getElementById('btnFullscreen').addEventListener('click',()=>{ wrap.requestFullscreen && wrap.requestFullscreen(); });
+      img.addEventListener('load', ()=>{ scale=1; ox=0; oy=0; apply(); });
+      // Double-tap reset
+      let lastTap=0; wrap.addEventListener('click',()=>{ const now=Date.now(); if(now-lastTap<350){ scale=1; ox=0; oy=0; apply(); } lastTap=now; });
+      // Export helpers for route module
+      window.__zoomAPI = { wrap, img, getState:()=>({scale, ox, oy}), setState:(s)=>{ scale=s.scale; ox=s.ox; oy=s.oy; apply(); }, clamp, apply };
+    })();
+
+    // --- Room route finder with overlay ---
+    (function(){
+      const rooms = {
+        'Success': {x:0.06,y:0.10,w:0.10,h:0.08},
+        'Inspire': {x:0.07,y:0.22,w:0.10,h:0.08},
+        'Visitor Room': {x:0.06,y:0.32,w:0.10,h:0.08},
+        'Joy': {x:0.10,y:0.40,w:0.10,h:0.08},
+        'Debug': {x:0.36,y:0.42,w:0.10,h:0.08},
+        'iDrive': {x:0.46,y:0.46,w:0.10,h:0.08},
+        'M-Mode': {x:0.58,y:0.46,w:0.10,h:0.08},
+        'Drift': {x:0.72,y:0.48,w:0.08,h:0.08},
+        'xDrive': {x:0.80,y:0.46,w:0.08,h:0.08},
+        'Torque': {x:0.88,y:0.46,w:0.08,h:0.08}
+      };
+
+      const fromSel = document.getElementById('fromRoom');
+      const toSel = document.getElementById('toRoom');
+      Object.keys(rooms).forEach(r=>{ const o1=document.createElement('option'); o1.value=r; o1.textContent=r; fromSel.appendChild(o1); const o2=document.createElement('option'); o2.value=r; o2.textContent=r; toSel.appendChild(o2); });
+      fromSel.value='Visitor Room'; toSel.value='Success';
+
+      const overlay = document.getElementById('overlay');
+      const api = window.__zoomAPI;
+
+      function drawMarkers(){
+        overlay.innerHTML='';
+        const W = overlay.clientWidth, H = overlay.clientHeight;
+        // Draw room rectangles and labels
+        for(const [name, r] of Object.entries(rooms)){
+          const x=r.x*W, y=r.y*H, w=r.w*W, h=r.h*H;
+          const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+          rect.setAttribute('x', x); rect.setAttribute('y', y); rect.setAttribute('width', w); rect.setAttribute('height', h);
+          rect.setAttribute('class','marker'); rect.setAttribute('rx','6'); rect.setAttribute('ry','6');
+          rect.addEventListener('click', ()=> focusRoom(name));
+          overlay.appendChild(rect);
+          const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+          label.setAttribute('x', x+6); label.setAttribute('y', y+18);
+          label.setAttribute('fill','#e8f0ff'); label.setAttribute('font-size','12'); label.textContent=name;
+          overlay.appendChild(label);
+        }
+      }
+
+      function focusRoom(name){
+        const r = rooms[name]; if(!r) return;
+        const W = api.wrap.clientWidth, H = api.wrap.clientHeight;
+        const iw = api.img.naturalWidth, ih = api.img.naturalHeight;
+        // Target center in image pixels
+        const cx = (r.x + r.w/2)*iw; const cy = (r.y + r.h/2)*ih;
+        // Desired scale to fit room nicely
+        const targetScale = Math.max(2, Math.min(5, Math.min(W/(r.w*iw), H/(r.h*ih)) * 0.8));
+        const s = api.getState();
+        // Compute translation so that room center appears near viewport center
+        const vx = W/2, vy = H/2;
+        const ox = vx - cx*targetScale;
+        const oy = vy - cy*targetScale;
+        api.setState({scale: targetScale, ox, oy});
+      }
+
+      function routeBetween(from,to){
+        drawMarkers();
+        const rf=rooms[from], rt=rooms[to]; if(!rf||!rt) return;
+        const W = overlay.clientWidth, H = overlay.clientHeight;
+        const fx = (rf.x+rf.w/2)*W, fy=(rf.y+rf.h/2)*H;
+        const tx = (rt.x+rt.w/2)*W, ty=(rt.y+rt.h/2)*H;
+        const path = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+        path.setAttribute('points', `${fx},${fy} ${(fx+tx)/2},${fy} ${(fx+tx)/2},${ty} ${tx},${ty}`);
+        path.setAttribute('fill','none'); path.setAttribute('stroke','#ff5252'); path.setAttribute('stroke-width','3'); path.setAttribute('stroke-dasharray','6,6');
+        overlay.appendChild(path);
+        // Pulse destination
+        const destRect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        destRect.setAttribute('x', rt.x*W); destRect.setAttribute('y', rt.y*H); destRect.setAttribute('width', rt.w*W); destRect.setAttribute('height', rt.h*H);
+        destRect.setAttribute('class','marker pulse'); destRect.setAttribute('rx','6'); destRect.setAttribute('ry','6');
+        overlay.appendChild(destRect);
+      }
+
+      function routeText(from,to){
+        const steps = [
+          `Start at ${from}.`,
+          `Move to the main corridor.`,
+          `Proceed towards ${to}.`,
+          `Follow signage and safety arrows on the floorplan.`
+        ];
+        return steps.join(' ');
+      }
+
+      document.getElementById('btnRoute').addEventListener('click', ()=>{
+        const f=fromSel.value, t=toSel.value; routeBetween(f,t); focusRoom(t);
+        const text = routeText(f,t);
+        document.getElementById('routeText').textContent = text;
+      });
+      document.getElementById('btnClear').addEventListener('click', ()=>{ overlay.innerHTML=''; drawMarkers(); document.getElementById('routeText').textContent=''; });
+
+      // Initial draw after image loads
+      window.addEventListener('load', drawMarkers);
+      window.addEventListener('resize', drawMarkers);
+
+      // Expose focusRoom for clicks
+      window.focusRoom = focusRoom;
+    })();
+
+    // --- Audio guidance ---
+    (function(){
+      const btnSpeak = document.getElementById('btnSpeak');
+      const btnStop  = document.getElementById('btnStop');
+      function speak(){
+        if(!('speechSynthesis' in window)){ alert('Speech Synthesis not supported in this browser.'); return; }
+        const rt = document.getElementById('routeText').textContent || 'Welcome to BTI Pune. Follow the green arrows to the nearest exit and assemble at the muster point.';
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(rt);
+        const voices = window.speechSynthesis.getVoices();
+        const prefer = voices.find(v=>/en-IN/i.test(v.lang)) || voices.find(v=>/en/i.test(v.lang));
+        if(prefer) u.voice = prefer; u.rate = 1; u.pitch = 1; u.volume = 1;
+        window.speechSynthesis.speak(u);
+      }
+      btnSpeak.addEventListener('click', speak);
+      btnStop.addEventListener('click', ()=> window.speechSynthesis.cancel());
+      window.speechSynthesis.onvoiceschanged = function(){ /* Safari/Chrome async voices */ };
+    })();
+
+    // Print
+    document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
+  </script>
+
+
+</body>
+</html>
