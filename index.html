@@ -89,46 +89,6 @@
     <h1>BTI Pune – Visitor Information</h1>
     <p class="muted">Zoomable exit plan • Tap-to-play audio • Room route finder • QR share</p>
   </header>
-  <header>
-    <div class="title">BTI Pune • Exit Guidance</div>
-    <div class="controls">
-      <label>Exit:</label>
-      <select id="exitSelect"></select>
-      <label>Lang:</label>
-      <select id="langSelect">
-        <option value="en">EN</option>
-        <option value="de">DE</option>
-      </select>
-      <button class="btn" id="play">Play</button>
-      <button class="btn" id="replay">Replay</button>
-      <button class="btn" id="mute">Mute</button>
-      <label>Vol</label>
-      <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
-      <button class="btn" id="toggleTTS">TTS: On</button>
-      <button class="btn" id="copyLink">Copy Deep Link</button>
-      <button class="btn" id="zoomOut">−</button>
-      <button class="btn" id="zoomIn">+</button>
-      <button class="btn" id="resetView">Reset</button>
-    </div>
-  </header>
-  <div class="container">
-    <div class="audio-bar"><strong>Audio:</strong> MP3 preferred (assets/audio/EXITx/voice_*.mp3), TTS fallback.</div>
-    <div class="banner">Single QR build: Use one generic QR pointing to your hosted <code>index.html</code>. Deep‑links supported via <code>?exit=5&lang=en</code>.</div>
-    <div id="canvasWrap">
-      <img id="floor" alt="Floor Map" />
-      <svg id="overlay"></svg>
-    </div>
-    <div class="legend">
-      <div class="row"><div class="swatch"></div><div>Active route</div></div>
-    </div>
-    <footer>
-      Tap a route to highlight and play guidance. Drag to pan. Use +/− to zoom.
-      Deep links: <code>?exit=5&lang=en</code>
-      <div id="phrase" style="margin-top:8px"></div>
-    </footer>
-  </div>
-  <script src="assets/app.js"></script>
-
   
   <div class="container">
     <div class="grid">
@@ -169,6 +129,47 @@
             <div class="img-item"><img src="r3.png" alt="Rooms & Areas" style="width:100%; border-radius:8px"/><p class="muted">Rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p></div>
           </div>
 
+           <header>
+    <div class="title">BTI Pune • Exit Guidance</div>
+    <div class="controls">
+      <label>Exit:</label>
+      <select id="exitSelect"></select>
+      <label>Lang:</label>
+      <select id="langSelect">
+        <option value="en">EN</option>
+        <option value="de">DE</option>
+      </select>
+      <button class="btn" id="play">Play</button>
+      <button class="btn" id="replay">Replay</button>
+      <button class="btn" id="mute">Mute</button>
+      <label>Vol</label>
+      <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
+      <button class="btn" id="toggleTTS">TTS: On</button>
+      <button class="btn" id="copyLink">Copy Deep Link</button>
+      <button class="btn" id="zoomOut">−</button>
+      <button class="btn" id="zoomIn">+</button>
+      <button class="btn" id="resetView">Reset</button>
+    </div>
+  </header>
+  <div class="container">
+    <div class="audio-bar"><strong>Audio:</strong> MP3 preferred (assets/audio/EXITx/voice_*.mp3), TTS fallback.</div>
+    <div class="banner">Single QR build: Use one generic QR pointing to your hosted <code>index.html</code>. Deep‑links supported via <code>?exit=5&lang=en</code>.</div>
+    <div id="canvasWrap">
+      <img id="floor" alt="Floor Map" />
+      <svg id="overlay"></svg>
+    </div>
+    <div class="legend">
+      <div class="row"><div class="swatch"></div><div>Active route</div></div>
+    </div>
+    <footer>
+      Tap a route to highlight and play guidance. Drag to pan. Use +/− to zoom.
+      Deep links: <code>?exit=5&lang=en</code>
+      <div id="phrase" style="margin-top:8px"></div>
+    </footer>
+  </div>
+  <script src="assets/app.js"></script>
+
+          
           <hr style="margin:16px 0; border-color:#1f3f74"/>
 
           <p><strong>Share via QR:</strong></p>
@@ -177,7 +178,6 @@
             <a class="btn" download="BTI_Pune_QR.png" href="updated_qr.png">⬇️ Download QR</a>
             <button class="btn" id="btnPrint">🖨️ Print</button>
           </div>
-          <p class="muted">URL: <a href="https://bmwtechworks-pune.github.io/BMWTechWorks-VisitorInfo/" target="_blank">Open site</a></p>
         </div>
       </aside>
     </div>
