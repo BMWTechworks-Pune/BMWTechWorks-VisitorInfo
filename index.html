@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>BMWTechWorks Pune – Visitor Info (Final Mobile)</title>
+  <meta name="theme-color" content="#0e3a61" />
+  <style>
+    :root { --brand:#0e3a61; --accent:#0fa8ff; --bg:#f5f7fa; --text:#0b1220; --sel:#ff3b30; --muted:#4b5e78; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "DejaVu Sans", Arial, sans-serif; background: var(--bg); color: var(--text); }
+    header { position: sticky; top: 0; background: var(--brand); color: white; padding: 14px 16px; z-index: 1000; }
+    header h1 { margin: 0; font-size: 18px; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 12px; }
+    nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    nav a { background: #ffffff22; color: white; padding: 8px 12px; border-radius: 999px; text-decoration: none; font-size: 13px; }
+
+    section { background: white; border: 1px solid #e5eaf0; border-radius: 12px; padding: 12px; margin: 12px 0; }
+    section h2 { margin: 0 0 8px; font-size: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .card { background: #f9fbff; border: 1px solid #e5edf5; border-radius: 10px; padding: 10px; }
+    .pill { padding: 6px 10px; border-radius: 999px; border: 1px solid #e0e6ee; background:#fff; color:var(--brand); font-weight:600; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    #planWrap { position: relative; height: 60vh; min-height: 360px; border: 1px solid #d9e3ef; border-radius: 10px; overflow: hidden; background: #fff; }
+    #planLayer { position: absolute; left: 0; top: 0; transform-origin: 0 0; user-select:none; touch-action:none; }
+    #planImg { display:block; width:100%; height:auto; }
+    #routeSvg { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
+    #planControls { display:flex; gap:8px; position:absolute; left:8px; bottom:8px; background:#ffffffcc; backdrop-filter:blur(6px); padding:6px; border-radius:999px; border:1px solid #e0e6ee; }
+    #planControls button { padding: 8px 10px; border-radius: 999px; border: 1px solid #d0d8e2; background: white; color: var(--brand); font-weight: 600; }
+    .marker { fill:#2e7d32; stroke:#fff; stroke-width:1.5; }
+    .marker.sel { fill: var(--sel); }
+    .label { font: 12px "DejaVu Sans", Arial; fill:#002a4f; stroke:#fff; stroke-width:0.5; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BMWTechWorks Pune – Visitor Information</h1>
+    <nav>
+      <a href="#org">Overview</a>
+      <a href="#features">BTI Features</a>
+    </nav>
+  </header>
+  <main class="wrap">
+
+<section id="org">
+  <h2>Overview</h2>
+  <p class="muted">English · Deutsch · Quick links, contacts, layout & visitor protocol included.</p>
+  <div class="grid">
+    <div class="card"><strong>Quick Links:</strong> <a href="https://www.olacabs.com/" target="_blank">Ola</a> · <a href="https://www.uber.com/in/en/" target="_blank">Uber</a> · <a href="https://www.zomato.com/" target="_blank">Zomato</a> · <a href="https://www.swiggy.com/" target="_blank">Swiggy</a> · <a href="https://www.xe.com/currencyconverter/" target="_blank">INR→EUR</a> · <a href="https://www.tripadvisor.in/Attractions-g297654-Activities-Pune_Maharashtra.html" target="_blank">Sightseeing</a></div>
+    <div class="card"><strong>Company:</strong> <a href="https://www.bmwgroup.com/en.html" target="_blank">Website</a> · <a href="https://www.linkedin.com/company/bmwgroup/" target="_blank">LinkedIn</a></div>
+    <div class="card"><strong>Emergency:</strong> Reception +91-XXXXXXXXXX · Ambulance 108 · Emergency +91- 9769317569</div>
+    <div class="card"><strong>Location:</strong> BMWTechWorks India, Amar Tech Park, Balewadi, Pune 411045 · <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank">Google Maps</a></div>
+  </div>
+</section>
+<section id="Nearby Emergency">
+<h2>Nearby Emergency</h2>
+        <table>
+            <tr><th>Category</th><th>Name & Details</th><th>Google Map Link</th></tr>
+            <tr><td>Location</td><td>Amar Tech Park Office Location, Balewadi Pune 411045</td><td><a href='https://maps.app.goo.gl/AmarTechParkLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency</td><td><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Accord Hospital, Baner 2 km – Multispeciality</td><td><a href='https://maps.app.goo.gl/AccordHospitalLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hospital</td><td>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</td><td><a href='https://maps.app.goo.gl/AshwiniHospitalLink' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Jupiter Hospital Ambulance 24x7 Ambulance – 020 2799 2799</td><td><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Mai Ambulance Services Local Ambulance – Fast service</td><td><a href='https://maps.app.goo.gl/MaiAmbulanceLink' target='_blank'>View</a></td></tr>
+            <tr><td>Ambulance</td><td>Nucare Ambulance Contact – 9096667656</td><td><a href='https://maps.app.goo.gl/NucareAmbulanceLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>Holiday Inn Express Hinjewadi 3-star hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/HolidayInnLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>The Orchid Hotel 4-star hotel, Balewadi Stadium</td><td><a href='https://maps.app.goo.gl/OrchidHotelLink' target='_blank'>View</a></td></tr>
+            <tr><td>Hotel</td><td>Sadanand Regency Budget hotel near Balewadi</td><td><a href='https://maps.app.goo.gl/SadanandRegencyLink' target='_blank'>View</a></td></tr>
+        </table>
+</section>
+<section id="features">
+  <h2>BTI Features – Exit Plan, Audio, Routes, EN/DE & Deep Links</h2>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+    <button id="langToggle" class="pill">EN/DE</button>
+    <span id="langLabel" class="muted">Language: EN</span>
+    <button id="captureToggle" class="pill" title="Click map to capture normalized coords">Capture Markers</button>
+    <span id="capStatus" class="muted"></span>
+  </div>
+
+  <div id="planWrap">
+    <div id="planLayer">
+      <img id="planImg" src="assets/exit-plan.png" alt="Exit Plan" />
+      <svg id="routeSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div id="planControls">
+      <button id="zoomIn">＋</button>
+      <button id="zoomOut">－</button>
+      <button id="reset">⟲ Reset</button>
+      <button id="fullscreen">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:10px;">
+    <div class="card">
+      <h3>Audio Guidance</h3>
+      <audio id="guideAudio" src="assets/audio-guidance.wav"></audio>
+      <div style="display:flex; gap:8px; margin-top:6px;"><button id="playAudio">🔊 Play</button><button id="stopAudio">⏹ Stop</button></div>
+    </div>
+
+    <div class="card">
+      <h3>Room Route Finder</h3>
+      <label for="roomSel">Choose room:</label>
+      <select id="roomSel">
+        <option value="">— Select —</option>
+        <option>Success</option>
+        <option>Inspire</option>
+        <option>Joy</option>
+        <option>Debug</option>
+        <option>iDrive</option>
+        <option>M-Mode</option>
+        <option>Drift</option>
+        <option>xDrive</option>
+        <option>Torque</option>
+      </select>
+      <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
+    </div>
+
+    <div class="card">
+      <h3>QR Share (4-DEC-25)</h3>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADmUlEQVR4nO2cy23cMBCGvwkF+CgBLsClSB2kJCMlpQOpFHcgHQ1wMTnwIa7WyCFZYx/457CwJX6gBAx+zoOUOf9my49/BEGkSJEiRYoUKfL+SMvWAZuZTYDZACxDHmjTVkZNV5lT5LOQuLs7o7u7r8F97mO+M67BgeB53Bq8GTw/1nuK/H6yqs9EcJ8B6CM+k90n3U1SdaU5RT4H2R0vjL8N6FdYhhVGB4NwzTlFPjvZe9GhzcxsOJm7x4thd/K0Im9PFh3qHdjK1XEFS2I0vbgBOBu0BcnHek+R304uZpYSMbYOm7YOxo8Oe19J0bVNnFJadvunFXlXZNKhQ8PD4dNYBtKPw6f5cdRjvafI7yZL8afDZ04GBGf0nJeZ2Yvn8Eh5mcgLKyWfCPSRHFOntD6UWlDvnlJ9XzOh+pDIatkjgObHi0vluiOkONt9BdUYRZ5b8qHsG3nxyv7iRZaq+jCqTi3ya9LsLQLbiyf3+fUWYbEO9w8zsyE4S+mm3fxpRd4X2ehQE/akUChd2yOjWAZLh0RekstbhPHDLNWH3teanKXG6ynfsOGkvr3Ig+U4Zw1JgrL6QA2PQtvQ38VIOiSy2EVe1uTxObc/rG+KqUWeW4mHznRoT8mq+mRZ6qVDIo+2+9C+ZGUv6dtFLgsUSIdEnlttXZzMl5+f5hCcZQrRxhV8GQIOOGyWOmZ2u6cVeY9k9qHlp2Pw4rB1Efo1d1jH9RWWCRxCNAjRb/e0Iu+RrHnZWaXIfV+36jLWhEday0Q2tudlTVoPNUMre/Kbtqx8SOSXZEhKUzpikbQRDUjOlXodueR4pTlFPgVZ163gqQJ0WLJyhhbL4HJASDokslrpx+89+vZAWZKgrFK1bC0fEtlas6eDerRsLAc5fO4POoTiIZEHa32ozxqz71mE0i/bw2n5kMgvya3uFbIuuY9NqfVxsnzofuvyuPnmTyvynsh2S9BeKZpL5ywNmYGDVEmHRBZL6XvZmxiig2P0+V/qDWN7jekk9Tj/35win4s8fvejKUyPpfF63AUiHRJ5ZvsK1hYQoZ4Dik3tOg1RTC3y72QJhczePO3Et/eyozHtmb3+nCIfmbz4dgwEtxoKGYRoy7B67uVvJXR6sPcU+X3k8bsfvkyWvvFhKXRuPKeLRu/aPyTy3Mr+oeQYARv91Bm1MM2WPQe2V5AOibyw43c/fP8AY7rQx8u//nNOkSJFihQpUqTIeyL/AEwdHT/njVN5AAAAAElFTkSuQmCC" alt="QR 4-DEC-25" style="max-width:180px; height:auto; border:1px solid #e0e6ee; border-radius:8px;" />
+      <p><a download href="assets/qr_4-DEC-25.png">⬇️ Download QR</a></p>
+      <p class="muted">Encodes: <code>https://bmwtechworks-pune.github.io/BMWTechWorks-VisitorInfo/?d=4-DEC-25</code></p>
+    </div>
+  </div>
+</section>
+
+    <footer>© BMWTechWorks Pune · Built for mobile · Final build · 4-Dec-2025</footer>
+  </main>
+
+  <script>
+    // Language phrases
+    const phrases = {
+      en: [
+        ['Hallo','Hello / Namaste'],['Ich möchte zu diesem Ort gehen','I want to go to this place'],['Wie viel kostet das?','How much money?'],['Danke','Thanks'],['Ich möchte das','I want this'],['Guten Morgen','Good Morning'],['Gute Nacht','Good Night'],['Wo ist die Toilette?','Where is the restroom?'],['Können Sie mir helfen?','Can you help me?'],['Ich brauche Wasser','I need water']
+      ],
+      de: [
+        ['Hallo','Hallo'],['Ich möchte zu diesem Ort gehen','Ich möchte zu diesem Ort gehen'],['Wie viel kostet das?','Wie viel kostet das?'],['Danke','Danke'],['Ich möchte das','Ich möchte das'],['Guten Morgen','Guten Morgen'],['Gute Nacht','Gute Nacht'],['Wo ist die Toilette?','Wo ist die Toilette?'],['Können Sie mir helfen?','Können Sie mir helfen?'],['Ich brauche Wasser','Ich brauche Wasser']
+      ]
+    };
+
+    function renderPhrases(lang){
+      const org = document.getElementById('org');
+      let html = '<h3>Basic German → English Phrases</h3><ul>';
+      (phrases[lang]||phrases.en).forEach(p=>{ html += `<li>${p[0]} → ${p[1]}</li>`; });
+      html += '</ul>';
+      const container = document.createElement('div'); container.innerHTML = html;
+      const existingH3 = org.querySelector('h3');
+      if(existingH3 && existingH3.nextElementSibling){ existingH3.nextElementSibling.replaceWith(container); }
+      else { org.appendChild(container); }
+      document.getElementById('langLabel').textContent = 'Language: ' + (lang==='de'?'DE':'EN');
+    }
+
+    // --- Refined markers & paths (approximate, normalized to image) ---
+    const roomMarkers = {
+      Success:[0.060,0.280],
+      Inspire:[0.085,0.400],
+      Joy:[0.140,0.560],
+      Debug:[0.410,0.520],
+      iDrive:[0.530,0.540],
+      'M-Mode':[0.640,0.560],
+      Drift:[0.800,0.560],
+      xDrive:[0.880,0.540],
+      Torque:[0.940,0.540]
+    };
+
+    const routePaths = {
+      Success:[[0.120,0.550],[0.100,0.480],[0.080,0.360],[0.060,0.300]],
+      Inspire:[[0.120,0.550],[0.100,0.480],[0.085,0.400]],
+      Joy:[[0.120,0.550],[0.140,0.560]],
+      Debug:[[0.120,0.550],[0.300,0.550],[0.410,0.520]],
+      iDrive:[[0.120,0.550],[0.300,0.550],[0.530,0.540]],
+      'M-Mode':[[0.120,0.550],[0.300,0.550],[0.640,0.560]],
+      Drift:[[0.120,0.550],[0.300,0.550],[0.740,0.560],[0.800,0.560]],
+      xDrive:[[0.120,0.550],[0.300,0.550],[0.820,0.550],[0.880,0.540]],
+      Torque:[[0.120,0.550],[0.300,0.550],[0.860,0.540],[0.940,0.540]]
+    };
+
+    const routeText = {
+      en: {
+        Success:['Reception → left corridor','Proceed up to board room','Success (Board)'],
+        Inspire:['Reception → left corridor','Training room next to Success'],
+        Joy:['Reception → left corridor','Joy is near Visitor area'],
+        Debug:['Reception → central aisle','Continue to mid block','Debug lab is at center'],
+        iDrive:['Reception → central aisle','Past Debug','iDrive opposite Debug'],
+        'M-Mode':['Reception → central aisle','Continue right','M‑Mode corner room'],
+        Drift:['Reception → central aisle','Right aisle → T‑junction','Drift next to xDrive'],
+        xDrive:['Reception → central aisle','Right aisle','xDrive near Torque'],
+        Torque:['Reception → rightmost end','Opposite xDrive','Torque room']
+      },
+      de: {
+        Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
+        Inspire:['Empfang → linker Flur','Schulungsraum neben Success'],
+        Joy:['Empfang → linker Flur','Joy nahe Besucherbereich'],
+        Debug:['Empfang → Mittelgang','Weiter bis Mitte','Debug‑Labor im Zentrum'],
+        iDrive:['Empfang → Mittelgang','An Debug vorbei','iDrive gegenüber Debug'],
+        'M-Mode':['Empfang → Mittelgang','Nach rechts','M‑Mode an der Ecke'],
+        Drift:['Empfang → Mittelgang','Rechter Gang → T‑Kreuzung','Drift neben xDrive'],
+        xDrive:['Empfang → Mittelgang','Rechter Gang','xDrive nahe Torque'],
+        Torque:['Empfang → ganz rechts','Gegenüber xDrive','Torque‑Raum']
+      }
+    };
+
+    // Pan/zoom
+    const layer = document.getElementById('planLayer');
+    const svg = document.getElementById('routeSvg');
+    const img = document.getElementById('planImg');
+    let scale = 1, tx = 0, ty = 0; let dragging = false, px = 0, py = 0;
+    function apply(){ layer.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+    apply();
+    document.getElementById('zoomIn').onclick = ()=>{ scale = Math.min(4, scale + 0.15); apply(); };
+    document.getElementById('zoomOut').onclick = ()=>{ scale = Math.max(0.5, scale - 0.15); apply(); };
+    document.getElementById('reset').onclick = ()=>{ scale = 1; tx = 0; ty = 0; apply(); drawRoute(null); };
+    document.getElementById('fullscreen').onclick = ()=>{ const el = document.getElementById('planWrap'); if (el.requestFullscreen) el.requestFullscreen(); };
+
+    layer.addEventListener('pointerdown', (e)=>{ dragging = true; px = e.clientX; py = e.clientY; layer.setPointerCapture(e.pointerId); });
+    layer.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx = e.clientX - px; const dy = e.clientY - py; tx += dx; ty += dy; px = e.clientX; py = e.clientY; apply(); });
+    layer.addEventListener('pointerup', ()=> dragging=false);
+
+    function clearSvg(){ svg.innerHTML = ''; }
+
+    function drawMarkers(selected){
+      Object.keys(roomMarkers).forEach(name=>{
+        const [nx, ny] = roomMarkers[name];
+        const cx = (nx*100)+'%'; const cy = (ny*100)+'%';
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); circle.setAttribute('r','6');
+        circle.setAttribute('class','marker'+(name===selected?' sel':'')); svg.appendChild(circle);
+        const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+        text.setAttribute('x', cx); text.setAttribute('y', cy); text.setAttribute('dx','8'); text.setAttribute('dy','-8');
+        text.setAttribute('class','label'); text.textContent = name; svg.appendChild(text);
+      });
+    }
+
+    function drawRoute(room){
+      clearSvg();
+      drawMarkers(room);
+      if(!room || !routePaths[room]) return;
+      const pts = routePaths[room].map(p=> `${p[0]*100},${p[1]*100}`).join(' ');
+      const pl = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      pl.setAttribute('points', pts);
+      pl.setAttribute('fill','none'); pl.setAttribute('stroke','#ff3b30'); pl.setAttribute('stroke-width','3');
+      pl.setAttribute('stroke-linecap','round'); pl.setAttribute('stroke-linejoin','round');
+      svg.appendChild(pl);
+    }
+
+    const sel = document.getElementById('roomSel');
+    const steps = document.getElementById('routeSteps');
+    let currentLang = (new URLSearchParams(location.search)).get('lang') || 'en';
+    function selectRoom(room){
+      if(!room){ steps.innerHTML=''; drawRoute(null); return; }
+      sel.value = room; steps.innerHTML='';
+      (routeText[currentLang][room]||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
+      drawRoute(room);
+    }
+
+    sel.addEventListener('change', ()=> selectRoom(sel.value));
+
+    // Language toggle
+    renderPhrases(currentLang);
+    document.getElementById('langToggle').onclick = ()=>{ currentLang = (currentLang==='en')?'de':'en'; renderPhrases(currentLang); selectRoom(sel.value); };
+
+    // Deep link apply
+    const params = new URLSearchParams(location.search);
+    if(params.get('lang')){ currentLang = params.get('lang'); renderPhrases(currentLang); }
+    const startRoom = params.get('room');
+    if(startRoom){ selectRoom(startRoom); }
+
+    // Audio controls
+    const audio = document.getElementById('guideAudio');
+    document.getElementById('playAudio').onclick = ()=> audio.play();
+    document.getElementById('stopAudio').onclick = ()=> { audio.pause(); audio.currentTime=0; };
+
+    // Capture (normalized coords)
+    let capture=false; const capBtn = document.getElementById('captureToggle'); const capStatus=document.getElementById('capStatus');
+    capBtn.onclick = ()=>{ capture=!capture; capStatus.textContent = capture? 'Tap map to log normalized coords' : ''; };
+    document.getElementById('planLayer').addEventListener('click', (e)=>{
+      if(!capture) return; const rect = img.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width; const y = (e.clientY - rect.top) / rect.height;
+      const msg = `Coord: [${x.toFixed(4)}, ${y.toFixed(4)}]`; console.log(msg); capStatus.textContent = msg;
+      navigator.clipboard && navigator.clipboard.writeText(`[${x.toFixed(4)}, ${y.toFixed(4)}]`).catch(()=>{});
+    });
+  </script>
+
+</body>
+</html>
