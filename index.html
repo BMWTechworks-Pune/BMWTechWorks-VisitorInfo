@@ -112,7 +112,7 @@
 </head>
 <body>
 <header>BMWTechWorks Pune - Visitor Information</header>
-    ./🏠 Back to QR Page</a>
+    
 <div class='container'>
     <div style='text-align:center;'>
         <button class='toggle-btn' onclick="toggleLanguage('en')">English</button>
@@ -248,6 +248,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
           <div class="controls" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
             <label for="exitSelect">Exit:</label>
             <select id="exitSelect">
+            <option value="EXIT1">None</option>
               <option value="EXIT1">EXIT1</option>
               <option value="EXIT2">EXIT2</option>
               <option value="EXIT3">EXIT3</option>
@@ -265,10 +266,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
             <button class="btn" id="replay">Replay</button>
             <button class="btn" id="mute">Mute</button>
 
-            <label for="vol">Vol</label>
-            <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
-
-            <button class="btn" id="toggleTTS" aria-pressed="false">TTS: Off</button>
+           
 
             <!-- Optional: second set of zoom buttons (header block) -->
             <button class="btn" id="zoomOut">−</button>
@@ -431,6 +429,11 @@ function clearRouteOverlay(){
 
   // --- Guidance text placeholders (update to match r1.png) ---
   const ROUTE_TEXT = {
+
+     None: {
+      en: '.',
+      de: '.'
+    },
     EXIT1: {
       en: 'From Reception, proceed straight along the main corridor, turn left at the pantry, and follow the green arrows to the EXIT1 staircase.',
       de: 'Von der Rezeption geradeaus zum Hauptflur, links an der Pantry abbiegen und den grünen Pfeilen zur EXIT1‑Treppenhaus folgen.'
@@ -771,6 +774,5 @@ Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
   <div>***Developed By BTI-Digital CAR - SPP Team***</div>
    <div style="font-weight:bold; color:green;">
   @Copyright BTI-Digital CAR PUNE-SPP Team - 2025</div>
-   ./Back to QR Page</a>
 </footer>
 
