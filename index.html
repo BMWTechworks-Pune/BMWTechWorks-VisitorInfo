@@ -225,7 +225,6 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
         <div class="content">
           <div class="zoom-wrap" id="zoomWrap">
             <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan" />
-            <div class="zoom-hint">Scroll/pinch to zoom • Drag to pan • Double-tap to reset</div>
           </div>
 
           <div class="tools">
@@ -241,7 +240,13 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     <div class="title">BTI Pune • Exit Guidance</div>
     <div class="controls">
       <label>Exit:</label>
-      <select id="exitSelect"></select>
+      <select id="exitSelect"> 
+         <option value="en">EXIT1</option>
+        <option value="en">EXIT2</option>
+         <option value="en">EXIT3</option>
+            <option value="en">EXIT4</option>
+            <option value="en">EXIT5></option>
+      </select>
 
       <label>Lang:</label>
       <select id="langSelect">
@@ -263,11 +268,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       <button class="btn" id="resetView">Reset</button>
     </div>
   </header>
-
- 
-
-  <!-- Logic: pan/zoom, audio hooks (MP3 preferred, TTS fallback), deep links, JSON fallback -->
-  assets/app.js</script>
+  </script>
 
   <!-- Optional: Graceful message if JS is disabled -->
   <noscript>
