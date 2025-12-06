@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>BMWTechWorks Pune – Visitor Info (Index25) + Room Route Finder</title>
+  <style>
+    :root{ --accent:#007aff; --danger:#ff3b30; --bg:#f7f7f7; --card:#fff; --text:#111; --muted:#666; }
+    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background:var(--bg); color:var(--text); }
+    header{ padding:12px 16px; background:#ffffff; border-bottom:1px solid #e6e6e6; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    header h1{ margin:0; font-size:20px; font-weight:700; }
+    .toolbar{ display:flex; gap:8px; flex-wrap:wrap; }
+    button{ padding:8px 12px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
+    .primary{ border-color:var(--accent); color:#fff; background:var(--accent); }
+    .card{ background:var(--card); border:1px solid #e6e6e6; border-radius:12px; padding:14px; margin:14px; }
+    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    @media (max-width:900px){ .grid{ grid-template-columns: 1fr; } }
+    .muted{ color:var(--muted); }
+    #planWrap{ position:relative; background:#fff; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; }
+    #planLayer{ position:relative; transform-origin: 0 0; touch-action: none; }
+    #planImg{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
+    #routeSvg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .marker{ fill:#ffffff; stroke:#1c1c1e; stroke-width:2; opacity:0.95; }
+    .marker.sel{ fill:#ffd60a; stroke:#1c1c1e; }
+    .label{ fill:#111; font-size:12px; font-weight:600; text-shadow: 0 1px 0 rgba(255,255,255,0.8); }
+    #routeSteps{ margin-top:8px; }
+    #routeSteps li{ margin:4px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BMWTechWorks Pune – Index25</h1>
+    <div class="toolbar">
+      <button id="zoomIn" title="Zoom in">＋</button>
+      <button id="zoomOut" title="Zoom out">－</button>
+      <button id="reset" title="Reset view">Reset</button>
+      <button id="clearRoute" class="primary" title="Clear route & text">Clear</button>
+      <button id="langToggle" title="Toggle language">EN / DE</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section id="planWrap" class="card">
+      <div id="planLayer">
+        <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
+        <svg id="routeSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      </div>
+      <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
+    </section>
+
+    <section class="card">
+      <div class="card">
+        <h3>Room Route Finder</h3>
+        <label for="roomSel">Choose room:</label>
+        <select id="roomSel">
+          <option value="">— Select —</option>
+          <option>Success</option>
+          <option>Inspire</option>
+          <option>Joy</option>
+          <option>Debug</option>
+          <option>iDrive</option>
+          <option>M-Mode</option>
+          <option>Drift</option>
+          <option>xDrive</option>
+          <option>Torque</option>
+        </select>
+        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
+      </div>
+      <div id="audioPanel" class="card">
+        <h4>Audio Guidance (TTS)</h4>
+        <div class="row">
+          <button id="playAudio">Play</button>
+          <button id="stopAudio">Stop</button>
+          <span id="audioStatus" class="muted"></span>
+        </div>
+        <p class="muted" style="margin-top:6px">Tap <strong>Play</strong> after selecting a room.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const roomMarkers = {
+      Success:[0.060,0.280],
+      Inspire:[0.085,0.400],
+      Joy:[0.140,0.560],
+      Debug:[0.410,0.520],
+      iDrive:[0.530,0.540],
+      'M-Mode':[0.640,0.560],
+      Drift:[0.800,0.560],
+      xDrive:[0.880,0.540],
+      Torque:[0.940,0.540]
+    };
+    const routePaths = {
+      Success:[[0.120,0.550],[0.100,0.480],[0.080,0.360],[0.060,0.300]],
+      Inspire:[[0.120,0.550],[0.100,0.480],[0.085,0.400]],
+      Joy:[[0.120,0.550],[0.140,0.560]],
+      Debug:[[0.120,0.550],[0.300,0.550],[0.410,0.520]],
+      iDrive:[[0.120,0.550],[0.300,0.550],[0.530,0.540]],
+      'M-Mode':[[0.120,0.550],[0.300,0.550],[0.640,0.560]],
+      Drift:[[0.120,0.550],[0.300,0.550],[0.740,0.560],[0.800,0.560]],
+      xDrive:[[0.120,0.550],[0.300,0.550],[0.820,0.550],[0.880,0.540]],
+      Torque:[[0.120,0.550],[0.300,0.550],[0.860,0.540],[0.940,0.540]]
+    };
+    const routeText = {
+      en: {
+        Success:['Reception → left corridor','Proceed up to board room','Success (Board)'],
+        Inspire:['Reception → left corridor','Training room next to Success'],
+        Joy:['Reception → left corridor','Joy is near Visitor area'],
+        Debug:['Reception → central aisle','Continue to mid block','Debug lab is at center'],
+        iDrive:['Reception → central aisle','Past Debug','iDrive opposite Debug'],
+        'M-Mode':['Reception → central aisle','Continue right','M‑Mode corner room'],
+        Drift:['Reception → central aisle','Right aisle → T‑junction','Drift next to xDrive'],
+        xDrive:['Reception → central aisle','Right aisle','xDrive near Torque'],
+        Torque:['Reception → rightmost end','Opposite xDrive','Torque room']
+      },
+      de: {
+        Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
+        Inspire:['Empfang → linker Flur','Schulungsraum neben Success'],
+        Joy:['Empfang → linker Flur','Joy nahe Besucherbereich'],
+        Debug:['Empfang → Mittelgang','Weiter bis Mitte','Debug‑Labor im Zentrum'],
+        iDrive:['Empfang → Mittelgang','An Debug vorbei','iDrive gegenüber Debug'],
+        'M-Mode':['Empfang → Mittelgang','Nach rechts','M‑Mode an der Ecke'],
+        Drift:['Empfang → Mittelgang','Rechter Gang → T‑Kreuzung','Drift neben xDrive'],
+        xDrive:['Empfang → Mittelgang','Rechter Gang','xDrive nahe Torque'],
+        Torque:['Empfang → ganz rechts','Gegenüber xDrive','Torque‑Raum']
+      }
+    };
+
+    const layer = document.getElementById('planLayer');
+    const svg = document.getElementById('routeSvg');
+    let scale = 1, tx = 0, ty = 0; let dragging = false, px = 0, py = 0;
+    function apply(){ layer.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+    apply();
+    document.getElementById('zoomIn').onclick = ()=>{ scale = Math.min(4, scale + 0.15); apply(); };
+    document.getElementById('zoomOut').onclick = ()=>{ scale = Math.max(0.5, scale - 0.15); apply(); };
+    document.getElementById('reset').onclick = ()=>{ scale = 1; tx = 0; ty = 0; apply(); drawRoute(null); steps.innerHTML=''; stopTTS(); };
+    layer.addEventListener('pointerdown', (e)=>{ dragging = true; px = e.clientX; py = e.clientY; layer.setPointerCapture(e.pointerId); });
+    layer.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx = e.clientX - px; const dy = e.clientY - py; tx += dx; ty += dy; px = e.clientX; py = e.clientY; apply(); });
+    layer.addEventListener('pointerup', ()=> dragging=false);
+
+    function clearSvg(){ svg.innerHTML = ''; }
+    function clearPolylineOnly(){ svg.querySelectorAll('polyline').forEach(pl=>pl.remove()); }
+    function drawMarkers(selected){
+      Object.keys(roomMarkers).forEach(name=>{
+        const [nx, ny] = roomMarkers[name];
+        const cx = (nx*100)+'%'; const cy = (ny*100)+'%';
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); circle.setAttribute('r','6');
+        circle.setAttribute('class','marker'+(name===selected?' sel':'')); svg.appendChild(circle);
+        const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+        text.setAttribute('x', cx); text.setAttribute('y', cy); text.setAttribute('dx','8'); text.setAttribute('dy','-8');
+        text.setAttribute('class','label'); text.textContent = name; svg.appendChild(text);
+      });
+    }
+    function drawRoute(room){
+      clearSvg();
+      drawMarkers(room);
+      if(!room || !routePaths[room]) return;
+      const pts = routePaths[room].map(p=> `${p[0]*100},${p[1]*100}`).join(' ');
+      const pl = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      pl.setAttribute('points', pts);
+      pl.setAttribute('fill','none');
+      pl.setAttribute('stroke', getComputedStyle(document.documentElement).getPropertyValue('--danger').trim());
+      pl.setAttribute('stroke-width','3');
+      pl.setAttribute('stroke-linecap','round');
+      pl.setAttribute('stroke-linejoin','round');
+      svg.appendChild(pl);
+    }
+
+    const sel = document.getElementById('roomSel');
+    const steps = document.getElementById('routeSteps');
+    let currentLang = (new URLSearchParams(location.search)).get('lang') || 'en';
+
+    function selectRoom(room){
+      if(!room){ steps.innerHTML=''; drawRoute(null); stopTTS(); return; }
+      sel.value = room;
+      steps.innerHTML='';
+      (routeText[currentLang][room]||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
+      drawRoute(room);
+      updateVoiceStatus();
+    }
+    sel.addEventListener('change', ()=> selectRoom(sel.value));
+    document.getElementById('langToggle').onclick = ()=>{ currentLang = (currentLang==='en')?'de':'en'; selectRoom(sel.value); };
+
+    // TTS
+    const audioStatus = document.getElementById('audioStatus');
+    let voices = []; function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
+    loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
+    function pickVoice(langCode){ const exact = voices.find(v=>v.lang.toLowerCase()===langCode.toLowerCase()); if(exact) return exact; const prefix = langCode.split('-')[0]; const starts = voices.find(v=>v.lang.toLowerCase().startsWith(prefix.toLowerCase())); if(starts) return starts; return voices[0] || null; }
+    function buildSpeechText(room, lang){ const lines = routeText[lang][room] || []; return lines.join('. '); }
+    let currentUtterance = null;
+    function stopTTS(){ if(currentUtterance){ window.speechSynthesis.cancel(); currentUtterance = null; } else { window.speechSynthesis.cancel(); } audioStatus.textContent = ''; }
+    function speakSteps(room, lang){ stopTTS(); if(!room){ audioStatus.textContent='Select a room first.'; return; } const text = buildSpeechText(room, lang); if(!text){ audioStatus.textContent = 'No audio text available.'; return; } const voice = pickVoice(lang==='de' ? 'de-DE' : 'en-US'); const utter = new SpeechSynthesisUtterance(text); if(voice) utter.voice = voice; utter.rate = 1.0; utter.pitch = 1.0; utter.onstart = ()=>{ audioStatus.textContent = `Speaking (${(voice && voice.lang) || (lang==='de'?'de-DE':'en-US')})…`; }; utter.onend   = ()=>{ audioStatus.textContent = 'Done.'; setTimeout(()=> audioStatus.textContent='', 800); }; utter.onerror = ()=>{ audioStatus.textContent = 'Speech error. Try again.'; }; currentUtterance = utter; window.speechSynthesis.speak(utter); }
+    document.getElementById('playAudio').onclick = ()=> speakSteps(sel.value, currentLang);
+    document.getElementById('stopAudio').onclick = ()=> stopTTS();
+
+    document.getElementById('clearRoute').onclick = ()=>{ clearPolylineOnly(); steps.innerHTML=''; stopTTS(); };
+
+    const qs = new URLSearchParams(location.search); const initialRoom = qs.get('room'); if(initialRoom && Object.keys(roomMarkers).includes(initialRoom)){ selectRoom(initialRoom); }
+  </script>
+</body>
+</html>
