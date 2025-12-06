@@ -257,45 +257,14 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
 
       <button class="btn" id="toggleTTS">TTS: On</button>
-      <button class="btn" id="copyLink">Copy Deep Link</button>
-
+     
       <button class="btn" id="zoomOut">−</button>
       <button class="btn" id="zoomIn">+</button>
       <button class="btn" id="resetView">Reset</button>
     </div>
   </header>
 
-  <div class="container">
-    <div class="audio-bar">
-      <strong>Audio:</strong>
-      MP3 preferred (assets/audio/EXITx/voice_*.mp3), TTS fallback.
-    </div>
-
-    <div class="banner">
-      Single QR build: Use one generic QR pointing to your hosted
-      <code>index.html</code>. Deep‑links supported via <code>?exit=5&lang=en</code>.
-    </div>
-
-    <div id="canvasWrap">
-      <!-- The floor image is set by app.js to assets/r1.png and sized to the natural pixels -->
-      <img id="floor" alt="Floor Map" />
-      <!-- SVG overlay draws the EXIT polylines (tap to highlight + play guidance) -->
-      <svg id="overlay"></svg>
-    </div>
-
-    <div class="legend">
-      <div class="row">
-        <div class="swatch"></div>
-        <div>Active route</div>
-      </div>
-    </div>
-
-    <footer>
-      Tap a route to highlight and play guidance. Drag to pan. Use +/− to zoom.
-      Deep links: <code>?exit=5&amp;lang=en</code>
-      <div id="phrase" style="margin-top:8px"></div>
-    </footer>
-  </div>
+ 
 
   <!-- Logic: pan/zoom, audio hooks (MP3 preferred, TTS fallback), deep links, JSON fallback -->
   assets/app.js</script>
@@ -309,8 +278,6 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
   
         </div>
       </section>
-
-
   
       <aside class="card">
         <h2>Quick References & QR</h2>
@@ -580,8 +547,11 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 </p>
 
-  <footer style="text-align:center; padding:12px; color:var(--muted)">
-       © BTI Pune — Visitor Info.
-      ***Developed By BTI-Digital CAR -SPP Team ***
-      @Copyright BTI-Digital CAR PUNE-SPP Team -2025
-  </footer>
+  
+<footer style="text-align:center; padding:12px; color:var(--muted)">
+  <div>© BTI Pune — Visitor Info.</div>
+  <div>***Developed By BTI-Digital CAR - SPP Team***</div>
+   <div style="font-weight:bold; color:green;">
+  @Copyright BTI-Digital CAR PUNE-SPP Team - 2025</div>
+</footer>
+
