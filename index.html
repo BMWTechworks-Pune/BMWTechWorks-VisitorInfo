@@ -291,7 +291,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     // Print helper
     document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
   </script>
-<header>
+ <header>
     <h2>BMWTechWorks Pune – Meeting Rooms</h2>
   </header>
 
@@ -299,6 +299,8 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     <section id="planWrap" class="card">
       <div id="planLayer">
         <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
+        <!-- Optional SVG overlay kept for future use; not drawing any route now -->
+        <svg id="routeSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
       </div>
       <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
       <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
@@ -307,14 +309,14 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     <section class="card">
       <div class="card">
         <h3>Room Route Finder</h3>
-        <label for="roomSel">Choose Meeting  room:</label>
-         <div class="toolbar">
-        <button id="zoomIn" title="Zoom in">＋</button>
-      <button id="zoomOut" title="Zoom out">－</button>
-      <button id="reset" title="Reset view">Reset</button>
-      <button id="clearRoute" class="primary" title="Clear route & text">Clear</button>
-      <button id="langToggle" title="Toggle language">EN / DE</button>
-      </div>  
+        <label for="roomSel">Choose Meeting room:</label>
+        <div class="toolbar">
+          <button id="zoomIn" title="Zoom in">＋</button>
+          <button id="zoomOut" title="Zoom out">－</button>
+          <button id="reset" title="Reset view">Reset</button>
+          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
+          <button id="langToggle" title="Toggle language">EN / DE</button>
+        </div>
         <select id="roomSel">
           <option value="">— Select —</option>
           <option>Success</option>
@@ -329,9 +331,10 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
         </select>
         <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
       </div>
+
       <div id="audioPanel" class="card">
         <h4>Audio Guidance (TTS)</h4>
-        <div class="row">
+        <div class="toolbar">
           <button id="playAudio">Play</button>
           <button id="stopAudio">Stop</button>
           <span id="audioStatus" class="muted"></span>
@@ -342,11 +345,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
   </main>
 
   <script>
-    // Data (unchanged)
-    const roomMarkers = {
-      Success:[0.060,0.280], Inspire:[0.085,0.400], Joy:[0.140,0.560], Debug:[0.410,0.520],
-      iDrive:[0.530,0.540], 'M-Mode':[0.640,0.560], Drift:[0.800,0.560], xDrive:[0.880,0.540], Torque:[0.940,0.540]
-    };
+    // Data
     const routePaths = {
       Success:[[0.120,0.550],[0.100,0.480],[0.080,0.360],[0.060,0.300]],
       Inspire:[[0.120,0.550],[0.100,0.480],[0.085,0.400]],
@@ -358,6 +357,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       xDrive:[[0.120,0.550],[0.300,0.550],[0.820,0.550],[0.880,0.540]],
       Torque:[[0.120,0.550],[0.300,0.550],[0.860,0.540],[0.940,0.540]]
     };
+
     const routeText = {
       en: {
         Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
@@ -369,60 +369,47 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
         Drift: ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
         xDrive: ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
         Torque: ['Reception → far right end', 'Opposite xDrive', 'Torque room']
-
       },
       de: {
         Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
         Inspire:['Empfang → linker Flur','Schulungsraum neben Success'],
         Joy:['Empfang → linker Flur','Joy nahe Besucherbereich'],
-        Debug:['Empfang → Mittelgang','Weiter bis Mitte','Debug‑Labor im Zentrum'],
-        iDrive:['Empfang → Mittelgang','An Debug vorbei','iDrive gegenüber Debug'],
-        'M-Mode':['Empfang → Mittelgang','Nach rechts','M‑Mode an der Ecke'],
-        Drift:['Empfang → Mittelgang','Rechter Gang → T‑Kreuzung','Drift neben xDrive'],
-        xDrive:['Empfang → Mittelgang','Rechter Gang','xDrive nahe Torque'],
+        Debug:['Empfang → Hauptflur','Weiter zum Mittelteil','Debug‑Labor im Zentrum'],
+        iDrive:['Empfang → Hauptflur','An Debug vorbei','iDrive gegenüber Debug'],
+        'M-Mode':['Empfang → Hauptflur','Nach rechts abbiegen','M‑Mode Eckraum'],
+        Drift:['Empfang → Hauptflur','Rechts in Seitenflur → T‑Kreuzung','Drift neben xDrive'],
+        xDrive:['Empfang → Hauptflur','Rechts in Seitenflur','xDrive nahe Torque'],
         Torque:['Empfang → ganz rechts','Gegenüber xDrive','Torque‑Raum']
       }
     };
 
     // Pan/zoom
     const layer = document.getElementById('planLayer');
-    const svg = document.getElementById('routeSvg');
+    const svg = document.getElementById('routeSvg'); // present but unused for drawing
     let scale = 1, tx = 0, ty = 0; let dragging = false, px = 0, py = 0;
     function apply(){ layer.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
     apply();
     document.getElementById('zoomIn').onclick = ()=>{ scale = Math.min(4, scale + 0.15); apply(); };
     document.getElementById('zoomOut').onclick = ()=>{ scale = Math.max(0.5, scale - 0.15); apply(); };
 
-    // Reset: clear route + text + audio and reset view
+    // Reset: clear text + audio and reset view (+ empty dropdown)
+    const sel = document.getElementById('roomSel');
+    const steps = document.getElementById('routeSteps');
+
     document.getElementById('reset').onclick = ()=>{
       scale = 1; tx = 0; ty = 0; apply();
-      clearSvg(); steps.innerHTML=''; stopTTS();
-      sel.value = '';
+      clearSvg(); steps.innerHTML=''; stopTTS(); sel.value='';
     };
 
     layer.addEventListener('pointerdown', (e)=>{ dragging = true; px = e.clientX; py = e.clientY; layer.setPointerCapture(e.pointerId); });
     layer.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx = e.clientX - px; const dy = e.clientY - py; tx += dx; ty += dy; px = e.clientX; py = e.clientY; apply(); });
     layer.addEventListener('pointerup', ()=> dragging=false);
 
-    // Draw only route (no markers/labels, no endpoint dot)
-    function clearSvg(){ svg.innerHTML = ''; }
-    function drawRoute(room){
-      clearSvg();
-      if(!room || !routePaths[room]) return;
-      const pts = routePaths[room].map(p=> `${p[0]*100},${p[1]*100}`).join(' ');
-      const pl = document.createElementNS('http://www.w3.org/2000/svg','polyline');
-      pl.setAttribute('points', pts);
-      pl.setAttribute('fill','none');
-      pl.setAttribute('stroke', getComputedStyle(document.documentElement).getPropertyValue('--danger').trim());
-      pl.setAttribute('stroke-width','3');
-      pl.setAttribute('stroke-linecap','round');
-      pl.setAttribute('stroke-linejoin','round');
-      svg.appendChild(pl);
-    }
+    // No route drawing
+    function clearSvg(){ if(svg) svg.innerHTML=''; }
+    function drawRoute(room){ clearSvg(); return; }
 
-    // Route selection + language
-    const sel = document.getElementById('roomSel');
-    const steps = document.getElementById('routeSteps');
+    // Selection + language (text + TTS only)
     let currentLang = (new URLSearchParams(location.search)).get('lang') || 'en';
 
     function selectRoom(room){
@@ -430,7 +417,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       sel.value = room;
       steps.innerHTML='';
       (routeText[currentLang][room]||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
-      drawRoute(room);
+      // drawRoute(room); // intentionally not drawing any route
       updateVoiceStatus();
     }
 
@@ -441,20 +428,47 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     const audioStatus = document.getElementById('audioStatus');
     let voices = []; function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
     loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
-    function pickVoice(langCode){ const exact = voices.find(v=>v.lang.toLowerCase()===langCode.toLowerCase()); if(exact) return exact; const prefix = langCode.split('-')[0]; const starts = voices.find(v=>v.lang.toLowerCase().startsWith(prefix.toLowerCase())); if(starts) return starts; return voices[0] || null; }
+
+    function pickVoice(langCode){
+      const exact = voices.find(v=>v.lang.toLowerCase()===langCode.toLowerCase());
+      if(exact) return exact;
+      const prefix = langCode.split('-')[0];
+      const starts = voices.find(v=>v.lang.toLowerCase().startsWith(prefix.toLowerCase()));
+      if(starts) return starts;
+      return voices[0] || null;
+    }
+
     function buildSpeechText(room, lang){ const lines = routeText[lang][room] || []; return lines.join('. '); }
+
     let currentUtterance = null;
     function stopTTS(){ if(currentUtterance){ window.speechSynthesis.cancel(); currentUtterance = null; } else { window.speechSynthesis.cancel(); } audioStatus.textContent = ''; }
-    function speakSteps(room, lang){ stopTTS(); if(!room){ audioStatus.textContent='Select a room first.'; return; } const text = buildSpeechText(room, lang); if(!text){ audioStatus.textContent = 'No audio text available.'; return; } const voice = pickVoice(lang==='de' ? 'de-DE' : 'en-US'); const utter = new SpeechSynthesisUtterance(text); if(voice) utter.voice = voice; utter.rate = 1.0; utter.pitch = 1.0; utter.onstart = ()=>{ audioStatus.textContent = `Speaking (${(voice && voice.lang) || (lang==='de'?'de-DE':'en-US')})…`; }; utter.onend   = ()=>{ audioStatus.textContent = 'Done.'; setTimeout(()=> audioStatus.textContent='', 800); }; utter.onerror = ()=>{ audioStatus.textContent = 'Speech error. Try again.'; }; currentUtterance = utter; window.speechSynthesis.speak(utter); }
+
+    function speakSteps(room, lang){
+      stopTTS();
+      if(!room){ audioStatus.textContent='Select a room first.'; return; }
+      const text = buildSpeechText(room, lang);
+      if(!text){ audioStatus.textContent = 'No audio text available.'; return; }
+      const voice = pickVoice(lang==='de' ? 'de-DE' : 'en-US');
+      const utter = new SpeechSynthesisUtterance(text);
+      if(voice) utter.voice = voice;
+      utter.rate = 1.0; utter.pitch = 1.0;
+      utter.onstart = ()=>{ audioStatus.textContent = `Speaking (${(voice && voice.lang) || (lang==='de'?'de-DE':'en-US')})…`; };
+      utter.onend   = ()=>{ audioStatus.textContent = 'Done.'; setTimeout(()=> audioStatus.textContent='', 800); };
+      utter.onerror = ()=>{ audioStatus.textContent = 'Speech error. Try again.'; };
+      currentUtterance = utter;
+      window.speechSynthesis.speak(utter);
+    }
 
     document.getElementById('playAudio').onclick = ()=> speakSteps(sel.value, currentLang);
     document.getElementById('stopAudio').onclick = ()=> stopTTS();
 
-    // Clear: route + text + audio
+    // Clear: text + audio (keeps zoom/pan)
     document.getElementById('clearRoute').onclick = ()=>{ clearSvg(); steps.innerHTML=''; stopTTS(); sel.value=''; };
 
-    // Deep link
-    const qs = new URLSearchParams(location.search); const initialRoom = qs.get('room'); if(initialRoom && Object.keys(roomMarkers).includes(initialRoom)){ selectRoom(initialRoom); }
+    // Deep link (shows text + TTS only)
+    const qs = new URLSearchParams(location.search);
+    const initialRoom = qs.get('room');
+    if(initialRoom && routeText.en[initialRoom]){ sel.value = initialRoom; selectRoom(initialRoom); }
   </script>
 <h2 id='safety'>Safety & Emergency</h2>
 <p>Emergency escape route layout is pasted in designated areas.<br>
@@ -462,11 +476,11 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 <ul>
 <li>DPE: Yogesh Tambat, Zulqurnain Khan</li>
 <li>Digital Company: Rishabh Kundal</li>
-<li>Software Factory: Sandesh Gharal, Shubham Jambekar</li>
+<li>Software Factory: Sandesh Gharal</li>
 <li>Driving ECU: Vivek Patil, Ganesh Garg</li>
 <li>SSP: Aniket Patil, Chahul Turkar</li>
-<li>AIML & Infotainment: Pravinkumar Kale, Vipin Yadav</li>
-<li>Connected Vehicle: Rajiv Rengasamy, Sohan Dalwadi</li>
+<li>AIML & Infotainment: Pravinkumar Kale</li>
+<li>Connected Vehicle: Rajiv Rengasamy</li>
 </ul>
 
 <h2 id='facility'>Facility Concerns & Reporting</h2>
@@ -481,5 +495,7 @@ Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 </p>
 
   <footer style="text-align:center; padding:12px; color:var(--muted)">
-    © BTI Pune — Visitor Info. Developed By BTI-Digital CAR -@Copyright BTI-Digital CAR PUNE-2025
+       © BTI Pune — Visitor Info.
+      ***Developed By BTI-Digital CAR -SPP Team ***
+      @Copyright BTI-Digital CAR PUNE-SPP Team -2025
   </footer>
