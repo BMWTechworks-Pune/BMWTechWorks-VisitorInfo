@@ -238,10 +238,6 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
               <img src="r3.png" alt="Access Zones" />
               <p class="muted">Access policy map: A–G zones with restrictions and photography notes.</p>
             </div>
-            <div class="img-item">
-              <img src="r2.png" alt="Rooms & Areas" />
-              <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
-            </div>
           </div>
 
           <hr style="margin:16px 0; border-color:#1f3f74"/>
@@ -249,10 +245,6 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       </aside>
     </div>
   </div>
-
-  <footer style="text-align:center; padding:18px; color:var(--muted)">
-    © BTI Pune — Visitor Info. Developed By BTI-Digital CAR -@Copyright BTI-Digital CAR PUNE-2025
-  </footer>
 
   <script>
     // Zoom & Pan
@@ -300,7 +292,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
   </script>
 <header>
-    <h1>BMWTechWorks Pune – Meeting Rooms</h1>
+    <h2>BMWTechWorks Pune – Meeting Rooms</h2>
   </header>
 
   <main class="grid">
@@ -308,6 +300,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
       <div id="planLayer">
         <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
       </div>
+      <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
       <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
     </section>
 
@@ -367,15 +360,16 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     };
     const routeText = {
       en: {
-        Success:['Reception → left corridor','Proceed up to board room','Success (Board)'],
-        Inspire:['Reception → left corridor','Training room next to Success'],
-        Joy:['Reception → left corridor','Joy is near Visitor area'],
-        Debug:['Reception → central aisle','Continue to mid block','Debug lab is at center'],
-        iDrive:['Reception → central aisle','Past Debug','iDrive opposite Debug'],
-        'M-Mode':['Reception → central aisle','Continue right','M‑Mode corner room'],
-        Drift:['Reception → central aisle','Right aisle → T‑junction','Drift next to xDrive'],
-        xDrive:['Reception → central aisle','Right aisle','xDrive near Torque'],
-        Torque:['Reception → rightmost end','Opposite xDrive','Torque room']
+        Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
+        Inspire: ['Reception → left corridor', 'Training room next to Success'],
+        Joy: ['Reception → left corridor', 'Joy is near Visitor area'],
+        Debug: ['Reception → main corridor', 'Continue to middle section', 'Debug lab is at center'],
+        iDrive: ['Reception → main corridor', 'Pass Debug', 'iDrive opposite Debug'],
+        'M-Mode': ['Reception → main corridor', 'Turn right', 'M‑Mode corner room'],
+        Drift: ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
+        xDrive: ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
+        Torque: ['Reception → far right end', 'Opposite xDrive', 'Torque room']
+
       },
       de: {
         Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
@@ -485,3 +479,7 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 <a href='https://www.youtube.com'>YouTube</a><br>
 Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 </p>
+
+  <footer style="text-align:center; padding:12px; color:var(--muted)">
+    © BTI Pune — Visitor Info. Developed By BTI-Digital CAR -@Copyright BTI-Digital CAR PUNE-2025
+  </footer>
