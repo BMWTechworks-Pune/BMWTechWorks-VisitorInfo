@@ -215,137 +215,353 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 <li>Tailgating is strictly prohibited and considered a security violation.</li>
 </ul>
 
-  <header>
-    <h2>BTI Pune – Visitor Information</h2>
-  </header>
+ 
+<!-- ===== BTI Pune – Visitor Information: Exit Plan + Guidance ===== -->
+<header>
+  <h2>Exit Plan (Zoom • Pan • Fullscreen)</h2>
+</header>
 
-  <div class="container">
-    <div class="grid">
-      <section class="card">
-        <h2>Exit Plan (Zoom • Pan • Fullscreen)</h2>
-        <div class="content">
-          <div class="zoom-wrap" id="zoomWrap">
-            <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan" />
-          </div>
-
-          <div class="tools">
-            <button class="btn" id="btnSpeak">🔊 Play Audio Guidance</button>
-            <button class="btn" id="btnStop">⏹ Stop</button>
-            <button class="btn" id="btnReset">↺ Reset View</button>
-            <button class="btn" id="btnZoomIn">➕ Zoom In</button>
-            <button class="btn" id="btnZoomOut">➖ Zoom Out</button>
-            <button class="btn" id="btnFullscreen">⛶ Fullscreen</button>
-          </div>
-          <p class="muted" style="margin-top:8px">Best experienced on Chrome/Edge. Use headphones in open areas.</p>
-          <header>
-    <div class="title">BTI Pune • Exit Guidance</div>
-    <div class="controls">
-      <label>Exit:</label>
-      <select id="exitSelect"> 
-         <option value="en">EXIT1</option>
-        <option value="en">EXIT2</option>
-         <option value="en">EXIT3</option>
-            <option value="en">EXIT4</option>
-            <option value="en">EXIT5></option>
-      </select>
-
-      <label>Lang:</label>
-      <select id="langSelect">
-        <option value="en">EN</option>
-        <option value="de">DE</option>
-      </select>
-
-      <button class="btn" id="play">Play</button>
-      <button class="btn" id="replay">Replay</button>
-      <button class="btn" id="mute">Mute</button>
-
-      <label>Vol</label>
-      <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
-
-      <button class="btn" id="toggleTTS">TTS: On</button>
-     
-      <button class="btn" id="zoomOut">−</button>
-      <button class="btn" id="zoomIn">+</button>
-      <button class="btn" id="resetView">Reset</button>
-    </div>
-  </header>
-  </script>
-
-  <!-- Optional: Graceful message if JS is disabled -->
-  <noscript>
-    <div style="padding:12px;color:#e11d48;">
-      JavaScript is required for interactive routes and audio guidance.
-    </div>
-  </noscript>
-  
+<div class="container">
+  <div class="grid">
+    <section class="card">
+      <h2>Exit Plan (Zoom • Pan • Fullscreen)</h2>
+      <div class="content">
+        <!-- Map: zoom/pan wrapper -->
+        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
+          <!-- Optional overlay holder (SVG will be injected here if you add routes later) -->
+          <!-- <svg id="routeOverlay" style="position:absolute; inset:0; pointer-events:none;"></svg> -->
+          <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
+               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
+          <button class="btn" id="btnSpeak">🔊 Play Audio Guidance</button>
+          <button class="btn" id="btnStop">⏹ Stop</button>
+          <button class="btn" id="btnReset">↺ Reset View</button>
+          <button class="btn" id="btnZoomIn">➕ Zoom In</button>
+          <button class="btn" id="btnZoomOut">➖ Zoom Out</button>
+          <button class="btn" id="btnFullscreen">⛶ Fullscreen</button>
         </div>
-      </section>
-  
-      <aside class="card">
-        <h2>Quick References & QR</h2>
-        <div class="content">
-          <div class="img-list">
-            <div class="img-item">
-              <img src="r5.png" alt="Lanyard Types" />
-              <p class="muted">ID lanyards: Employee • Contractor • Visitor • BMW Employee</p>
-            </div>
-            <div class="img-item">
-              <img src="r3.png" alt="Access Zones" />
-              <p class="muted">Access policy map: A–G zones with restrictions and photography notes.</p>
-            </div>
-          </div>
 
-          <hr style="margin:16px 0; border-color:#1f3f74"/>
+        <p class="muted" style="margin-top:8px">Best experienced on Chrome/Edge. Use headphones in open areas.</p>
+
+        <!-- Exit Guidance header controls -->
+        <header style="margin-top:10px;">
+          <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
+          <div class="controls" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+            <label for="exitSelect">Exit:</label>
+            <select id="exitSelect">
+              <option value="EXIT1">EXIT1</option>
+              <option value="EXIT2">EXIT2</option>
+              <option value="EXIT3">EXIT3</option>
+              <option value="EXIT4">EXIT4</option>
+              <option value="EXIT5">EXIT5</option>
+            </select>
+
+            <label for="langSelect">Lang:</label>
+            <select id="langSelect">
+              <option value="en">EN</option>
+              <option value="de">DE</option>
+            </select>
+
+            <button class="btn" id="play">Play</button>
+            <button class="btn" id="replay">Replay</button>
+            <button class="btn" id="mute">Mute</button>
+
+            <label for="vol">Vol</label>
+            <input type="range" id="vol" min="0" max="1" step="0.05" value="1" />
+
+            <button class="btn" id="toggleTTS" aria-pressed="false">TTS: Off</button>
+
+            <!-- Optional: second set of zoom buttons (header block) -->
+            <button class="btn" id="zoomOut">−</button>
+            <button class="btn" id="zoomIn">+</button>
+            <button class="btn" id="resetView">Reset</button>
+          </div>
+        </header>
+
+        <!-- Guidance text display -->
+        <div id="routeText" class="routeText" aria-live="polite"
+             style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
+          Select an exit to see guidance.
         </div>
-      </aside>
-    </div>
+
+        <!-- Hidden audio element driven by the controls -->
+        <audio id="routeAudio" preload="auto" style="display:none;"></audio>
+
+        <!-- Optional: Graceful message if JS is disabled -->
+        <noscript>
+          <div style="padding:12px;color:#e11d48;">
+            JavaScript is required for interactive routes and audio guidance.
+          </div>
+        </noscript>
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2>Quick References &amp; QR</h2>
+      <div class="content">
+        <div class="img-list">
+          <div class="img-item">
+            r5.png
+            <p class="muted">ID lanyards: Employee • Contractor • Visitor • BMW Employee</p>
+          </div>
+          <div class="img-item">
+            r3.png
+            <p class="muted">Access policy map: A–G zones with restrictions and photography notes.</p>
+          </div>
+        </div>
+        <hr style="margin:16px 0; border-color:#1f3f74"/>
+      </div>
+    </aside>
   </div>
+</div>
 
-  <script>
-    // Zoom & Pan
-    (function(){
-      const wrap = document.getElementById('zoomWrap');
+<!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
+<script>
+/* ---------- Helper: clear any future route overlays (SVG) ---------- */
+function clearRouteOverlay(){
+  const overlay = document.getElementById('routeOverlay');
+  if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+}
+
+/* ---------- Zoom & Pan on the map (mouse + touch) ---------- */
+(function(){
+  const wrap = document.getElementById('zoomWrap');
+  const img  = document.getElementById('zoomImg');
+
+  let scale = 1, min = 1, max = 6;
+  let ox = 0, oy = 0;    // translation
+  let down = false, sx = 0, sy = 0;
+
+  function apply(){ img.style.transform = `translate(${ox}px, ${oy}px) scale(${scale})`; }
+  function clamp(){
+    const bw = wrap.clientWidth, bh = wrap.clientHeight;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const vw = iw * scale, vh = ih * scale;
+    const minX = Math.min(0, bw - vw);
+    const minY = Math.min(0, bh - vh);
+    ox = Math.max(minX, Math.min(ox, 0));
+    oy = Math.max(minY, Math.min(oy, 0));
+  }
+
+  wrap.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = wrap.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    const prev = scale;
+    scale = Math.min(max, Math.max(min, scale * (e.deltaY < 0 ? 1.1 : 0.9)));
+    ox = mx - (mx - ox) * (scale / prev);
+    oy = my - (my - oy) * (scale / prev);
+    clamp(); apply();
+  }, {passive:false});
+
+  wrap.addEventListener('mousedown', (e) => { down = true; sx = e.clientX - ox; sy = e.clientY - oy; });
+  window.addEventListener('mouseup',   () => { down = false; });
+  window.addEventListener('mousemove', (e) => {
+    if (!down) return;
+    ox = e.clientX - sx; oy = e.clientY - sy;
+    clamp(); apply();
+  });
+
+  // Touch gestures
+  let lastX = 0, lastY = 0, pinchStartDist = 0, pinchStartScale = 1;
+  wrap.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2){
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchStartDist = Math.hypot(dx, dy);
+      pinchStartScale = scale;
+    } else if (e.touches.length === 1){
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    }
+  }, {passive:true});
+
+  wrap.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2){
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      scale = Math.min(max, Math.max(min, pinchStartScale * (dist / pinchStartDist)));
+      apply();
+    } else if (e.touches.length === 1){
+      const nx = e.touches[0].clientX, ny = e.touches[0].clientY;
+      ox += (nx - lastX); oy += (ny - lastY);
+      lastX = nx; lastY = ny; clamp(); apply();
+    }
+  }, {passive:true});
+
+  // Double-tap to reset on mobile; double-click on desktop
+  let lastTap = 0;
+  wrap.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTap < 350){ scale = 1; ox = 0; oy = 0; apply(); }
+    lastTap = now;
+  });
+
+  // Buttons (both sets)
+  function doResetView(){ scale = 1; ox = 0; oy = 0; apply(); }
+  document.getElementById('btnReset')?.addEventListener('click', doResetView);
+  document.getElementById('resetView')?.addEventListener('click', doResetView);
+  document.getElementById('btnZoomIn')?.addEventListener('click', () => { scale = Math.min(max, scale * 1.2); apply(); });
+  document.getElementById('btnZoomOut')?.addEventListener('click', () => { scale = Math.max(min, scale / 1.2); apply(); });
+  document.getElementById('zoomIn')?.addEventListener('click', () => { scale = Math.min(max, scale * 1.2); apply(); });
+  document.getElementById('zoomOut')?.addEventListener('click', () => { scale = Math.max(min, scale / 1.2); apply(); });
+
+  document.getElementById('btnFullscreen')?.addEventListener('click', () => { if (wrap.requestFullscreen) wrap.requestFullscreen(); });
+  img.addEventListener('load', () => { scale = 1; ox = 0; oy = 0; apply(); });
+})();
+
+/* ---------- Audio + TTS Guidance (EXIT1..EXIT5, EN/DE) ---------- */
+(function(){
+  const exitSelect = document.getElementById('exitSelect');
+  const langSelect = document.getElementById('langSelect');
+
+  const audioEl    = document.getElementById('routeAudio');
+  const playBtn    = document.getElementById('play');
+  const replayBtn  = document.getElementById('replay');
+  const muteBtn    = document.getElementById('mute');
+  const volSlider  = document.getElementById('vol');
+  const ttsBtn     = document.getElementById('toggleTTS');
+
+  const routeTextEl = document.getElementById('routeText');
+
+  // Optional older buttons
+  const btnSpeak = document.getElementById('btnSpeak');
+  const btnStop  = document.getElementById('btnStop');
+  const btnResetLeft = document.getElementById('btnReset');
+  const btnResetTop  = document.getElementById('resetView');
+
+  // --- Guidance text placeholders (update to match r1.png) ---
+  const ROUTE_TEXT = {
+    EXIT1: {
+      en: 'From Reception, proceed straight along the main corridor, turn left at the pantry, and follow the green arrows to the EXIT1 staircase.',
+      de: 'Von der Rezeption geradeaus zum Hauptflur, links an der Pantry abbiegen und den grünen Pfeilen zur EXIT1‑Treppenhaus folgen.'
+    },
+    EXIT2: {
+      en: 'From your bay, move to the nearest corridor, turn right at the meeting rooms, and continue to EXIT2. Use the staircase only.',
+      de: 'Von Ihrem Bereich zum nächsten Flur, rechts bei den Meetingräumen abbiegen und weiter zu EXIT2. Nur die Treppe benutzen.'
+    },
+    EXIT3: {
+      en: 'Go past the lab area, keep left at the cross junction, and proceed straight until EXIT3. Follow the illuminated exit signs.',
+      de: 'Am Labor vorbeigehen, an der Kreuzung links halten und geradeaus bis EXIT3. Den beleuchteten Ausgangsschildern folgen.'
+    },
+    EXIT4: {
+      en: 'Head towards the cafeteria, turn right before the glass door, and follow the green path markings to EXIT4.',
+      de: 'Zur Cafeteria gehen, vor der Glastür rechts abbiegen und den grünen Bodenmarkierungen zu EXIT4 folgen.'
+    },
+    EXIT5: {
+      en: 'Proceed to the rear corridor, turn left at the printers, and continue until EXIT5 near the service yard.',
+      de: 'Zum hinteren Flur gehen, bei den Druckern links abbiegen und bis EXIT5 in der Nähe des Servicehofs weitergehen.'
+    }
+  };
+
+  // Prefer recorded audio; allow TTS toggle
+  let useTTS = false;
+  function setTTSState(on){
+    useTTS = !!on;
+    ttsBtn.textContent = 'TTS: ' + (useTTS ? 'On' : 'Off');
+    ttsBtn.setAttribute('aria-pressed', String(useTTS));
+  }
+  ttsBtn.addEventListener('click', () => setTTSState(!useTTS));
+
+  // Your GitHub structure: assets/audio/EXIT#/voice_en.mp3 / voice_de.mp3
+  function audioCandidates(exit, lang){
+    return [
+      `assets/audio/${exit}/voice_${lang}.mp3`, // primary (as per your repo)
+      `assets/audio/${exit}/${lang}.mp3`,       // fallback
+      `assets/audio/${exit}_${lang}.mp3`,       // fallback
+      `assets/audio/${exit}.mp3`                // fallback (single file)
+    ];
+  }
+
+  function setAudioSource(exit, lang){
+    const list = audioCandidates(exit, lang);
+    let idx = 0;
+    function tryNext(){
+      if (idx >= list.length) { audioEl.removeAttribute('src'); return; }
+      const src = list[idx++]; audioEl.src = src; audioEl.load();
+    }
+    audioEl.onerror = () => tryNext();
+    tryNext();
+  }
+
+  function updateUI(){
+    const exit = exitSelect.value;
+    const lang = langSelect.value;
+    const text = ROUTE_TEXT[exit]?.[lang] || 'Guidance text coming soon.';
+    routeTextEl.textContent = text;
+    setAudioSource(exit, lang);
+  }
+
+  // TTS (fallback or explicit)
+  function speakTTS(){
+    const lang = langSelect.value;
+    const text = routeTextEl.textContent || '';
+    if (!('speechSynthesis' in window)){ alert('Speech Synthesis not supported in this browser.'); return; }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1; utter.pitch = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const prefer =
+      (lang === 'en' && (voices.find(v => /en-IN/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)))) ||
+      (lang === 'de' && voices.find(v => /^de/i.test(v.lang)));
+    if (prefer) utter.voice = prefer;
+    window.speechSynthesis.speak(utter);
+  }
+
+  // Playback controls
+  playBtn.addEventListener('click', () => { useTTS ? speakTTS() : audioEl.play().catch(()=>{}); });
+  replayBtn.addEventListener('click', () => {
+    if (useTTS){ window.speechSynthesis.cancel(); speakTTS(); }
+    else { audioEl.currentTime = 0; audioEl.play().catch(()=>{}); }
+  });
+  muteBtn.addEventListener('click', () => {
+    audioEl.muted = !audioEl.muted;
+    muteBtn.textContent = audioEl.muted ? 'Unmute' : 'Mute';
+  });
+  volSlider.addEventListener('input', () => { audioEl.volume = parseFloat(volSlider.value || '1'); });
+
+  // Hook older buttons
+  btnSpeak?.addEventListener('click', speakTTS);
+  btnStop?.addEventListener('click', () => window.speechSynthesis.cancel());
+
+  exitSelect.addEventListener('change', updateUI);
+  langSelect.addEventListener('change', updateUI);
+
+  // Full reset: audio/TTS + text + overlay + map view
+  function fullReset({resetSelectors = false} = {}){
+    try { audioEl.pause(); audioEl.currentTime = 0; audioEl.muted = false; } catch {}
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    clearRouteOverlay();
+    routeTextEl.textContent = 'Select an exit to see guidance.';
+    if (resetSelectors){ exitSelect.value = 'EXIT1'; langSelect.value = 'en'; }
+    updateUI();
+
+    // Trigger map reset via the left-bar button if present; else force transform
+    const imgResetBtn = document.getElementById('btnReset');
+    if (imgResetBtn){ imgResetBtn.click(); }
+    else {
       const img = document.getElementById('zoomImg');
-      let scale = 1, min=1, max=6; let ox=0, oy=0; let down=false, sx=0, sy=0;
-      function apply(){ img.style.transform = `translate(${ox}px, ${oy}px) scale(${scale})`; }
-      function clamp(){ const bw=wrap.clientWidth, bh=wrap.clientHeight; const iw=img.naturalWidth, ih=img.naturalHeight; const vw=iw*scale, vh=ih*scale; const minX=Math.min(0,bw-vw), minY=Math.min(0,bh-vh); ox=Math.max(minX, Math.min(ox, 0)); oy=Math.max(minY, Math.min(oy, 0)); }
-      wrap.addEventListener('wheel', (e)=>{ e.preventDefault(); const rect=wrap.getBoundingClientRect(); const mx=e.clientX-rect.left, my=e.clientY-rect.top; const prev=scale; scale=Math.min(max,Math.max(min, scale*(e.deltaY<0?1.1:0.9))); ox=mx-(mx-ox)*(scale/prev); oy=my-(my-oy)*(scale/prev); clamp(); apply(); }, {passive:false});
-      wrap.addEventListener('mousedown', (e)=>{ down=true; sx=e.clientX-ox; sy=e.clientY-oy; img.classList.add('dragging'); });
-      window.addEventListener('mouseup', ()=>{ down=false; img.classList.remove('dragging'); });
-      window.addEventListener('mousemove', (e)=>{ if(!down) return; ox=e.clientX-sx; oy=e.clientY-sy; clamp(); apply(); });
-      // Touch
-      let lastX=0,lastY=0, pinchStartDist=0,pinchStartScale=1;
-      wrap.addEventListener('touchstart',(e)=>{ if(e.touches.length===2){ const dx=e.touches[0].clientX-e.touches[1].clientX; const dy=e.touches[0].clientY-e.touches[1].clientY; pinchStartDist=Math.hypot(dx,dy); pinchStartScale=scale; } else if(e.touches.length===1){ lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; } },{passive:true});
-      wrap.addEventListener('touchmove',(e)=>{ if(e.touches.length===2){ const dx=e.touches[0].clientX-e.touches[1].clientX; const dy=e.touches[0].clientY-e.touches[1].clientY; const dist=Math.hypot(dx,dy); scale=Math.min(max,Math.max(min,pinchStartScale*(dist/pinchStartDist))); apply(); } else if(e.touches.length===1){ const nx=e.touches[0].clientX, ny=e.touches[0].clientY; ox+=(nx-lastX); oy+=(ny-lastY); lastX=nx; lastY=ny; clamp(); apply(); } },{passive:true});
-      // Reset & buttons
-      document.getElementById('btnReset').addEventListener('click',()=>{ scale=1; ox=0; oy=0; apply(); });
-      document.getElementById('btnZoomIn').addEventListener('click',()=>{ scale=Math.min(max, scale*1.2); apply(); });
-      document.getElementById('btnZoomOut').addEventListener('click',()=>{ scale=Math.max(min, scale/1.2); apply(); });
-      document.getElementById('btnFullscreen').addEventListener('click',()=>{ if(wrap.requestFullscreen) wrap.requestFullscreen(); });
-      img.addEventListener('load', ()=>{ scale=1; ox=0; oy=0; apply(); });
-      // Double-tap
-      let lastTap=0; wrap.addEventListener('click',()=>{ const now=Date.now(); if(now-lastTap<350){ scale=1; ox=0; oy=0; apply(); } lastTap=now; });
-    })();
+      if (img) img.style.transform = 'translate(0px, 0px) scale(1)';
+    }
+  }
 
-    // Audio guidance
-    (function(){
-      const speechText = [
-        'Welcome to BTI Pune. Follow the green arrows on the map to the nearest emergency exit.',
-        'From your current location, move towards the main corridor and look for EXIT signs 1 through 5.',
-        'Use staircases only. Do not use elevators during evacuation.',
-        'Exit the building and assemble at the muster point near the main gate.',
-        'Security and fire wardens will assist you. Stay calm and wait for the all‑clear.'
-      ].join('
-');
-      let u=null; const speakBtn=document.getElementById('btnSpeak'); const stopBtn=document.getElementById('btnStop');
-      function speak(){ if(!('speechSynthesis' in window)){ alert('Speech Synthesis not supported in this browser.'); return; } window.speechSynthesis.cancel(); u=new SpeechSynthesisUtterance(speechText); u.rate=1; u.pitch=1; const voices=window.speechSynthesis.getVoices(); const prefer=voices.find(v=>/en-IN/i.test(v.lang))||voices.find(v=>/en/i.test(v.lang)); if(prefer) u.voice=prefer; window.speechSynthesis.speak(u); }
-      speakBtn.addEventListener('click', speak); stopBtn.addEventListener('click', ()=>window.speechSynthesis.cancel());
-      window.speechSynthesis.onvoiceschanged = function(){};
-    })();
+  // Wire both reset buttons to full reset (keep selections by default)
+  btnResetLeft?.addEventListener('click', () => fullReset({resetSelectors:false}));
+  btnResetTop?.addEventListener('click',  () => fullReset({resetSelectors:false}));
 
-    // Print helper
-    document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
-  </script>
+  // Deep-link: ?exit=EXIT3&lang=de
+  (function initFromQuery(){
+    const p = new URLSearchParams(location.search);
+    const qExit = p.get('exit'); const qLang = p.get('lang');
+    if (qExit && Array.from(exitSelect.options).some(o => o.value === qExit)) exitSelect.value = qExit;
+    if (qLang && Array.from(langSelect.options).some(o => o.value === qLang)) langSelect.value = qLang;
+  })();
+
+  // Defaults
+  setTTSState(false); // start with recorded audio
+  updateUI();
+})();
+</script>
+
  <header>
     <h2>BMWTechWorks Pune – Meeting Rooms</h2>
   </header>
