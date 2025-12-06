@@ -5,17 +5,65 @@
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>BMWTechWorks Pune - Visitor Information</title>
 <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
-    header { background-color: #003366; color: white; text-align: center; padding: 20px; font-size: 24px; font-weight: bold; }
-    .container { padding: 20px; }
-    .toggle-btn { margin: 5px; padding: 10px 15px; background-color: #003366; color: white; border: none; cursor: pointer; }
-    h2 { color: #003366; margin-top: 20px; }
-    .links a { display: inline-block; margin: 5px; padding: 10px; background-color: #0066cc; color: white; text-decoration: none; border-radius: 4px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #003366; color: white; }
-    .english, .german { margin-top: 20px; }
-    .german { display: none; }
+   
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>BMWTechWorks Pune – Visitor Information & Meeting Rooms (Final)</title>
+  <style>
+    :root{ --accent:#007aff; --danger:#ff3b30; --bg:#f7f7f7; --card:#fff; --text:#111; --muted:#666; }
+
+    html,body{ height:100%; }
+    body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background:var(--bg); color:var(--text); }
+
+    /* Compact bold heading */
+    header{ padding:12px 16px; background:#ffffff; border-bottom:1px solid #e6e6e6; }
+    header h2{ margin:0; font-size:16px; font-weight:700; line-height:1.3; }
+
+    /* Layout */
+    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    @media (max-width:1000px){ .grid{ grid-template-columns: 1fr; } }
+    .card{ background:var(--card); border:1px solid #e6e6e6; border-radius:12px; padding:14px; margin:14px; }
+    .muted{ color:var(--muted); }
+
+    /* Plan area */
+    #planWrap{ position:relative; background:#fff; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; }
+    #planLayer{ position:relative; transform-origin: 0 0; touch-action: none; }
+    #planImg{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
+    /* Optional overlay kept for future use, no drawing now */
+    #routeSvg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+    /* Prevent stray backgrounds */
+    .no-bg{ background: none !important; }
+
+    /* Toolbar buttons: readable */
+    .toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+    .toolbar button{ font-size:16px; font-weight:600; padding:8px 14px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
+    .toolbar button.primary{ border-color: var(--accent); color:#fff; background:var(--accent); }
+
+    .card h3{ font-size:16px; font-weight:700; margin:0 0 8px 0; }
+    .card h4{ font-size:14px; font-weight:700; margin:0 0 6px 0; }
+
+    #routeSteps{ margin-top:8px; }
+    #routeSteps li{ margin:4px 0; }
+
+    /* Image strip for room photos: remove extra white space */
+    .imgStrip{ margin:8px 0 8px 0; padding:0; background:none; border:none; }
+    .imgRow{ display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; }
+    .imgWrap{ flex:1 1 320px; background:none; border:none; margin:0; padding:0; line-height:0; }
+    .imgWrap img{ display:block; width:100%; height:auto; margin:0; border-radius:8px; background:transparent; }
+    img{ vertical-align:middle; }
+    .tight p{ margin:4px 0; }
+
+    /* Tables */
+    table{ width:100%; border-collapse:collapse; }
+    th, td{ border:1px solid #ddd; padding:8px; text-align:left; }
+    th{ background:#fafafa; }
+
+    a{ color:#0a84ff; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+  </style>
+
 </style>
 <script>
     function toggleLanguage(lang) {
