@@ -235,11 +235,11 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
               <p class="muted">ID lanyards: Employee • Contractor • Visitor • BMW Employee</p>
             </div>
             <div class="img-item">
-              <img src="r2.png" alt="Access Zones" />
+              <img src="r3.png" alt="Access Zones" />
               <p class="muted">Access policy map: A–G zones with restrictions and photography notes.</p>
             </div>
             <div class="img-item">
-              <img src="r3.png" alt="Rooms & Areas" />
+              <img src="r2.png" alt="Rooms & Areas" />
               <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
             </div>
           </div>
@@ -300,21 +300,13 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
   </script>
 <header>
-    <h1>BMWTechWorks Pune – Index25</h1>
-    <div class="toolbar">
-      <button id="zoomIn" title="Zoom in">＋</button>
-      <button id="zoomOut" title="Zoom out">－</button>
-      <button id="reset" title="Reset view">Reset</button>
-      <button id="clearRoute" class="primary" title="Clear route & text">Clear</button>
-      <button id="langToggle" title="Toggle language">EN / DE</button>
-    </div>
+    <h1>BMWTechWorks Pune – Meeting Rooms</h1>
   </header>
 
   <main class="grid">
     <section id="planWrap" class="card">
       <div id="planLayer">
         <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
-        <svg id="routeSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
       </div>
       <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
     </section>
@@ -322,7 +314,14 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
     <section class="card">
       <div class="card">
         <h3>Room Route Finder</h3>
-        <label for="roomSel">Choose room:</label>
+        <label for="roomSel">Choose Meeting  room:</label>
+         <div class="toolbar">
+        <button id="zoomIn" title="Zoom in">＋</button>
+      <button id="zoomOut" title="Zoom out">－</button>
+      <button id="reset" title="Reset view">Reset</button>
+      <button id="clearRoute" class="primary" title="Clear route & text">Clear</button>
+      <button id="langToggle" title="Toggle language">EN / DE</button>
+      </div>  
         <select id="roomSel">
           <option value="">— Select —</option>
           <option>Success</option>
