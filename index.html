@@ -224,30 +224,13 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
   <div class="grid">
     <section class="card">
       <h2>Exit Plan (Zoom • Pan • Fullscreen)</h2>
-      <div class="content">
-        <!-- Map: zoom/pan wrapper -->
-        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
-          <!-- Optional overlay holder (SVG will be injected here if you add routes later) -->
-          <!-- <svg id="routeOverlay" style="position:absolute; inset:0; pointer-events:none;"></svg> -->
-          <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
-               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
-          <button class="btn" id="btnSpeak">🔊 Play Audio Guidance</button>
-          <button class="btn" id="btnStop">⏹ Stop</button>
-          <button class="btn" id="btnReset">↺ Reset View</button>
-          <button class="btn" id="btnZoomIn">➕ Zoom In</button>
-          <button class="btn" id="btnZoomOut">➖ Zoom Out</button>
-          <button class="btn" id="btnFullscreen">⛶ Fullscreen</button>
-        </div>
-
-        <p class="muted" style="margin-top:8px">Best experienced on Chrome/Edge. Use headphones in open areas.</p>
-
-        <!-- Exit Guidance header controls -->
+      
         <header style="margin-top:10px;">
           <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
           <div class="controls" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
             <label for="exitSelect">Exit:</label>
             <select id="exitSelect">
-            
+             
               <option value="EXIT1">EXIT1</option>
               <option value="EXIT2">EXIT2</option>
               <option value="EXIT3">EXIT3</option>
@@ -261,15 +244,15 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
               <option value="de">DE</option>
             </select>
 
-            <button class="btn" id="play">Play</button>
+            <button class="btn" id="play">🔊 Play Audio Guidance</button>
             <button class="btn" id="replay">Replay</button>
             <button class="btn" id="mute">Mute</button>
 
            
 
             <!-- Optional: second set of zoom buttons (header block) -->
-            <button class="btn" id="zoomOut">−</button>
-            <button class="btn" id="zoomIn">+</button>
+            <button class="btn" id="zoomOut">➖ Zoom Out</button>
+            <button class="btn" id="zoomIn">➕ Zoom In</button>
             <button class="btn" id="resetView">Reset</button>
           </div>
         </header>
@@ -314,36 +297,18 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 
 <!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  /* ---------------- CONFIG ----------------
-     If hosted on GitHub Pages at:
-     https://bmwtechworks-pune.github.io/BMWTechWorks-VisitorInfo/
-     use the repo base (leading slash + repo).
-  ------------------------------------------ */
-  // GitHub Pages deployment (recommended):
-  const AUDIO_BASE = '/BMWTechWorks-VisitorInfo/assets/audio/';
-  // For local same-folder testing, uncomment:
-  // const AUDIO_BASE = './assets/audio/';
+  /* ===============================
+     BTI Pune • Exit Guidance (TTS)
+     ===============================
+     - Uses browser SpeechSynthesis (EN/DE)
+     - No external audio files needed
+     - Works with your exact HTML IDs
+  */
 
-  // Exit -> audio files (English)
-  const AUDIO_FILES = {
-    EXIT1: 'EXIT1/voice_en.mp3', // West (near Success – Board room)
-    EXIT2: 'EXIT2/voice_en.mp3', // South‑West (near Joy)
-    EXIT3: 'EXIT3/voice_en.mp3', // Center (near Debug)
-    EXIT4: 'EXIT4/voice_en.mp3', // East (near iDrive / M‑Mode)
-    EXIT5: 'EXIT5/voice_en.mp3'  // Far‑East (near Xdrive / Torque)
-  };
-
-  /* ---------------- Guidance (EN/DE) ----------------
-     Based on r2.png labeled positions (west→east):
-       EXIT1  = near Success – Board room (top-left)
-       EXIT2  = near Joy (bottom-left)
-       EXIT3  = near Debug (center)
-       EXIT4  = near iDrive/M‑Mode (right)
-       EXIT5  = near Xdrive/Torque (far right)
-     Adjust text if you later move exit markers.
-  ---------------------------------------------------- */
+  /* -------- Guidance (KEEP text as-is) -------- */
   const GUIDANCE = {
     en: {
       EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
@@ -357,11 +322,11 @@ document.addEventListener('DOMContentLoaded', () => {
       EXIT2: "Gehen Sie nach Westen und dann nach Süden entlang des Flurs zum Südwestausgang (bei Joy).",
       EXIT3: "Gehen Sie zum zentralen Flur und weiter nach Norden zum Zentralausgang (bei Debug).",
       EXIT4: "Gehen Sie nach Osten entlang des Hauptflurs; biegen Sie an der nächsten Kreuzung nach Norden ab zum Ostausgang (bei iDrive/M‑Mode).",
-      EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum Ostausgang ganz rechts (bei Xdrive/Torque)."
+      EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum ganz rechten Ostausgang (bei Xdrive/Torque)."
     }
   };
 
-  /* ---------------- DOM refs (must match your HTML) ---------------- */
+  /* -------- DOM refs (must match your HTML) -------- */
   const zoomWrap      = document.getElementById('zoomWrap');
   const zoomImg       = document.getElementById('zoomImg');
 
@@ -384,101 +349,140 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetHeader   = document.getElementById('resetView');
 
   const routeText     = document.getElementById('routeText');
-  const routeAudio    = document.getElementById('routeAudio');
+  const routeAudio    = document.getElementById('routeAudio'); // present in HTML but unused here
 
-  /* ---------------- Guard rails: verify key elements exist ---------------- */
-  const required = { exitSelect, langSelect, routeText, routeAudio };
-  for (const [k, el] of Object.entries(required)) {
-    if (!el) console.error(`[BTI] Missing element: #${k}. Check your HTML IDs.`);
-  }
-
-  /* ---------------- State ---------------- */
+  /* -------- State -------- */
   let currentExit = exitSelect?.value || 'EXIT1';
   let currentLang = (langSelect?.value || 'en').toLowerCase();
   let isMuted = false;
+  let voices = [];
+  let activeUtterance = null;
 
-  /* ---------------- Helpers ---------------- */
-  function audioSrcForExit(exit) {
-    const base = AUDIO_BASE.endsWith('/') ? AUDIO_BASE : (AUDIO_BASE + '/');
-    return base + (AUDIO_FILES[exit] || '');
+  /* -------- Voice loading & selection -------- */
+  function loadVoices() {
+    try { voices = window.speechSynthesis.getVoices() || []; }
+    catch { voices = []; }
+  }
+  loadVoices();
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
   }
 
-  function updateGuidanceText() {
+  function pickVoice(lang) {
+    // Prefer locale-specific voices, fallback to any matching language, then default
+    const prefer = lang === 'de' ? ['de-DE', 'de', 'de-AT'] : ['en-US', 'en-GB', 'en'];
+    for (const pref of prefer) {
+      const v = voices.find(voice => (voice.lang || '').toLowerCase() === pref.toLowerCase());
+      if (v) return v;
+    }
+    // Any voice starting with the language code
+    const v2 = voices.find(voice => (voice.lang || '').toLowerCase().startsWith((lang === 'de' ? 'de' : 'en')));
+    if (v2) return v2;
+    // Fallback: first available
+    return voices[0] || null;
+  }
+
+  /* -------- Helpers -------- */
+  function guidanceText() {
     const phrases = GUIDANCE[currentLang] || GUIDANCE.en;
-    const text = phrases[currentExit] || 'Guidance unavailable for the selected exit.';
-    routeText.textContent = `${currentExit} • ${currentLang.toUpperCase()} • ${text}`;
+    return phrases[currentExit] || 'Guidance unavailable for the selected exit.';
   }
 
-  function loadAudioForExit() {
-    const src = audioSrcForExit(currentExit);
-    routeAudio.src = src;
-    routeAudio.load();
-    routeAudio.onerror = () => {
-      console.error(`[BTI] Audio not found: ${src}`);
-      routeText.textContent = `Audio not found for ${currentExit}. Check path: ${src}`;
+  function updateGuidanceUI() {
+    routeText.textContent = `${currentExit} • ${currentLang.toUpperCase()} • ${guidanceText()}`;
+  }
+
+  function speakGuidance() {
+    if (typeof window.speechSynthesis === 'undefined') {
+      routeText.textContent = 'Speech not supported on this browser. Please update or use Chrome/Edge.';
+      return;
+    }
+    // Stop any current speech
+    try { window.speechSynthesis.cancel(); } catch {}
+    activeUtterance = new SpeechSynthesisUtterance(guidanceText());
+    activeUtterance.lang = (currentLang === 'de') ? 'de-DE' : 'en-US';
+    const voice = pickVoice(currentLang);
+    if (voice) activeUtterance.voice = voice;
+    activeUtterance.rate = 1.0;   // speed
+    activeUtterance.pitch = 1.0;  // tone
+    activeUtterance.volume = isMuted ? 0 : 1;
+
+    activeUtterance.onstart = () => {
+      // Visual cue (optional): update button text
+      if (btnSpeak) btnSpeak.textContent = '🔊 Playing';
+      if (playHeader) playHeader.textContent = 'Playing';
     };
+    activeUtterance.onend = () => {
+      if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance';
+      if (playHeader) playHeader.textContent = 'Play';
+    };
+    activeUtterance.onerror = (e) => {
+      console.error('Speech synthesis error:', e);
+      routeText.textContent = 'Unable to play synthesized audio. Try again or check browser settings.';
+    };
+
+    window.speechSynthesis.speak(activeUtterance);
   }
 
-  /* ---------------- Init ---------------- */
-  function init() {
-    // Prepare audio
-    routeAudio.preload = 'auto';
-    routeAudio.crossOrigin = 'anonymous';    // safe for GitHub Pages/static
-    routeAudio.muted = isMuted;
+  function stopSpeech() {
+    try { window.speechSynthesis.cancel(); } catch {}
+    activeUtterance = null;
+    if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance';
+    if (playHeader) playHeader.textContent = 'Play';
+  }
 
-    // Initial UI
-    updateGuidanceText();
-    loadAudioForExit();
+  function replaySpeech() {
+    stopSpeech();
+    speakGuidance();
+  }
+
+  function toggleMute() {
+    isMuted = !isMuted;
+    if (muteHeader) muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
+    // If currently speaking, restart with updated volume
+    if (activeUtterance) replaySpeech();
+  }
+
+  /* -------- Init -------- */
+  function init() {
+    // Audio element exists in HTML; we won’t use it for TTS
+    if (routeAudio) { routeAudio.style.display = 'none'; }
+    updateGuidanceUI();
   }
   init();
 
-  /* ---------------- Dropdown handlers ---------------- */
+  /* -------- Dropdowns -------- */
   exitSelect?.addEventListener('change', () => {
     currentExit = exitSelect.value;
-    updateGuidanceText();   // text changes instantly
-    loadAudioForExit();     // audio switches to selected exit
-    routeAudio.currentTime = 0;
+    updateGuidanceUI();
+    // Do not auto-speak on change; user presses Play
   });
 
   langSelect?.addEventListener('change', () => {
     currentLang = langSelect.value.toLowerCase();
-    updateGuidanceText();   // EN/DE switch
+    updateGuidanceUI();
+    // Refresh voices in case language changed
+    loadVoices();
   });
 
-  /* ---------------- Audio controls (both button groups) ---------------- */
-  async function playAudio() {
-    try { await routeAudio.play(); }
-    catch (e) {
-      // Autoplay policy: show hint
-      console.warn('[BTI] Playback blocked by browser:', e);
-      routeText.textContent = 'Tap once on the page, then press Play again (browser blocked autoplay).';
-    }
-  }
-  function stopAudio()   { routeAudio.pause(); routeAudio.currentTime = 0; }
-  function replayAudio() { routeAudio.currentTime = 0; playAudio(); }
-  function toggleMute()  {
-    isMuted = !isMuted; routeAudio.muted = isMuted;
-    if (muteHeader) muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
-  }
-
-  // Bind main buttons
-  btnSpeak?.addEventListener('click', playAudio);
-  btnStop?.addEventListener('click', stopAudio);
+  /* -------- Bind buttons (two groups) -------- */
+  btnSpeak?.addEventListener('click', speakGuidance);
+  btnStop?.addEventListener('click', stopSpeech);
   btnReset?.addEventListener('click', resetView);
   btnZoomIn?.addEventListener('click', () => zoomBy(0.25));
   btnZoomOut?.addEventListener('click', () => zoomBy(-0.25));
   btnFullscreen?.addEventListener('click', toggleFullscreen);
 
-  // Bind header buttons
-  playHeader?.addEventListener('click', playAudio);
-  replayHeader?.addEventListener('click', replayAudio);
+  playHeader?.addEventListener('click', speakGuidance);
+  replayHeader?.addEventListener('click', replaySpeech);
   muteHeader?.addEventListener('click', toggleMute);
   zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
   zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
   resetHeader?.addEventListener('click', resetView);
 
-  /* ---------------- Map: zoom, pan, fullscreen ---------------- */
+  /* -------- Map: zoom / pan / fullscreen -------- */
   let scale = 1, tx = 0, ty = 0;
+
   function applyTransform() {
     if (!zoomImg) return;
     const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
@@ -489,30 +493,35 @@ document.addEventListener('DOMContentLoaded', () => {
     scale = Math.max(0.5, Math.min(4, scale + delta));
     applyTransform();
   }
-  function resetView() { scale = 1; tx = 0; ty = 0; applyTransform(); }
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) { zoomWrap?.requestFullscreen?.().catch(()=>{}); }
-    else { document.exitFullscreen?.(); }
+  function resetView() {
+    scale = 1; tx = 0; ty = 0;
+    applyTransform();
   }
-
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      zoomWrap?.requestFullscreen?.().catch(()=>{});
+    } else {
+      document.exitFullscreen?.();
+    }
+  }
   // Pointer-based panning
-  let isDragging = false, sx = 0, sy = 0;
+  let dragging = false, sx = 0, sy = 0;
   zoomWrap?.addEventListener('pointerdown', (e) => {
-    isDragging = true;
+    dragging = true;
     zoomWrap.setPointerCapture(e.pointerId);
     sx = e.clientX - tx; sy = e.clientY - ty;
   });
   zoomWrap?.addEventListener('pointermove', (e) => {
-    if (!isDragging) return;
+    if (!dragging) return;
     tx = e.clientX - sx; ty = e.clientY - sy;
     applyTransform();
   });
   zoomWrap?.addEventListener('pointerup', (e) => {
-    isDragging = false;
+    dragging = false;
     zoomWrap.releasePointerCapture(e.pointerId);
   });
 
-  // Keyboard shortcuts (optional)
+  /* -------- Keyboard shortcuts (optional) -------- */
   document.addEventListener('keydown', (e) => {
     if (e.key === '+') zoomBy(0.25);
     if (e.key === '-') zoomBy(-0.25);
