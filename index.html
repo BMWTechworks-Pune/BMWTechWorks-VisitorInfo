@@ -12,8 +12,44 @@
     body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background:var(--bg); color:var(--text); }
 
     /* Compact bold heading */
-    header{ padding:12px 16px; background:#ffffff; border-bottom:1px solid #e6e6e6; }
-    header h2{ color: #003366; margin-top: 20px; margin:0; font-size:16px; font-weight:700; line-height:1.3; }
+   
+/* Compact bold heading - UPDATED for BMW theme */
+header {
+  padding: 12px 16px;
+  background: #002c5f;      /* BMW dark blue */
+  color: #ffffff;           /* White text */
+  border-bottom: 1px solid #00224a; /* Slightly darker border for depth */
+  text-align: center;       /* Center the header text */
+  font-weight: 700;
+  font-size: 18px;
+  position: relative;       /* Needed for logo positioning */
+}
+
+header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #ffffff;           /* Ensure header text stays white */
+}
+
+/* BMW logo inside header without changing HTML */
+header::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  background-image: url('bmw-logo.png'); /* Replace with your logo file path */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+}
+
+    
 
     /* Container */
     .container{ padding:0 12px 24px; }
