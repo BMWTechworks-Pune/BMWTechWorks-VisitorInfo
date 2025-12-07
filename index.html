@@ -33,23 +33,6 @@ header h2 {
   color: #ffffff;           /* Ensure header text stays white */
 }
 
-/* BMW logo inside header without changing HTML */
-header::before {
-  content: "";
-  position: absolute;
-  left: 26px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  background-image: url('BmwLogo.png'); /* Replace with your logo file path */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  border-radius: 50%;
-}
-
-    
 
     /* Container */
     .container{ padding:0 12px 24px; }
@@ -163,9 +146,13 @@ header::before {
 
   
 
+
 <script>
   (function () {
-    // Create a lightweight toast for user feedback
+    // Simple mobile detection
+    var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Optional toast for feedback (desktop)
     function showToast(msg) {
       let toast = document.getElementById('ql-toast');
       if (!toast) {
@@ -182,6 +169,8 @@ header::before {
         toast.style.fontSize = '13px';
         toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
         toast.style.zIndex = '9999';
+        toast.style.transition = 'opacity 200ms ease';
+        toast.style.opacity = '0';
         document.body.appendChild(toast);
       }
       toast.textContent = msg;
@@ -189,17 +178,20 @@ header::before {
       setTimeout(function () { toast.style.opacity = '0'; }, 1800);
     }
 
-    function openInNamedTab(e) {
+    function handleQuickLinkClick(e) {
       e.preventDefault();
       const url = e.currentTarget.href;
 
-      // Open/reuse a single tab named 'BMWTW-QuickLinks'
-      // Note: Mobile browsers may still bring the new tab forward; we can't override that.
-      window.open(url, 'BMWTW-QuickLinks', 'noopener');
+      if (isMobile) {
+        // ✅ MOBILE: open in same tab so Back returns to QR page
+        // No target/_blank. Browser back/gesture will bring the user back.
+        location.href = url;
+        return;
+      }
 
-      // Try to keep/return focus here (works on desktop; mobile may ignore)
+      // ✅ DESKTOP: reuse one named tab; attempt to keep focus on QR page
+      window.open(url, 'BMWTW-QuickLinks', 'noopener');
       try {
-        // Brief delay can help on some desktop browsers
         setTimeout(function () {
           window.focus();
           showToast('Opened in new tab. Switch back anytime.');
@@ -210,26 +202,24 @@ header::before {
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-      // Attach behavior without changing your HTML
+      // Attach without changing your HTML
       document.querySelectorAll('.links a').forEach(function (a) {
-        // Normalize attributes to reuse one tab
-        a.setAttribute('target', 'BMWTW-QuickLinks');
-        a.setAttribute('rel', 'noopener');
-        // Our unified handler
-        a.addEventListener('click', openInNamedTab);
+        // Normalize attributes:
+        // - On mobile, ensure no _blank target so same-tab navigation works.
+        // - On desktop, use a single named tab.
+        if (isMobile) {
+          a.removeAttribute('target');
+          a.removeAttribute('rel');
+        } else {
+          a.setAttribute('target', 'BMWTW-QuickLinks');
+          a.setAttribute('rel', 'noopener');
+        }
+        a.addEventListener('click', handleQuickLinkClick);
       });
-    });
-
-    // Optional: On desktop, if page becomes hidden and then visible again,
-    // we can hint the user. Mobile ignores programmatic focus.
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) {
-        // Page is visible again
-        // You could update UI or show a message if needed
-      }
     });
   })();
 </script>
+
 
 
   
