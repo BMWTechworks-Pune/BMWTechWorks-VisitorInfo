@@ -160,6 +160,30 @@ header::before {
         document.querySelector('.german').style.display = lang === 'de' ? 'block' : 'none';
     }
 </script>
+
+  
+<script>
+    // Reuse a single named tab/window for all quick links and keep the QR page focused
+    (function () {
+      function openInReturnTab(e) {
+        e.preventDefault();
+        const url = e.currentTarget.href;
+        // Open or reuse a single tab named 'BMWTW-QuickLinks'
+        window.open(url, 'BMWTW-QuickLinks', 'noopener');
+        // Keep the QR page (this page) focused so user stays here
+        try { window.focus(); } catch (_) {}
+      }
+
+      // Attach to all quick links without modifying HTML markup
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.links a').forEach(function (a) {
+          a.addEventListener('click', openInReturnTab);
+        });
+      });
+    })();
+  </script>
+
+  
 </head>
 <body>
 <header>BMWTechWorks Pune - Visitor Information</header>
