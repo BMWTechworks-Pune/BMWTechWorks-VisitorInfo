@@ -313,216 +313,324 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 </div>
 
 <!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
+
 <script>
-/* ===================== DATA: paths & texts ===================== */
-/* Normalized waypoints [x,y] in 0..1 relative to r1.png. 
-   ⚠️ Placeholder paths — tune points to match the red/green arrows on your map. */
-const exitRoutePaths = {
-  EXIT1: [[0.52,0.36],[0.47,0.36],[0.40,0.36],[0.34,0.28],[0.20,0.20],[0.14,0.18]], // to Exit 1 (approx)
-  EXIT2: [[0.52,0.36],[0.47,0.36],[0.41,0.42],[0.30,0.55],[0.18,0.72],[0.09,0.84]], // to Exit 2 (approx)
-  EXIT3: [[0.52,0.36],[0.56,0.44],[0.55,0.54],[0.48,0.60],[0.43,0.64],[0.38,0.70]], // to Exit 3 (approx)
-  EXIT4: [[0.52,0.36],[0.58,0.36],[0.65,0.38],[0.72,0.46],[0.76,0.54],[0.80,0.60]], // to Exit 4 (approx)
-  EXIT5: [[0.52,0.36],[0.60,0.30],[0.68,0.28],[0.75,0.26],[0.80,0.24],[0.86,0.22]]  // to Exit 5 (approx)
-};
-/* Guidance text (edit to match r1.png labels precisely) */
-const exitRouteText = {
-  en: {
-    EXIT1: ['From YOU ARE HERE, move left along the corridor','Turn left near pantry','Follow green arrows to EXIT 1 staircase'],
-    EXIT2: ['From YOU ARE HERE, proceed left','Continue past labs','Follow signs to EXIT 2'],
-    EXIT3: ['From YOU ARE HERE, proceed slightly right','Head towards the central corridor','Follow signs to EXIT 3'],
-    EXIT4: ['From YOU ARE HERE, go right','Turn right near meeting rooms','Follow green markings to EXIT 4'],
-    EXIT5: ['From YOU ARE HERE, head to the upper corridor','Continue right','Reach EXIT 5 near the top section']
-  },
-  de: {
-    EXIT1: ['Von HIER aus nach links zum Flur','Links bei der Pantry abbiegen','Den grünen Pfeilen zu EXIT 1 folgen'],
-    EXIT2: ['Von HIER nach links gehen','An den Laborräumen vorbei','Den Schildern zu EXIT 2 folgen'],
-    EXIT3: ['Von HIER leicht rechts gehen','Zum Hauptflur laufen','Den Schildern zu EXIT 3 folgen'],
-    EXIT4: ['Von HIER nach rechts gehen','Rechts bei den Besprechungsräumen abbiegen','Den grünen Markierungen zu EXIT 4 folgen'],
-    EXIT5: ['Von HIER zum oberen Flur gehen','Nach rechts weiterlaufen','EXIT 5 im oberen Bereich erreichen']
-  }
-};
+/* =========================
+   BTI Pune • Exit Plan Logic
+   =========================
+   - Works with your existing HTML (no markup/CSS changes)
+  ; audio is English   - Uses /assets/audio/EXIT*/voice_en.mp3
+   - Deep links: ?room=Joy&exit=EXIT3&lang=de
+*/
 
-/* ===================== PAN / ZOOM (same feel as room finder) ===================== */
-const exitLayer = document.getElementById('exitPlanLayer');
-const exitSvg   = document.getElementById('exitRouteSvg');
-const exitImg   = document.getElementById('exitPlanImg');
+/* -------- Config: audio base -------- */
+const AUDIO_BASE = new URL('assets/audio/', document.baseURI).href;
 
-let exitScale = 1, exitTx = 0, exitTy = 0;
-let exitDragging = false, exPx = 0, exPy = 0;
-
-function exitApply(){ exitLayer.style.transform = `translate(${exitTx}px, ${exitTy}px) scale(${exitScale})`; }
-exitApply();
-
-document.getElementById('exitZoomIn').onclick = () => { exitScale = Math.min(4, exitScale + 0.15); exitApply(); };
-document.getElementById('exitZoomOut').onclick = () => { exitScale = Math.max(0.5, exitScale - 0.15); exitApply(); };
-
-document.getElementById('exitReset').onclick = () => {
-  exitScale = 1; exitTx = 0; exitTy = 0; exitApply();
-  exitClearSvg(); exitSteps.innerHTML = ''; exitStopAudio(true); exitSel.value = '';
-  exitAudioStatus.textContent = '';
+/* -------- Config: exits & key rooms (normalized 0..1 on r1.png) --------
+   These are best-effort positions inferred from your r2.png:
+   EXIT1  — West exit near "Success – Board room"
+   EXIT2  — South‑west exit near "Joy"
+   EXIT3  — Central exit near "Debug"
+   EXIT4  — East exit near "iDrive/M‑Mode"
+   EXIT5  — Far‑east exit near "Xdrive/Torque"
+*/
+const EXITS = {
+  EXIT1: { name: 'West Exit (near Success – Board room)', x: 0.06, y: 0.14, audio: 'EXIT1/voice_en.mp3' },
+  EXIT2: { name: 'South‑West Exit (near Joy)',               x: 0.10, y: 0.86, audio: 'EXIT2/voice_en.mp3' },
+  EXIT3: { name: 'Central Exit (near Debug)',                x: 0.50, y: 0.58, audio: 'EXIT3/voice_en.mp3' },
+  EXIT4: { name: 'East Exit (near iDrive/M‑Mode)',           x: 0.78, y: 0.70, audio: 'EXIT4/voice_en.mp3' },
+  EXIT5: { name: 'Far‑East Exit (near Xdrive/Torque)',       x: 0.92, y: 0.78, audio: 'EXIT5/voice_en.mp3' }
 };
 
-exitLayer.addEventListener('pointerdown', (e) => {
-  exitDragging = true; exPx = e.clientX; exPy = e.clientY; exitLayer.setPointerCapture(e.pointerId);
+/* Approximate positions of labeled rooms (for YOU ARE HERE) */
+const ROOMS = {
+  Success:     { x: 0.09, y: 0.12 },
+  Inspire:     { x: 0.12, y: 0.26 },
+  VisitorRoom: { x: 0.16, y: 0.40 },
+  Joy:         { x: 0.16, y: 0.86 },
+  Debug:       { x: 0.52, y: 0.58 },
+  iDrive:      { x: 0.73, y: 0.72 },
+  MMode:       { x: 0.78, y: 0.72 },
+  Drift:       { x: 0.85, y: 0.76 },
+  Xdrive:      { x: 0.89, y: 0.76 },
+  Torque:      { x: 0.95, y: 0.76 }
+};
+
+/* -------- DOM refs (exact IDs from your HTML) -------- */
+const zoomWrap      = document.getElementById('zoomWrap');
+const zoomImg       = document.getElementById('zoomImg');
+
+const btnSpeak      = document.getElementById('btnSpeak');
+const btnStop       = document.getElementById('btnStop');
+const btnReset      = document.getElementById('btnReset');
+const btnZoomIn     = document.getElementById('btnZoomIn');
+const btnZoomOut    = document.getElementById('btnZoomOut');
+const btnFullscreen = document.getElementById('btnFullscreen');
+
+const exitSelect    = document.getElementById('exitSelect');
+const langSelect    = document.getElementById('langSelect');
+
+const playHeader    = document.getElementById('play');
+const replayHeader  = document.getElementById('replay');
+const muteHeader    = document.getElementById('mute');
+
+const zoomOutHeader = document.getElementById('zoomOut');
+const zoomInHeader  = document.getElementById('zoomIn');
+const resetHeader   = document.getElementById('resetView');
+
+const routeText     = document.getElementById('routeText');
+const routeAudio    = document.getElementById('routeAudio');
+
+/* -------- URL params for deep link -------- */
+const params       = new URLSearchParams(location.search);
+const paramRoom    = params.get('room'); // e.g., Joy, Debug, Xdrive
+const paramExit    = params.get('exit'); // e.g., EXIT3
+const paramLang    = (params.get('lang') || '').toLowerCase();
+
+/* -------- State -------- */
+let currentExit = (paramExit && EXITS[paramExit]) ? paramExit : (exitSelect?.value || 'EXIT1');
+let currentLang = ['en','de'].includes(paramLang) ? paramLang : (langSelect?.value || 'en').toLowerCase();
+let startRoom   = (paramRoom && ROOMS[paramRoom]) ? paramRoom : 'VisitorRoom';
+let startPos    = ROOMS[startRoom];
+
+let isMuted = false;
+let scale = 1, tx = 0, ty = 0;
+let isDragging = false, dragStartX = 0, dragStartY = 0;
+
+/* -------- Inject markers (no CSS file—use inline styles) -------- */
+const youMarker = document.createElement('div');
+youMarker.style.position = 'absolute';
+youMarker.style.pointerEvents = 'none';
+youMarker.style.transformOrigin = '0 0';
+youMarker.style.display = 'flex';
+youMarker.style.alignItems = 'center';
+youMarker.style.gap = '8px';
+const youDot = document.createElement('div');
+youDot.style.width = '14px'; youDot.style.height = '14px'; youDot.style.borderRadius = '50%';
+youDot.style.background = '#f59e0b'; youDot.style.border = '2px solid #fff';
+youDot.style.boxShadow = '0 0 0 3px rgba(245,158,11,.25)';
+const youLbl = document.createElement('div');
+youLbl.textContent = 'YOU ARE HERE';
+youLbl.style.background = 'rgba(0,0,0,.55)'; youLbl.style.color = '#fff';
+youLbl.style.padding = '4px 8px'; youLbl.style.borderRadius = '6px';
+youLbl.style.border = '1px solid rgba(255,255,255,.25)';
+youLbl.style.fontWeight = '600'; youLbl.style.fontSize = '12px';
+youMarker.appendChild(youDot); youMarker.appendChild(youLbl);
+zoomWrap.appendChild(youMarker);
+
+/* Optional: small exit dots to visually confirm positions */
+const exitDots = {};
+Object.entries(EXITS).forEach(([key, val]) => {
+  const d = document.createElement('div');
+  d.style.position = 'absolute'; d.style.width = '10px'; d.style.height = '10px';
+  d.style.borderRadius = '50%'; d.style.background = '#38bdf8'; d.style.border = '2px solid #fff';
+  d.style.boxShadow = '0 0 0 2px rgba(56,189,248,.25)';
+  d.title = `${key} • ${val.name}`;
+  zoomWrap.appendChild(d);
+  exitDots[key] = d;
 });
-exitLayer.addEventListener('pointermove', (e) => {
-  if (!exitDragging) return;
-  const dx = e.clientX - exPx, dy = e.clientY - exPy;
-  exitTx += dx; exitTy += dy; exPx = e.clientX; exPy = e.clientY; exitApply();
-});
-exitLayer.addEventListener('pointerup', () => exitDragging = false);
 
-/* ===================== OVERLAY DRAWING ===================== */
-function exitClearSvg(){ if (exitSvg) exitSvg.innerHTML = ''; }
+/* -------- Helpers -------- */
+function normToPx(xn, yn) {
+  const rect = zoomWrap.getBoundingClientRect();
+  return { x: rect.width * xn, y: rect.height * yn };
+}
 
-function drawExitRoute(pointsNorm, color='#e11d48'){ // red path by default
-  exitClearSvg();
-  if (!pointsNorm || pointsNorm.length === 0) return;
-  // Convert normalized 0..1 coords to viewBox (0..1000)
-  const pts = pointsNorm.map(([x,y]) => `${x*1000},${y*1000}`).join(' ');
-  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-  poly.setAttribute('points', pts);
-  poly.setAttribute('fill', 'none');
-  poly.setAttribute('stroke', color);
-  poly.setAttribute('stroke-width', '6');
-  poly.setAttribute('stroke-linecap', 'round');
-  poly.setAttribute('stroke-linejoin', 'round');
-  exitSvg.appendChild(poly);
+function placeMarkers() {
+  const p = normToPx(startPos.x, startPos.y);
+  youMarker.style.left = `${p.x}px`; youMarker.style.top = `${p.y}px`;
 
-  // Waypoint circles
-  pointsNorm.forEach(([x,y], idx) => {
-    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    c.setAttribute('cx', x*1000);
-    c.setAttribute('cy', y*1000);
-    c.setAttribute('r', idx === 0 ? 10 : 6); // larger at start (YOU ARE HERE)
-    c.setAttribute('fill', idx === 0 ? '#f59e0b' : '#1f3f74');
-    exitSvg.appendChild(c);
+  Object.entries(EXITS).forEach(([key, val]) => {
+    const e = normToPx(val.x, val.y);
+    exitDots[key].style.left = `${e.x - 5}px`; // center roughly
+    exitDots[key].style.top  = `${e.y - 5}px`;
   });
+
+  // apply current pan/zoom to markers
+  const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  youMarker.style.transform = t;
+  Object.values(exitDots).forEach(el => { el.style.transform = t; });
 }
 
-/* ===================== SELECTION + LANGUAGE ===================== */
-const exitSel       = document.getElementById('exitSel');
-const exitSteps     = document.getElementById('exitRouteSteps');
-const exitAudio     = document.getElementById('exitAudio');
-const exitPlay      = document.getElementById('exitPlayAudio');
-const exitStop      = document.getElementById('exitStopAudio');
-const exitVolume    = document.getElementById('exitVolume');
-const exitAudioStatus = document.getElementById('exitAudioStatus');
-
-let exitLang = (new URLSearchParams(location.search)).get('lang') || 'en';
-
-function selectExit(exitId){
-  if (!exitId) { exitSteps.innerHTML = ''; exitClearSvg(); exitStopAudio(true); return; }
-  exitSel.value = exitId;
-  // Text
-  const lines = (exitRouteText[exitLang] && exitRouteText[exitLang][exitId]) ? exitRouteText[exitLang][exitId] : [];
-  exitSteps.innerHTML = '';
-  lines.forEach(s => { const li = document.createElement('li'); li.textContent = s; exitSteps.appendChild(li); });
-  // Overlay
-  drawExitRoute(exitRoutePaths[exitId], '#16a34a'); // green route
-  // Bind audio source (recorded ➜ fallback TTS)
-  bindRecordedAudio(exitId, exitLang);
-  exitUpdateAudioStatus();
+function audioSrcForExit(exit) {
+  return new URL(EXITS[exit].audio, AUDIO_BASE).href;
 }
 
-exitSel.addEventListener('change', () => selectExit(exitSel.value));
-document.getElementById('exitLangToggle').onclick = () => {
-  exitLang = (exitLang === 'en') ? 'de' : 'en';
-  selectExit(exitSel.value);
-};
-
-/* ===================== AUDIO: recorded first, TTS fallback ===================== */
-function audioCandidates(exitId, lang){
-  return [
-    `assets/audio/${exitId}/voice_${lang}.mp3`, // preferred (your structure)
-    `assets/audio/${exitId}/${lang}.mp3`,       // fallback
-    `assets/audio/${exitId}_${lang}.mp3`,       // fallback
-    `assets/audio/${exitId}.mp3`                // single-file fallback
-  ];
-}
-function bindRecordedAudio(exitId, lang){
-  const list = audioCandidates(exitId, lang);
-  let idx = 0;
-  exitAudio.onerror = () => tryNext();
-  function tryNext(){
-    if (idx >= list.length) { exitAudio.removeAttribute('src'); return; }
-    const src = list[idx++]; exitAudio.src = src; exitAudio.load();
-  }
-  tryNext();
-}
-function exitUpdateAudioStatus(){
-  const hasSrc = !!exitAudio.getAttribute('src');
-  exitAudioStatus.textContent = hasSrc ? 'Recorded audio available.' : 'No recording found — will use TTS.';
-}
-function exitStopAudio(silent=false){
-  try { exitAudio.pause(); exitAudio.currentTime = 0; } catch {}
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-  if (!silent) exitAudioStatus.textContent = '';
-}
-exitVolume.addEventListener('input', () => {
-  exitAudio.volume = parseFloat(exitVolume.value || '1');
-});
-
-// TTS helpers
-let exitVoices = [];
-function loadVoices(){ exitVoices = window.speechSynthesis.getVoices(); }
-if ('speechSynthesis' in window) {
-  loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
-}
-function pickExitVoice(langCode){
-  const exact = exitVoices.find(v => v.lang.toLowerCase() === langCode.toLowerCase());
-  if (exact) return exact;
-  const prefix = langCode.split('-')[0];
-  const starts = exitVoices.find(v => v.lang.toLowerCase().startsWith(prefix.toLowerCase()));
-  return starts || exitVoices[0] || null;
-}
-function buildExitSpeech(exitId, lang){
-  const lines = (exitRouteText[lang] && exitRouteText[lang][exitId]) ? exitRouteText[lang][exitId] : [];
-  return lines.join('. ');
+/* Build direction text from vector (start -> exit) */
+function cardinal(dx, dy, lang) {
+  const horiz = dx > 0 ? (lang==='de'?'Osten':'east') : (dx < 0 ? (lang==='de'?'Westen':'west') : null);
+  const vert  = dy > 0 ? (lang==='de'?'Süden':'south') : (dy < 0 ? (lang==='de'?'Norden':'north') : null);
+  return { horiz, vert };
 }
 
-// Play: prefer recorded audio; if not, use TTS
-exitPlay.addEventListener('click', () => {
-  const exitId = exitSel.value;
-  if (!exitId) { exitAudioStatus.textContent = 'Select an exit first.'; return; }
-  const hasSrc = !!exitAudio.getAttribute('src');
-  exitStopAudio(true);
-  if (hasSrc) {
-    exitAudio.volume = parseFloat(exitVolume.value || '1');
-    exitAudio.play().then(() => { exitAudioStatus.textContent = 'Playing recorded audio…'; })
-                    .catch(() => { exitAudioStatus.textContent = 'Could not play audio.'; });
+function guidanceSentence(startKey, exitKey, lang) {
+  const s = ROOMS[startKey], e = EXITS[exitKey];
+  const dx = e.x - s.x, dy = e.y - s.y;
+  const { horiz, vert } = cardinal(dx, dy, lang);
+  const exitName = e.name;
+
+  if (lang === 'de') {
+    const part1 = horiz ? `Gehen Sie nach ${horiz} entlang des Flurs` : `Gehen Sie geradeaus`;
+    const part2 = vert  ? `, dann nach ${vert} an der Kreuzung` : ``;
+    return `${part1}${part2} und folgen Sie dem Flur bis zum ${exitName}.`;
   } else {
-    if (!('speechSynthesis' in window)) { exitAudioStatus.textContent = 'TTS not supported in this browser.'; return; }
-    const langCode = (exitLang === 'de') ? 'de-DE' : 'en-US';
-    const voice = pickExitVoice(langCode);
-    const utter = new SpeechSynthesisUtterance(buildExitSpeech(exitId, exitLang));
-    if (voice) utter.voice = voice;
-    utter.rate = 1.0; utter.pitch = 1.0;
-    utter.onstart = () => { exitAudioStatus.textContent = `Speaking (${voice ? voice.lang : langCode})…`; };
-    utter.onend   = () => { exitAudioStatus.textContent = 'Done.'; setTimeout(() => exitAudioStatus.textContent = '', 800); };
-    utter.onerror = () => { exitAudioStatus.textContent = 'Speech error. Try again.'; };
-    window.speechSynthesis.speak(utter);
+    const part1 = horiz ? `Head ${horiz} along the corridor` : `Go straight`;
+    const part2 = vert  ? `, then ${vert} at the junction` : ``;
+    return `${part1}${part2} and follow the corridor to the ${exitName}.`;
   }
+}
+
+function updateGuidanceText() {
+  const phrase = guidanceSentence(startRoom, currentExit, currentLang);
+  const lead   = `${currentExit} • ${currentLang.toUpperCase()}`;
+  routeText.textContent = `${lead} • From ${startRoom}: ${phrase}`;
+}
+
+function loadAudioForExit() {
+  const src = audioSrcForExit(currentExit);
+  routeAudio.src = src;
+  routeAudio.load();
+}
+
+/* -------- Init -------- */
+function init() {
+  // Apply URL param defaults to selects
+  if (exitSelect && EXITS[currentExit]) exitSelect.value = currentExit;
+  if (langSelect) langSelect.value = currentLang;
+
+  // Audio setup
+  routeAudio.preload = 'auto';
+  routeAudio.crossOrigin = 'anonymous';
+  routeAudio.muted = isMuted;
+
+  // Initial UI
+  updateGuidanceText();
+  loadAudioForExit();
+  placeMarkers();
+}
+init();
+
+/* -------- Resize: reposition markers -------- */
+window.addEventListener('resize', placeMarkers);
+
+/* -------- Exit & Language events -------- */
+exitSelect?.addEventListener('change', () => {
+  currentExit = exitSelect.value;
+  updateGuidanceText();
+  loadAudioForExit();
+  routeAudio.currentTime = 0;
 });
 
-// Stop
-exitStop.addEventListener('click', () => exitStopAudio());
+langSelect?.addEventListener('change', () => {
+  currentLang = langSelect.value.toLowerCase();
+  updateGuidanceText();
+});
 
-// Clear (text + audio + overlay only; keep zoom state)
-document.getElementById('exitClear').onclick = () => {
-  exitSteps.innerHTML = ''; exitClearSvg(); exitStopAudio(); exitAudioStatus.textContent = '';
-};
-
-/* ===================== Deep-link init: ?exit=EXIT3&lang=de ===================== */
-(function initFromQuery(){
-  const p = new URLSearchParams(location.search);
-  const qExit = p.get('exit'); const qLang = p.get('lang');
-  if (qLang && (qLang === 'en' || qLang === 'de')) exitLang = qLang;
-  if (qExit && ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(qExit)) {
-    exitSel.value = qExit; selectExit(qExit);
+/* -------- Audio controls -------- */
+async function playAudio() {
+  try { await routeAudio.play(); }
+  catch (e) {
+    // Browser blocked play without interaction
+    routeText.textContent = 'Tap once on the page, then press Play again (browser blocked autoplay).';
   }
-})();
+}
+function stopAudio() { routeAudio.pause(); routeAudio.currentTime = 0; }
+function replayAudio() { routeAudio.currentTime = 0; playAudio(); }
+function toggleMute() {
+  isMuted = !isMuted;
+  routeAudio.muted = isMuted;
+  muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
+}
+
+/* Bind both button sets */
+btnSpeak?.addEventListener('click', playAudio);
+btnStop?.addEventListener('click', stopAudio);
+btnReset?.addEventListener('click', resetView);
+
+btnZoomIn?.addEventListener('click', () => zoomBy(0.25));
+btnZoomOut?.addEventListener('click', () => zoomBy(-0.25));
+btnFullscreen?.addEventListener('click', toggleFullscreen);
+
+playHeader?.addEventListener('click', playAudio);
+replayHeader?.addEventListener('click', replayAudio);
+muteHeader?.addEventListener('click', toggleMute);
+
+zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
+zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
+resetHeader?.addEventListener('click', resetView);
+
+routeAudio.addEventListener('ended', () => { /* optional: UI feedback */ });
+
+/* -------- Zoom/Pan/Fullscreen -------- */
+function applyTransform() {
+  const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  zoomImg.style.transformOrigin = '0 0';
+  zoomImg.style.transform = t;
+  // Keep markers in sync
+  youMarker.style.transform = t;
+  Object.values(exitDots).forEach(el => { el.style.transform = t; });
+}
+
+function zoomBy(delta) {
+  scale = Math.max(0.5, Math.min(4, scale + delta));
+  applyTransform();
+}
+
+function resetView() {
+  scale = 1; tx = 0; ty = 0;
+  applyTransform();
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    zoomWrap.requestFullscreen?.().catch(()=>{});
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+/* Pointer-based panning */
+zoomWrap.addEventListener('pointerdown', (e) => {
+  isDragging = true;
+  zoomWrap.setPointerCapture(e.pointerId);
+  dragStartX = e.clientX - tx;
+  dragStartY = e.clientY - ty;
+});
+
+zoomWrap.addEventListener('pointermove', (e) => {
+  if (!isDragging) return;
+  tx = e.clientX - dragStartX;
+  ty = e.clientY - dragStartY;
+  applyTransform();
+});
+
+zoomWrap.addEventListener('pointerup', (e) => {
+  isDragging = false;
+  zoomWrap.releasePointerCapture(e.pointerId);
+});
+
+/* -------- Tap to set YOU ARE HERE (optional) --------
+   Click/tap anywhere on the map to set a custom start point.
+*/
+zoomWrap.addEventListener('click', (e) => {
+  const rect = zoomWrap.getBoundingClientRect();
+  const xn = (e.clientX - rect.left - tx) / (rect.width * scale);
+  const yn = (e.clientY - rect.top  - ty) / (rect.height * scale);
+  startPos = { x: Math.max(0, Math.min(1, xn)), y: Math.max(0, Math.min(1, yn)) };
+  startRoom = 'Custom';
+  placeMarkers();
+  updateGuidanceText();
+});
+
+/* -------- Keyboard shortcuts -------- */
+document.addEventListener('keydown', (e) => {
+  if (e.key === '+') zoomBy(0.25);
+  if (e.key === '-') zoomBy(-0.25);
+  if (e.key.toLowerCase() === 'r') resetView();
+  if (e.key.toLowerCase() === 'f') toggleFullscreen();
+});
 </script>
+
 
  <header>
     <h2>BMWTechWorks Pune – Meeting Rooms</h2>
