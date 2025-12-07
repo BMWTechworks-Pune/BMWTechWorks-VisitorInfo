@@ -305,14 +305,20 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 <!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
 
 
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   /* =========================================
      BTI Pune • Exit Guidance (TTS only)
-     - Exit dropdown supports "None"
-     - Proper Reset (audio + text + view)
-     the West Exit (near Success – Board room).",     - Disables Play/Replay on None
+     - Force default EXIT1 via JS
+     - Text visible immediately on load/change
+     - Play/Replay enabled for EXIT1..EXIT5
+     - Reset sets Exit=None + default message
+     ========================================= */
+
+  /* -------- Guidance (EN/DE) -------- */
+  const GUIDANCE = {
+    en: {
+      EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
       EXIT2: "Head west and then south along the corridor to the South‑West Exit (near Joy).",
       EXIT3: "Proceed towards the central corridor and continue north to the Central Exit (near Debug).",
       EXIT4: "Go east along the main corridor; at the next junction turn north to reach the East Exit (near iDrive/M‑Mode).",
@@ -327,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  /* -------- DOM refs (match your HTML) -------- */
+  /* -------- DOM refs -------- */
   const zoomWrap      = document.getElementById('zoomWrap');
   const zoomImg       = document.getElementById('zoomImg');
 
@@ -352,147 +358,112 @@ document.addEventListener('DOMContentLoaded', () => {
   const routeText     = document.getElementById('routeText');
   const routeAudio    = document.getElementById('routeAudio'); // unused in TTS mode
 
-  /* -------- State -------- */
-  let currentExit = exitSelect?.value || 'None';
-  let currentLang = (langSelect?.value || 'en').toLowerCase();
+  /* -------- Normalizers -------- */
+  function normalizeExit(v){ return String(v || '').trim().toUpperCase(); }
+  function normalizeLang(v){ v = String(v || '').trim().toLowerCase(); return v === 'de' ? 'de' : 'en'; }
+
+  /* -------- Helpers -------- */
+  function isValidExit(val){ val = normalizeExit(val); return ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(val); }
+  function isNone(val){ return normalizeExit(val) === 'NONE'; }
+  function defaultMessage(lang){ return lang==='de' ? 'Wählen Sie einen Ausgang aus, um die Anleitung zu sehen.' : 'Select an exit to see guidance.'; }
+  function setButtonsEnabled(enabled){
+    if (btnSpeak)     btnSpeak.disabled     = !enabled;
+    if (playHeader)   playHeader.disabled   = !enabled;
+    if (replayHeader) replayHeader.disabled = !enabled;
+    if (btnStop)      btnStop.disabled      = false;
+    if (btnReset)     btnReset.disabled     = false;
+    if (muteHeader)   muteHeader.disabled   = false;
+  }
+
+  /* -------- Force default EXIT1 (no HTML edits needed) -------- */
+  if (exitSelect) {
+    exitSelect.value = 'EXIT1'; // set default
+    // If your markup has "None" first, it will be overridden by this.
+  }
+
+  /* -------- State (after forcing EXIT1) -------- */
+  let currentExit = normalizeExit(exitSelect?.value || 'EXIT1');
+  let currentLang = normalizeLang(langSelect?.value || 'en');
   let isMuted = false;
   let voices = [];
   let activeUtterance = null;
 
-  /* -------- Ensure "None" exists even if HTML wasn’t edited -------- */
-  (function ensureNoneOption(){
-    if (!exitSelect) return;
-    const hasNone = Array.from(exitSelect.options).some(o => o.value === 'None');
-    if (!hasNone) {
-      const noneOpt = document.createElement('option');
-      noneOpt.value = 'None';
-      noneOpt.textContent = 'None';
-      exitSelect.insertBefore(noneOpt, exitSelect.firstChild);
-    }
-  })();
-
-  /* -------- Speech voices -------- */
-  function loadVoices() {
-    try { voices = window.speechSynthesis.getVoices() || []; }
-    catch { voices = []; }
-  }
-  loadVoices();
-  if (typeof window.speechSynthesis !== 'undefined') {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-  }
-
-  function pickVoice(lang) {
-    const prefer = lang === 'de' ? ['de-DE','de-AT','de'] : ['en-US','en-GB','en'];
-    for (const code of prefer) {
-      const v = voices.find(voice => (voice.lang || '').toLowerCase() === code.toLowerCase());
-      if (v) return v;
-    }
-    const v2 = voices.find(voice => (voice.lang || '').toLowerCase().startsWith(lang === 'de' ? 'de' : 'en'));
-    return v2 || voices[0] || null;
-  }
-
-  /* -------- Helpers -------- */
-  function isValidExit(val) {
-    return ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(val);
-  }
-  function defaultMessage(lang) {
-    return lang === 'de'
-      ? 'Wählen Sie einen Ausgang aus, um die Anleitung zu sehen.'
-      : 'Select an exit to see guidance.';
-  }
-  function guidanceText() {
+  /* -------- Guidance text render -------- */
+  function guidanceText(){
     if (!isValidExit(currentExit)) return defaultMessage(currentLang);
     const phrases = GUIDANCE[currentLang] || GUIDANCE.en;
     return phrases[currentExit] || defaultMessage(currentLang);
   }
-  function updateGuidanceUI() {
-    if (!routeText) return;
-    const header = isValidExit(currentExit)
-      ? `${currentExit} • ${currentLang.toUpperCase()}`
-      : `${currentLang.toUpperCase()}`;
+  function updateGuidanceUI(){
+    const header = isValidExit(currentExit) ? `${currentExit} • ${currentLang.toUpperCase()}` : `${currentLang.toUpperCase()}`;
     routeText.textContent = `${header} • ${guidanceText()}`;
-
-    // Disable Play/Replay when None
-    const disabled = !isValidExit(currentExit);
-    if (btnSpeak)   btnSpeak.disabled = disabled;
-    if (playHeader) playHeader.disabled = disabled;
-    if (replayHeader) replayHeader.disabled = disabled;
+    setButtonsEnabled(isValidExit(currentExit));
   }
 
-  function speakGuidance() {
-    if (!isValidExit(currentExit)) {
-      updateGuidanceUI(); // nothing to speak
+  /* -------- Speech synthesis -------- */
+  function loadVoices(){ try { voices = window.speechSynthesis.getVoices() || []; } catch { voices = []; } }
+  loadVoices();
+  if (typeof window.speechSynthesis !== 'undefined'){ window.speechSynthesis.onvoiceschanged = loadVoices; }
+  function pickVoice(lang){
+    const prefer = lang==='de' ? ['de-DE','de-AT','de'] : ['en-US','en-GB','en'];
+    for (const code of prefer){ const v = voices.find(voice => (voice.lang||'').toLowerCase() === code.toLowerCase()); if (v) return v; }
+    const v2 = voices.find(voice => (voice.lang||'').toLowerCase().startsWith(lang==='de' ? 'de' : 'en'));
+    return v2 || voices[0] || null;
+  }
+  function speakGuidance(){
+    if (!isValidExit(currentExit)){
+      updateGuidanceUI();
       return;
     }
-    if (typeof window.speechSynthesis === 'undefined') {
+    if (typeof window.speechSynthesis === 'undefined'){
       routeText.textContent = 'Speech not supported on this browser. Please use Chrome/Edge.';
       return;
     }
     try { window.speechSynthesis.cancel(); } catch {}
     activeUtterance = new SpeechSynthesisUtterance(guidanceText());
-    activeUtterance.lang = (currentLang === 'de') ? 'de-DE' : 'en-US';
+    activeUtterance.lang = (currentLang==='de') ? 'de-DE' : 'en-US';
     const voice = pickVoice(currentLang);
     if (voice) activeUtterance.voice = voice;
-    activeUtterance.rate = 1.0;
-    activeUtterance.pitch = 1.0;
-    activeUtterance.volume = isMuted ? 0 : 1;
+    activeUtterance.rate = 1.0; activeUtterance.pitch = 1.0; activeUtterance.volume = isMuted ? 0 : 1;
 
-    activeUtterance.onstart = () => {
-      if (btnSpeak) btnSpeak.textContent = '🔊 Playing';
-      if (playHeader) playHeader.textContent = 'Playing';
-    };
-    activeUtterance.onend = () => {
-      if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance';
-      if (playHeader) playHeader.textContent = 'Play';
-    };
-    activeUtterance.onerror = (e) => {
-      console.error('Speech synthesis error:', e);
-      routeText.textContent = 'Unable to play synthesized audio. Try again.';
-    };
+    activeUtterance.onstart = () => { if (btnSpeak) btnSpeak.textContent = '🔊 Playing'; if (playHeader) playHeader.textContent = 'Playing'; };
+    activeUtterance.onend   = () => { if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance'; if (playHeader) playHeader.textContent = 'Play'; };
+    activeUtterance.onerror = (e) => { console.error('Speech synthesis error:', e); routeText.textContent = 'Unable to play synthesized audio. Try again.'; setButtonsEnabled(true); };
 
     window.speechSynthesis.speak(activeUtterance);
   }
-
-  function stopSpeech() {
+  function stopSpeech(){
     try { window.speechSynthesis.cancel(); } catch {}
     activeUtterance = null;
     if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance';
     if (playHeader) playHeader.textContent = 'Play';
   }
-
-  function replaySpeech() {
-    stopSpeech();
-    speakGuidance();
-  }
-
-  function toggleMute() {
+  function replaySpeech(){ stopSpeech(); speakGuidance(); }
+  function toggleMute(){
     isMuted = !isMuted;
     if (muteHeader) muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
-    // If currently speaking, restart to apply new volume
-    if (activeUtterance) replaySpeech();
+    if (activeUtterance) replaySpeech(); // apply new volume
   }
 
-  /* -------- Init -------- */
-  function init() {
+  /* -------- Init (render text immediately) -------- */
+  function init(){
     if (routeAudio) routeAudio.style.display = 'none'; // unused in TTS mode
-    updateGuidanceUI();
+    updateGuidanceUI(); // TEXT VISIBLE ON LOAD for EXIT1
   }
   init();
 
-  /* -------- Dropdowns -------- */
+  /* -------- Dropdown handlers (text updates instantly) -------- */
   exitSelect?.addEventListener('change', () => {
-    currentExit = exitSelect.value;
-    updateGuidanceUI();
-    // user presses Play to speak
+    currentExit = normalizeExit(exitSelect.value);
+    updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON EXIT CHANGE
   });
-
   langSelect?.addEventListener('change', () => {
-    currentLang = langSelect.value.toLowerCase();
-    updateGuidanceUI();
+    currentLang = normalizeLang(langSelect.value);
+    updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON LANG CHANGE
     loadVoices();
   });
 
-  /* -------- Buttons: both groups -------- */
+  /* -------- Buttons (both blocks) -------- */
   btnSpeak?.addEventListener('click', speakGuidance);
   btnStop?.addEventListener('click', stopSpeech);
   btnReset?.addEventListener('click', resetAll);
@@ -507,62 +478,29 @@ document.addEventListener('DOMContentLoaded', () => {
   zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
   resetHeader?.addEventListener('click', resetAll);
 
-  /* -------- Reset (view + audio + text) -------- */
-  function resetAll() {
-    // 1) Stop any speech
-    stopSpeech();
-    // 2) Reset map view
-    resetView();
-    // 3) Set Exit = None
-    if (exitSelect) exitSelect.value = 'None';
+  /* -------- Reset (speech + view + state + text) -------- */
+  function resetAll(){
+    stopSpeech();   // stop TTS
+    resetView();    // reset pan/zoom
+    if (exitSelect) exitSelect.value = 'None'; // programmatically set None
     currentExit = 'None';
-    // 4) Update UI (localized default message + disable Play/Replay)
-    updateGuidanceUI();
+    updateGuidanceUI(); // show default message + disable Play/Replay
   }
 
   /* -------- Map: zoom / pan / fullscreen -------- */
   let scale = 1, tx = 0, ty = 0;
+  function applyTransform(){ if (!zoomImg) return; const t = `translate(${tx}px, ${ty}px) scale(${scale})`; zoomImg.style.transformOrigin = '0 0'; zoomImg.style.transform = t; }
+  function zoomBy(delta){ scale = Math.max(0.5, Math.min(4, scale + delta)); applyTransform(); }
+  function resetView(){ scale = 1; tx = 0; ty = 0; applyTransform(); }
+  function toggleFullscreen(){ if (!document.fullscreenElement){ zoomWrap?.requestFullscreen?.().catch(()=>{}); } else { document.exitFullscreen?.(); } }
 
-  function applyTransform() {
-    if (!zoomImg) return;
-    const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
-    zoomImg.style.transformOrigin = '0 0';
-    zoomImg.style.transform = t;
-  }
-  function zoomBy(delta) {
-    scale = Math.max(0.5, Math.min(4, scale + delta));
-    applyTransform();
-  }
-  function resetView() {
-    scale = 1; tx = 0; ty = 0;
-    applyTransform();
-  }
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      zoomWrap?.requestFullscreen?.().catch(()=>{});
-    } else {
-      document.exitFullscreen?.();
-    }
-  }
-
-  // Pointer-based panning
+  // Panning
   let dragging = false, sx = 0, sy = 0;
-  zoomWrap?.addEventListener('pointerdown', (e) => {
-    dragging = true;
-    zoomWrap.setPointerCapture(e.pointerId);
-    sx = e.clientX - tx; sy = e.clientY - ty;
-  });
-  zoomWrap?.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    tx = e.clientX - sx; ty = e.clientY - sy;
-    applyTransform();
-  });
-  zoomWrap?.addEventListener('pointerup', (e) => {
-    dragging = false;
-    zoomWrap.releasePointerCapture(e.pointerId);
-  });
+  zoomWrap?.addEventListener('pointerdown', (e) => { dragging = true; zoomWrap.setPointerCapture(e.pointerId); sx = e.clientX - tx; sy = e.clientY - ty; });
+  zoomWrap?.addEventListener('pointermove', (e) => { if (!dragging) return; tx = e.clientX - sx; ty = e.clientY - sy; applyTransform(); });
+  zoomWrap?.addEventListener('pointerup',   (e) => { dragging = false; zoomWrap.releasePointerCapture(e.pointerId); });
 
-  /* -------- Keyboard shortcuts -------- */
+  // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
     if (e.key === '+') zoomBy(0.25);
     if (e.key === '-') zoomBy(-0.25);
@@ -571,13 +509,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-     ========================================= */
-
-  /* -------- Guidance (EN/DE — keep exactly as you want) -------- */
-  const GUIDANCE = {
-    en: {
-
-
 
 
 
