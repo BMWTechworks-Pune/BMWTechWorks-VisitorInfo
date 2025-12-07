@@ -822,7 +822,126 @@ document.addEventListener('DOMContentLoaded', () => {
 <a href='https://www.youtube.com'>YouTube</a><br>
 Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 </p>
+<!-- ========================= -->
+<!-- QR SECTION (added)       -->
+<!-- ========================= -->
+<section id="qr-section" aria-labelledby="qr-title">
+  <h3 id="qr-title">Quick Access QR</h3>
 
+  <div class="qr-wrapper">
+    <!-- Update path if your QR file is elsewhere -->
+    assets/q_code.png
+  </div>
+
+  <div class="qr-actions">
+    <button id="shareQRBtn" class="btn primary">Share QR</button>
+    <button id="downloadQRBtn" class="btn">Download QR</button>
+    <button id="copyLinkBtn" class="btn ghost">Copy Link</button>
+  </div>
+
+  <p class="qr-note">Tip: Share or save this QR to avoid re-scanning next time.</p>
+</section>
+
+<!-- Lightweight styles for the QR block -->
+<style>
+  #qr-section {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: #fafafa;
+  }
+  .qr-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  .qr-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    appearance: none;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    padding: 0.55rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn.primary {
+    background: #ff7f11; /* orange theme */
+    border-color: #ff7f11;
+    color: #fff;
+  }
+  .btn.ghost {
+    background: transparent;
+  }
+  .qr-note {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+  }
+</style>
+
+<!-- Share / Download / Copy logic -->
+<script>
+  // TODO: Set this to the same URL encoded in q_code.png
+  const LANDING_URL = 'https://bmwtechworks.github.io/bti-pune/index.html';
+
+  async function shareQR() {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'BTI Visitor Mini-site',
+          text: 'Open the BTI Visitor Mini-site without scanning.',
+          url: LANDING_URL
+        });
+      } else {
+        // Fallback: copy the link
+        await copyLink(true);
+        alert('Sharing is not supported here. The link has been copied to your clipboard.');
+      }
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  }
+
+  function downloadQR() {
+    const img = document.getElementById('siteQR');
+    const a = document.createElement('a');
+    a.download = 'BTI-Visitor-QR.png';
+
+    if (img && img.tagName.toLowerCase() === 'img') {
+      a.href = img.src;
+      a.click();
+      return;
+    }
+    alert('QR image not found to download.');
+  }
+
+  async function copyLink(silent = false) {
+    try {
+      await navigator.clipboard.writeText(LANDING_URL);
+      if (!silent) {
+        const btn = document.getElementById('copyLinkBtn');
+        const prev = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => (btn.textContent = prev), 1500);
+      }
+    } catch (err) {
+      console.error('Copy failed:', err);
+      if (!silent) alert('Could not copy the link. Please long-press and copy manually.');
+    }
+  }
+
+  document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
+  document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
+  document.getElementById('copyLinkBtn')?.addEventListener('click', () => copyLink(false));
+</script>
   
 <footer style="text-align:center; padding:12px; color:var(--muted)">
   <div>© BTI Pune — Visitor Info.</div>
