@@ -315,321 +315,215 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 <!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
 
 <script>
-/* =========================
-   BTI Pune • Exit Plan Logic
-   =========================
-   - Works with your existing HTML (no markup/CSS changes)
-  ; audio is English   - Uses /assets/audio/EXIT*/voice_en.mp3
-   - Deep links: ?room=Joy&exit=EXIT3&lang=de
-*/
+document.addEventListener('DOMContentLoaded', () => {
+  /* ---------------- CONFIG ----------------
+     If hosted on GitHub Pages at:
+     https://bmwtechworks-pune.github.io/BMWTechWorks-VisitorInfo/
+     use the repo base (leading slash + repo).
+  ------------------------------------------ */
+  // GitHub Pages deployment (recommended):
+  const AUDIO_BASE = '/BMWTechWorks-VisitorInfo/assets/audio/';
+  // For local same-folder testing, uncomment:
+  // const AUDIO_BASE = './assets/audio/';
 
-/* -------- Config: audio base -------- */
-const AUDIO_BASE = new URL('assets/audio/', document.baseURI).href;
+  // Exit -> audio files (English)
+  const AUDIO_FILES = {
+    EXIT1: 'EXIT1/voice_en.mp3', // West (near Success – Board room)
+    EXIT2: 'EXIT2/voice_en.mp3', // South‑West (near Joy)
+    EXIT3: 'EXIT3/voice_en.mp3', // Center (near Debug)
+    EXIT4: 'EXIT4/voice_en.mp3', // East (near iDrive / M‑Mode)
+    EXIT5: 'EXIT5/voice_en.mp3'  // Far‑East (near Xdrive / Torque)
+  };
 
-/* -------- Config: exits & key rooms (normalized 0..1 on r1.png) --------
-   These are best-effort positions inferred from your r2.png:
-   EXIT1  — West exit near "Success – Board room"
-   EXIT2  — South‑west exit near "Joy"
-   EXIT3  — Central exit near "Debug"
-   EXIT4  — East exit near "iDrive/M‑Mode"
-   EXIT5  — Far‑east exit near "Xdrive/Torque"
-*/
-const EXITS = {
-  EXIT1: { name: 'West Exit (near Success – Board room)', x: 0.06, y: 0.14, audio: 'EXIT1/voice_en.mp3' },
-  EXIT2: { name: 'South‑West Exit (near Joy)',               x: 0.10, y: 0.86, audio: 'EXIT2/voice_en.mp3' },
-  EXIT3: { name: 'Central Exit (near Debug)',                x: 0.50, y: 0.58, audio: 'EXIT3/voice_en.mp3' },
-  EXIT4: { name: 'East Exit (near iDrive/M‑Mode)',           x: 0.78, y: 0.70, audio: 'EXIT4/voice_en.mp3' },
-  EXIT5: { name: 'Far‑East Exit (near Xdrive/Torque)',       x: 0.92, y: 0.78, audio: 'EXIT5/voice_en.mp3' }
-};
+  /* ---------------- Guidance (EN/DE) ----------------
+     Based on r2.png labeled positions (west→east):
+       EXIT1  = near Success – Board room (top-left)
+       EXIT2  = near Joy (bottom-left)
+       EXIT3  = near Debug (center)
+       EXIT4  = near iDrive/M‑Mode (right)
+       EXIT5  = near Xdrive/Torque (far right)
+     Adjust text if you later move exit markers.
+  ---------------------------------------------------- */
+  const GUIDANCE = {
+    en: {
+      EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
+      EXIT2: "Head west and then south along the corridor to the South‑West Exit (near Joy).",
+      EXIT3: "Proceed towards the central corridor and continue north to the Central Exit (near Debug).",
+      EXIT4: "Go east along the main corridor; at the next junction turn north to reach the East Exit (near iDrive/M‑Mode).",
+      EXIT5: "Continue east to the far right wing and turn south to reach the Far‑East Exit (near Xdrive/Torque)."
+    },
+    de: {
+      EXIT1: "Gehen Sie nach Westen entlang des Hauptflurs; biegen Sie an der Kreuzung nach Norden ab zum Westausgang (bei Success – Board room).",
+      EXIT2: "Gehen Sie nach Westen und dann nach Süden entlang des Flurs zum Südwestausgang (bei Joy).",
+      EXIT3: "Gehen Sie zum zentralen Flur und weiter nach Norden zum Zentralausgang (bei Debug).",
+      EXIT4: "Gehen Sie nach Osten entlang des Hauptflurs; biegen Sie an der nächsten Kreuzung nach Norden ab zum Ostausgang (bei iDrive/M‑Mode).",
+      EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum Ostausgang ganz rechts (bei Xdrive/Torque)."
+    }
+  };
 
-/* Approximate positions of labeled rooms (for YOU ARE HERE) */
-const ROOMS = {
-  Success:     { x: 0.09, y: 0.12 },
-  Inspire:     { x: 0.12, y: 0.26 },
-  VisitorRoom: { x: 0.16, y: 0.40 },
-  Joy:         { x: 0.16, y: 0.86 },
-  Debug:       { x: 0.52, y: 0.58 },
-  iDrive:      { x: 0.73, y: 0.72 },
-  MMode:       { x: 0.78, y: 0.72 },
-  Drift:       { x: 0.85, y: 0.76 },
-  Xdrive:      { x: 0.89, y: 0.76 },
-  Torque:      { x: 0.95, y: 0.76 }
-};
+  /* ---------------- DOM refs (must match your HTML) ---------------- */
+  const zoomWrap      = document.getElementById('zoomWrap');
+  const zoomImg       = document.getElementById('zoomImg');
 
-/* -------- DOM refs (exact IDs from your HTML) -------- */
-const zoomWrap      = document.getElementById('zoomWrap');
-const zoomImg       = document.getElementById('zoomImg');
+  const btnSpeak      = document.getElementById('btnSpeak');
+  const btnStop       = document.getElementById('btnStop');
+  const btnReset      = document.getElementById('btnReset');
+  const btnZoomIn     = document.getElementById('btnZoomIn');
+  const btnZoomOut    = document.getElementById('btnZoomOut');
+  const btnFullscreen = document.getElementById('btnFullscreen');
 
-const btnSpeak      = document.getElementById('btnSpeak');
-const btnStop       = document.getElementById('btnStop');
-const btnReset      = document.getElementById('btnReset');
-const btnZoomIn     = document.getElementById('btnZoomIn');
-const btnZoomOut    = document.getElementById('btnZoomOut');
-const btnFullscreen = document.getElementById('btnFullscreen');
+  const exitSelect    = document.getElementById('exitSelect');
+  const langSelect    = document.getElementById('langSelect');
 
-const exitSelect    = document.getElementById('exitSelect');
-const langSelect    = document.getElementById('langSelect');
+  const playHeader    = document.getElementById('play');
+  const replayHeader  = document.getElementById('replay');
+  const muteHeader    = document.getElementById('mute');
 
-const playHeader    = document.getElementById('play');
-const replayHeader  = document.getElementById('replay');
-const muteHeader    = document.getElementById('mute');
+  const zoomOutHeader = document.getElementById('zoomOut');
+  const zoomInHeader  = document.getElementById('zoomIn');
+  const resetHeader   = document.getElementById('resetView');
 
-const zoomOutHeader = document.getElementById('zoomOut');
-const zoomInHeader  = document.getElementById('zoomIn');
-const resetHeader   = document.getElementById('resetView');
+  const routeText     = document.getElementById('routeText');
+  const routeAudio    = document.getElementById('routeAudio');
 
-const routeText     = document.getElementById('routeText');
-const routeAudio    = document.getElementById('routeAudio');
+  /* ---------------- Guard rails: verify key elements exist ---------------- */
+  const required = { exitSelect, langSelect, routeText, routeAudio };
+  for (const [k, el] of Object.entries(required)) {
+    if (!el) console.error(`[BTI] Missing element: #${k}. Check your HTML IDs.`);
+  }
 
-/* -------- URL params for deep link -------- */
-const params       = new URLSearchParams(location.search);
-const paramRoom    = params.get('room'); // e.g., Joy, Debug, Xdrive
-const paramExit    = params.get('exit'); // e.g., EXIT3
-const paramLang    = (params.get('lang') || '').toLowerCase();
+  /* ---------------- State ---------------- */
+  let currentExit = exitSelect?.value || 'EXIT1';
+  let currentLang = (langSelect?.value || 'en').toLowerCase();
+  let isMuted = false;
 
-/* -------- State -------- */
-let currentExit = (paramExit && EXITS[paramExit]) ? paramExit : (exitSelect?.value || 'EXIT1');
-let currentLang = ['en','de'].includes(paramLang) ? paramLang : (langSelect?.value || 'en').toLowerCase();
-let startRoom   = (paramRoom && ROOMS[paramRoom]) ? paramRoom : 'VisitorRoom';
-let startPos    = ROOMS[startRoom];
+  /* ---------------- Helpers ---------------- */
+  function audioSrcForExit(exit) {
+    const base = AUDIO_BASE.endsWith('/') ? AUDIO_BASE : (AUDIO_BASE + '/');
+    return base + (AUDIO_FILES[exit] || '');
+  }
 
-let isMuted = false;
-let scale = 1, tx = 0, ty = 0;
-let isDragging = false, dragStartX = 0, dragStartY = 0;
+  function updateGuidanceText() {
+    const phrases = GUIDANCE[currentLang] || GUIDANCE.en;
+    const text = phrases[currentExit] || 'Guidance unavailable for the selected exit.';
+    routeText.textContent = `${currentExit} • ${currentLang.toUpperCase()} • ${text}`;
+  }
 
-/* -------- Inject markers (no CSS file—use inline styles) -------- */
-const youMarker = document.createElement('div');
-youMarker.style.position = 'absolute';
-youMarker.style.pointerEvents = 'none';
-youMarker.style.transformOrigin = '0 0';
-youMarker.style.display = 'flex';
-youMarker.style.alignItems = 'center';
-youMarker.style.gap = '8px';
-const youDot = document.createElement('div');
-youDot.style.width = '14px'; youDot.style.height = '14px'; youDot.style.borderRadius = '50%';
-youDot.style.background = '#f59e0b'; youDot.style.border = '2px solid #fff';
-youDot.style.boxShadow = '0 0 0 3px rgba(245,158,11,.25)';
-const youLbl = document.createElement('div');
-youLbl.textContent = 'YOU ARE HERE';
-youLbl.style.background = 'rgba(0,0,0,.55)'; youLbl.style.color = '#fff';
-youLbl.style.padding = '4px 8px'; youLbl.style.borderRadius = '6px';
-youLbl.style.border = '1px solid rgba(255,255,255,.25)';
-youLbl.style.fontWeight = '600'; youLbl.style.fontSize = '12px';
-youMarker.appendChild(youDot); youMarker.appendChild(youLbl);
-zoomWrap.appendChild(youMarker);
+  function loadAudioForExit() {
+    const src = audioSrcForExit(currentExit);
+    routeAudio.src = src;
+    routeAudio.load();
+    routeAudio.onerror = () => {
+      console.error(`[BTI] Audio not found: ${src}`);
+      routeText.textContent = `Audio not found for ${currentExit}. Check path: ${src}`;
+    };
+  }
 
-/* Optional: small exit dots to visually confirm positions */
-const exitDots = {};
-Object.entries(EXITS).forEach(([key, val]) => {
-  const d = document.createElement('div');
-  d.style.position = 'absolute'; d.style.width = '10px'; d.style.height = '10px';
-  d.style.borderRadius = '50%'; d.style.background = '#38bdf8'; d.style.border = '2px solid #fff';
-  d.style.boxShadow = '0 0 0 2px rgba(56,189,248,.25)';
-  d.title = `${key} • ${val.name}`;
-  zoomWrap.appendChild(d);
-  exitDots[key] = d;
-});
+  /* ---------------- Init ---------------- */
+  function init() {
+    // Prepare audio
+    routeAudio.preload = 'auto';
+    routeAudio.crossOrigin = 'anonymous';    // safe for GitHub Pages/static
+    routeAudio.muted = isMuted;
 
-/* -------- Helpers -------- */
-function normToPx(xn, yn) {
-  const rect = zoomWrap.getBoundingClientRect();
-  return { x: rect.width * xn, y: rect.height * yn };
-}
+    // Initial UI
+    updateGuidanceText();
+    loadAudioForExit();
+  }
+  init();
 
-function placeMarkers() {
-  const p = normToPx(startPos.x, startPos.y);
-  youMarker.style.left = `${p.x}px`; youMarker.style.top = `${p.y}px`;
-
-  Object.entries(EXITS).forEach(([key, val]) => {
-    const e = normToPx(val.x, val.y);
-    exitDots[key].style.left = `${e.x - 5}px`; // center roughly
-    exitDots[key].style.top  = `${e.y - 5}px`;
+  /* ---------------- Dropdown handlers ---------------- */
+  exitSelect?.addEventListener('change', () => {
+    currentExit = exitSelect.value;
+    updateGuidanceText();   // text changes instantly
+    loadAudioForExit();     // audio switches to selected exit
+    routeAudio.currentTime = 0;
   });
 
-  // apply current pan/zoom to markers
-  const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  youMarker.style.transform = t;
-  Object.values(exitDots).forEach(el => { el.style.transform = t; });
-}
+  langSelect?.addEventListener('change', () => {
+    currentLang = langSelect.value.toLowerCase();
+    updateGuidanceText();   // EN/DE switch
+  });
 
-function audioSrcForExit(exit) {
-  return new URL(EXITS[exit].audio, AUDIO_BASE).href;
-}
-
-/* Build direction text from vector (start -> exit) */
-function cardinal(dx, dy, lang) {
-  const horiz = dx > 0 ? (lang==='de'?'Osten':'east') : (dx < 0 ? (lang==='de'?'Westen':'west') : null);
-  const vert  = dy > 0 ? (lang==='de'?'Süden':'south') : (dy < 0 ? (lang==='de'?'Norden':'north') : null);
-  return { horiz, vert };
-}
-
-function guidanceSentence(startKey, exitKey, lang) {
-  const s = ROOMS[startKey], e = EXITS[exitKey];
-  const dx = e.x - s.x, dy = e.y - s.y;
-  const { horiz, vert } = cardinal(dx, dy, lang);
-  const exitName = e.name;
-
-  if (lang === 'de') {
-    const part1 = horiz ? `Gehen Sie nach ${horiz} entlang des Flurs` : `Gehen Sie geradeaus`;
-    const part2 = vert  ? `, dann nach ${vert} an der Kreuzung` : ``;
-    return `${part1}${part2} und folgen Sie dem Flur bis zum ${exitName}.`;
-  } else {
-    const part1 = horiz ? `Head ${horiz} along the corridor` : `Go straight`;
-    const part2 = vert  ? `, then ${vert} at the junction` : ``;
-    return `${part1}${part2} and follow the corridor to the ${exitName}.`;
+  /* ---------------- Audio controls (both button groups) ---------------- */
+  async function playAudio() {
+    try { await routeAudio.play(); }
+    catch (e) {
+      // Autoplay policy: show hint
+      console.warn('[BTI] Playback blocked by browser:', e);
+      routeText.textContent = 'Tap once on the page, then press Play again (browser blocked autoplay).';
+    }
   }
-}
-
-function updateGuidanceText() {
-  const phrase = guidanceSentence(startRoom, currentExit, currentLang);
-  const lead   = `${currentExit} • ${currentLang.toUpperCase()}`;
-  routeText.textContent = `${lead} • From ${startRoom}: ${phrase}`;
-}
-
-function loadAudioForExit() {
-  const src = audioSrcForExit(currentExit);
-  routeAudio.src = src;
-  routeAudio.load();
-}
-
-/* -------- Init -------- */
-function init() {
-  // Apply URL param defaults to selects
-  if (exitSelect && EXITS[currentExit]) exitSelect.value = currentExit;
-  if (langSelect) langSelect.value = currentLang;
-
-  // Audio setup
-  routeAudio.preload = 'auto';
-  routeAudio.crossOrigin = 'anonymous';
-  routeAudio.muted = isMuted;
-
-  // Initial UI
-  updateGuidanceText();
-  loadAudioForExit();
-  placeMarkers();
-}
-init();
-
-/* -------- Resize: reposition markers -------- */
-window.addEventListener('resize', placeMarkers);
-
-/* -------- Exit & Language events -------- */
-exitSelect?.addEventListener('change', () => {
-  currentExit = exitSelect.value;
-  updateGuidanceText();
-  loadAudioForExit();
-  routeAudio.currentTime = 0;
-});
-
-langSelect?.addEventListener('change', () => {
-  currentLang = langSelect.value.toLowerCase();
-  updateGuidanceText();
-});
-
-/* -------- Audio controls -------- */
-async function playAudio() {
-  try { await routeAudio.play(); }
-  catch (e) {
-    // Browser blocked play without interaction
-    routeText.textContent = 'Tap once on the page, then press Play again (browser blocked autoplay).';
+  function stopAudio()   { routeAudio.pause(); routeAudio.currentTime = 0; }
+  function replayAudio() { routeAudio.currentTime = 0; playAudio(); }
+  function toggleMute()  {
+    isMuted = !isMuted; routeAudio.muted = isMuted;
+    if (muteHeader) muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
   }
-}
-function stopAudio() { routeAudio.pause(); routeAudio.currentTime = 0; }
-function replayAudio() { routeAudio.currentTime = 0; playAudio(); }
-function toggleMute() {
-  isMuted = !isMuted;
-  routeAudio.muted = isMuted;
-  muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
-}
 
-/* Bind both button sets */
-btnSpeak?.addEventListener('click', playAudio);
-btnStop?.addEventListener('click', stopAudio);
-btnReset?.addEventListener('click', resetView);
+  // Bind main buttons
+  btnSpeak?.addEventListener('click', playAudio);
+  btnStop?.addEventListener('click', stopAudio);
+  btnReset?.addEventListener('click', resetView);
+  btnZoomIn?.addEventListener('click', () => zoomBy(0.25));
+  btnZoomOut?.addEventListener('click', () => zoomBy(-0.25));
+  btnFullscreen?.addEventListener('click', toggleFullscreen);
 
-btnZoomIn?.addEventListener('click', () => zoomBy(0.25));
-btnZoomOut?.addEventListener('click', () => zoomBy(-0.25));
-btnFullscreen?.addEventListener('click', toggleFullscreen);
+  // Bind header buttons
+  playHeader?.addEventListener('click', playAudio);
+  replayHeader?.addEventListener('click', replayAudio);
+  muteHeader?.addEventListener('click', toggleMute);
+  zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
+  zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
+  resetHeader?.addEventListener('click', resetView);
 
-playHeader?.addEventListener('click', playAudio);
-replayHeader?.addEventListener('click', replayAudio);
-muteHeader?.addEventListener('click', toggleMute);
-
-zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
-zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
-resetHeader?.addEventListener('click', resetView);
-
-routeAudio.addEventListener('ended', () => { /* optional: UI feedback */ });
-
-/* -------- Zoom/Pan/Fullscreen -------- */
-function applyTransform() {
-  const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  zoomImg.style.transformOrigin = '0 0';
-  zoomImg.style.transform = t;
-  // Keep markers in sync
-  youMarker.style.transform = t;
-  Object.values(exitDots).forEach(el => { el.style.transform = t; });
-}
-
-function zoomBy(delta) {
-  scale = Math.max(0.5, Math.min(4, scale + delta));
-  applyTransform();
-}
-
-function resetView() {
-  scale = 1; tx = 0; ty = 0;
-  applyTransform();
-}
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    zoomWrap.requestFullscreen?.().catch(()=>{});
-  } else {
-    document.exitFullscreen?.();
+  /* ---------------- Map: zoom, pan, fullscreen ---------------- */
+  let scale = 1, tx = 0, ty = 0;
+  function applyTransform() {
+    if (!zoomImg) return;
+    const t = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    zoomImg.style.transformOrigin = '0 0';
+    zoomImg.style.transform = t;
   }
-}
+  function zoomBy(delta) {
+    scale = Math.max(0.5, Math.min(4, scale + delta));
+    applyTransform();
+  }
+  function resetView() { scale = 1; tx = 0; ty = 0; applyTransform(); }
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) { zoomWrap?.requestFullscreen?.().catch(()=>{}); }
+    else { document.exitFullscreen?.(); }
+  }
 
-/* Pointer-based panning */
-zoomWrap.addEventListener('pointerdown', (e) => {
-  isDragging = true;
-  zoomWrap.setPointerCapture(e.pointerId);
-  dragStartX = e.clientX - tx;
-  dragStartY = e.clientY - ty;
-});
+  // Pointer-based panning
+  let isDragging = false, sx = 0, sy = 0;
+  zoomWrap?.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    zoomWrap.setPointerCapture(e.pointerId);
+    sx = e.clientX - tx; sy = e.clientY - ty;
+  });
+  zoomWrap?.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    tx = e.clientX - sx; ty = e.clientY - sy;
+    applyTransform();
+  });
+  zoomWrap?.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    zoomWrap.releasePointerCapture(e.pointerId);
+  });
 
-zoomWrap.addEventListener('pointermove', (e) => {
-  if (!isDragging) return;
-  tx = e.clientX - dragStartX;
-  ty = e.clientY - dragStartY;
-  applyTransform();
-});
-
-zoomWrap.addEventListener('pointerup', (e) => {
-  isDragging = false;
-  zoomWrap.releasePointerCapture(e.pointerId);
-});
-
-/* -------- Tap to set YOU ARE HERE (optional) --------
-   Click/tap anywhere on the map to set a custom start point.
-*/
-zoomWrap.addEventListener('click', (e) => {
-  const rect = zoomWrap.getBoundingClientRect();
-  const xn = (e.clientX - rect.left - tx) / (rect.width * scale);
-  const yn = (e.clientY - rect.top  - ty) / (rect.height * scale);
-  startPos = { x: Math.max(0, Math.min(1, xn)), y: Math.max(0, Math.min(1, yn)) };
-  startRoom = 'Custom';
-  placeMarkers();
-  updateGuidanceText();
-});
-
-/* -------- Keyboard shortcuts -------- */
-document.addEventListener('keydown', (e) => {
-  if (e.key === '+') zoomBy(0.25);
-  if (e.key === '-') zoomBy(-0.25);
-  if (e.key.toLowerCase() === 'r') resetView();
-  if (e.key.toLowerCase() === 'f') toggleFullscreen();
+  // Keyboard shortcuts (optional)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '+') zoomBy(0.25);
+    if (e.key === '-') zoomBy(-0.25);
+    if (e.key.toLowerCase() === 'r') resetView();
+    if (e.key.toLowerCase() === 'f') toggleFullscreen();
+  });
 });
 </script>
+
+
+
 
 
  <header>
