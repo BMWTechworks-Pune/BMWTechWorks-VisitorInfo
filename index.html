@@ -822,19 +822,19 @@ document.addEventListener('DOMContentLoaded', () => {
 <a href='https://www.youtube.com'>YouTube</a><br>
 Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 </p>
+
+
 <!-- ========================= -->
-<!-- QR SECTION (added)       -->
+<!-- QR SECTION (final)       -->
 <!-- ========================= -->
 <section id="qr-section" aria-labelledby="qr-title">
   <h3 id="qr-title">Quick Access QR</h3>
 
   <div class="qr-wrapper">
-    <!-- Update path if your QR file is elsewhere -->
-    assets/q_code.png
-  </div>
-
-  <div class="qr-actions">
-    <button id="shareQRBtn" class="btn primary">Share QR</button>
+    <!-- QR image packaged with your Pages site -->
+    <img id="siteQR"
+         src="assets/q_code.png"
+         <button id="shareQRBtn" class="btn primary">Share QR</button>
     <button id="downloadQRBtn" class="btn">Download QR</button>
     <button id="copyLinkBtn" class="btn ghost">Copy Link</button>
   </div>
@@ -889,8 +889,8 @@ Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
 
 <!-- Share / Download / Copy logic -->
 <script>
-  // TODO: Set this to the same URL encoded in q_code.png
-  const LANDING_URL = 'https://bmwtechworks.github.io/bti-pune/index.html';
+  // Set to the same URL encoded in q_code.png (your generic landing page)
+  const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
 
   async function shareQR() {
     try {
@@ -901,26 +901,46 @@ Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
           url: LANDING_URL
         });
       } else {
-        // Fallback: copy the link
         await copyLink(true);
-        alert('Sharing is not supported here. The link has been copied to your clipboard.');
+        alert('Sharing is not supported on this device. The link has been copied to your clipboard.');
       }
     } catch (err) {
       console.error('Share failed:', err);
     }
   }
 
-  function downloadQR() {
+  // Robust download that works on iOS/desktop: fetch as Blob and download
+  async function downloadQR() {
     const img = document.getElementById('siteQR');
-    const a = document.createElement('a');
-    a.download = 'BTI-Visitor-QR.png';
-
-    if (img && img.tagName.toLowerCase() === 'img') {
-      a.href = img.src;
-      a.click();
+    if (!img) {
+      alert('QR image not found to download.');
       return;
     }
-    alert('QR image not found to download.');
+    try {
+      const response = await fetch(img.src, { mode: 'cors' });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = 'BTI-Visitor-QR.png';
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+        a.remove();
+      }, 1000);
+    } catch (e) {
+      console.error('Download failed:', e);
+      // iOS fallback: open in new tab so user can long-press → Save Image
+      try {
+        window.open(img.src, '_blank');
+      } catch (_) {
+        alert('Could not auto-download the QR. Please open the image and long-press to “Save Image”.');
+      }
+    }
   }
 
   async function copyLink(silent = false) {
@@ -942,6 +962,8 @@ Website: <a href='https://bmwtechworks.in'>bmwtechworks.in</a>
   document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
   document.getElementById('copyLinkBtn')?.addEventListener('click', () => copyLink(false));
 </script>
+
+
   
 <footer style="text-align:center; padding:12px; color:var(--muted)">
   <div>© BTI Pune — Visitor Info.</div>
