@@ -314,254 +314,213 @@ User ID: Facilities@bmwtechworks.in (For password, please connect with facilitie
 
 <!-- ===== Logic: Zoom/Pan + Audio/TTS + Reset ===== -->
 <script>
-/* ---------- Helper: clear any future route overlays (SVG) ---------- */
-function clearRouteOverlay(){
-  const overlay = document.getElementById('routeOverlay');
-  if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+/* ===================== DATA: paths & texts ===================== */
+/* Normalized waypoints [x,y] in 0..1 relative to r1.png. 
+   ⚠️ Placeholder paths — tune points to match the red/green arrows on your map. */
+const exitRoutePaths = {
+  EXIT1: [[0.52,0.36],[0.47,0.36],[0.40,0.36],[0.34,0.28],[0.20,0.20],[0.14,0.18]], // to Exit 1 (approx)
+  EXIT2: [[0.52,0.36],[0.47,0.36],[0.41,0.42],[0.30,0.55],[0.18,0.72],[0.09,0.84]], // to Exit 2 (approx)
+  EXIT3: [[0.52,0.36],[0.56,0.44],[0.55,0.54],[0.48,0.60],[0.43,0.64],[0.38,0.70]], // to Exit 3 (approx)
+  EXIT4: [[0.52,0.36],[0.58,0.36],[0.65,0.38],[0.72,0.46],[0.76,0.54],[0.80,0.60]], // to Exit 4 (approx)
+  EXIT5: [[0.52,0.36],[0.60,0.30],[0.68,0.28],[0.75,0.26],[0.80,0.24],[0.86,0.22]]  // to Exit 5 (approx)
+};
+/* Guidance text (edit to match r1.png labels precisely) */
+const exitRouteText = {
+  en: {
+    EXIT1: ['From YOU ARE HERE, move left along the corridor','Turn left near pantry','Follow green arrows to EXIT 1 staircase'],
+    EXIT2: ['From YOU ARE HERE, proceed left','Continue past labs','Follow signs to EXIT 2'],
+    EXIT3: ['From YOU ARE HERE, proceed slightly right','Head towards the central corridor','Follow signs to EXIT 3'],
+    EXIT4: ['From YOU ARE HERE, go right','Turn right near meeting rooms','Follow green markings to EXIT 4'],
+    EXIT5: ['From YOU ARE HERE, head to the upper corridor','Continue right','Reach EXIT 5 near the top section']
+  },
+  de: {
+    EXIT1: ['Von HIER aus nach links zum Flur','Links bei der Pantry abbiegen','Den grünen Pfeilen zu EXIT 1 folgen'],
+    EXIT2: ['Von HIER nach links gehen','An den Laborräumen vorbei','Den Schildern zu EXIT 2 folgen'],
+    EXIT3: ['Von HIER leicht rechts gehen','Zum Hauptflur laufen','Den Schildern zu EXIT 3 folgen'],
+    EXIT4: ['Von HIER nach rechts gehen','Rechts bei den Besprechungsräumen abbiegen','Den grünen Markierungen zu EXIT 4 folgen'],
+    EXIT5: ['Von HIER zum oberen Flur gehen','Nach rechts weiterlaufen','EXIT 5 im oberen Bereich erreichen']
+  }
+};
+
+/* ===================== PAN / ZOOM (same feel as room finder) ===================== */
+const exitLayer = document.getElementById('exitPlanLayer');
+const exitSvg   = document.getElementById('exitRouteSvg');
+const exitImg   = document.getElementById('exitPlanImg');
+
+let exitScale = 1, exitTx = 0, exitTy = 0;
+let exitDragging = false, exPx = 0, exPy = 0;
+
+function exitApply(){ exitLayer.style.transform = `translate(${exitTx}px, ${exitTy}px) scale(${exitScale})`; }
+exitApply();
+
+document.getElementById('exitZoomIn').onclick = () => { exitScale = Math.min(4, exitScale + 0.15); exitApply(); };
+document.getElementById('exitZoomOut').onclick = () => { exitScale = Math.max(0.5, exitScale - 0.15); exitApply(); };
+
+document.getElementById('exitReset').onclick = () => {
+  exitScale = 1; exitTx = 0; exitTy = 0; exitApply();
+  exitClearSvg(); exitSteps.innerHTML = ''; exitStopAudio(true); exitSel.value = '';
+  exitAudioStatus.textContent = '';
+};
+
+exitLayer.addEventListener('pointerdown', (e) => {
+  exitDragging = true; exPx = e.clientX; exPy = e.clientY; exitLayer.setPointerCapture(e.pointerId);
+});
+exitLayer.addEventListener('pointermove', (e) => {
+  if (!exitDragging) return;
+  const dx = e.clientX - exPx, dy = e.clientY - exPy;
+  exitTx += dx; exitTy += dy; exPx = e.clientX; exPy = e.clientY; exitApply();
+});
+exitLayer.addEventListener('pointerup', () => exitDragging = false);
+
+/* ===================== OVERLAY DRAWING ===================== */
+function exitClearSvg(){ if (exitSvg) exitSvg.innerHTML = ''; }
+
+function drawExitRoute(pointsNorm, color='#e11d48'){ // red path by default
+  exitClearSvg();
+  if (!pointsNorm || pointsNorm.length === 0) return;
+  // Convert normalized 0..1 coords to viewBox (0..1000)
+  const pts = pointsNorm.map(([x,y]) => `${x*1000},${y*1000}`).join(' ');
+  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  poly.setAttribute('points', pts);
+  poly.setAttribute('fill', 'none');
+  poly.setAttribute('stroke', color);
+  poly.setAttribute('stroke-width', '6');
+  poly.setAttribute('stroke-linecap', 'round');
+  poly.setAttribute('stroke-linejoin', 'round');
+  exitSvg.appendChild(poly);
+
+  // Waypoint circles
+  pointsNorm.forEach(([x,y], idx) => {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x*1000);
+    c.setAttribute('cy', y*1000);
+    c.setAttribute('r', idx === 0 ? 10 : 6); // larger at start (YOU ARE HERE)
+    c.setAttribute('fill', idx === 0 ? '#f59e0b' : '#1f3f74');
+    exitSvg.appendChild(c);
+  });
 }
 
-/* ---------- Zoom & Pan on the map (mouse + touch) ---------- */
-(function(){
-  const wrap = document.getElementById('zoomWrap');
-  const img  = document.getElementById('zoomImg');
+/* ===================== SELECTION + LANGUAGE ===================== */
+const exitSel       = document.getElementById('exitSel');
+const exitSteps     = document.getElementById('exitRouteSteps');
+const exitAudio     = document.getElementById('exitAudio');
+const exitPlay      = document.getElementById('exitPlayAudio');
+const exitStop      = document.getElementById('exitStopAudio');
+const exitVolume    = document.getElementById('exitVolume');
+const exitAudioStatus = document.getElementById('exitAudioStatus');
 
-  let scale = 1, min = 1, max = 6;
-  let ox = 0, oy = 0;    // translation
-  let down = false, sx = 0, sy = 0;
+let exitLang = (new URLSearchParams(location.search)).get('lang') || 'en';
 
-  function apply(){ img.style.transform = `translate(${ox}px, ${oy}px) scale(${scale})`; }
-  function clamp(){
-    const bw = wrap.clientWidth, bh = wrap.clientHeight;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const vw = iw * scale, vh = ih * scale;
-    const minX = Math.min(0, bw - vw);
-    const minY = Math.min(0, bh - vh);
-    ox = Math.max(minX, Math.min(ox, 0));
-    oy = Math.max(minY, Math.min(oy, 0));
+function selectExit(exitId){
+  if (!exitId) { exitSteps.innerHTML = ''; exitClearSvg(); exitStopAudio(true); return; }
+  exitSel.value = exitId;
+  // Text
+  const lines = (exitRouteText[exitLang] && exitRouteText[exitLang][exitId]) ? exitRouteText[exitLang][exitId] : [];
+  exitSteps.innerHTML = '';
+  lines.forEach(s => { const li = document.createElement('li'); li.textContent = s; exitSteps.appendChild(li); });
+  // Overlay
+  drawExitRoute(exitRoutePaths[exitId], '#16a34a'); // green route
+  // Bind audio source (recorded ➜ fallback TTS)
+  bindRecordedAudio(exitId, exitLang);
+  exitUpdateAudioStatus();
+}
+
+exitSel.addEventListener('change', () => selectExit(exitSel.value));
+document.getElementById('exitLangToggle').onclick = () => {
+  exitLang = (exitLang === 'en') ? 'de' : 'en';
+  selectExit(exitSel.value);
+};
+
+/* ===================== AUDIO: recorded first, TTS fallback ===================== */
+function audioCandidates(exitId, lang){
+  return [
+    `assets/audio/${exitId}/voice_${lang}.mp3`, // preferred (your structure)
+    `assets/audio/${exitId}/${lang}.mp3`,       // fallback
+    `assets/audio/${exitId}_${lang}.mp3`,       // fallback
+    `assets/audio/${exitId}.mp3`                // single-file fallback
+  ];
+}
+function bindRecordedAudio(exitId, lang){
+  const list = audioCandidates(exitId, lang);
+  let idx = 0;
+  exitAudio.onerror = () => tryNext();
+  function tryNext(){
+    if (idx >= list.length) { exitAudio.removeAttribute('src'); return; }
+    const src = list[idx++]; exitAudio.src = src; exitAudio.load();
   }
+  tryNext();
+}
+function exitUpdateAudioStatus(){
+  const hasSrc = !!exitAudio.getAttribute('src');
+  exitAudioStatus.textContent = hasSrc ? 'Recorded audio available.' : 'No recording found — will use TTS.';
+}
+function exitStopAudio(silent=false){
+  try { exitAudio.pause(); exitAudio.currentTime = 0; } catch {}
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if (!silent) exitAudioStatus.textContent = '';
+}
+exitVolume.addEventListener('input', () => {
+  exitAudio.volume = parseFloat(exitVolume.value || '1');
+});
 
-  wrap.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const rect = wrap.getBoundingClientRect();
-    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    const prev = scale;
-    scale = Math.min(max, Math.max(min, scale * (e.deltaY < 0 ? 1.1 : 0.9)));
-    ox = mx - (mx - ox) * (scale / prev);
-    oy = my - (my - oy) * (scale / prev);
-    clamp(); apply();
-  }, {passive:false});
+// TTS helpers
+let exitVoices = [];
+function loadVoices(){ exitVoices = window.speechSynthesis.getVoices(); }
+if ('speechSynthesis' in window) {
+  loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+function pickExitVoice(langCode){
+  const exact = exitVoices.find(v => v.lang.toLowerCase() === langCode.toLowerCase());
+  if (exact) return exact;
+  const prefix = langCode.split('-')[0];
+  const starts = exitVoices.find(v => v.lang.toLowerCase().startsWith(prefix.toLowerCase()));
+  return starts || exitVoices[0] || null;
+}
+function buildExitSpeech(exitId, lang){
+  const lines = (exitRouteText[lang] && exitRouteText[lang][exitId]) ? exitRouteText[lang][exitId] : [];
+  return lines.join('. ');
+}
 
-  wrap.addEventListener('mousedown', (e) => { down = true; sx = e.clientX - ox; sy = e.clientY - oy; });
-  window.addEventListener('mouseup',   () => { down = false; });
-  window.addEventListener('mousemove', (e) => {
-    if (!down) return;
-    ox = e.clientX - sx; oy = e.clientY - sy;
-    clamp(); apply();
-  });
-
-  // Touch gestures
-  let lastX = 0, lastY = 0, pinchStartDist = 0, pinchStartScale = 1;
-  wrap.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2){
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      pinchStartDist = Math.hypot(dx, dy);
-      pinchStartScale = scale;
-    } else if (e.touches.length === 1){
-      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-    }
-  }, {passive:true});
-
-  wrap.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 2){
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const dist = Math.hypot(dx, dy);
-      scale = Math.min(max, Math.max(min, pinchStartScale * (dist / pinchStartDist)));
-      apply();
-    } else if (e.touches.length === 1){
-      const nx = e.touches[0].clientX, ny = e.touches[0].clientY;
-      ox += (nx - lastX); oy += (ny - lastY);
-      lastX = nx; lastY = ny; clamp(); apply();
-    }
-  }, {passive:true});
-
-  // Double-tap to reset on mobile; double-click on desktop
-  let lastTap = 0;
-  wrap.addEventListener('click', () => {
-    const now = Date.now();
-    if (now - lastTap < 350){ scale = 1; ox = 0; oy = 0; apply(); }
-    lastTap = now;
-  });
-
-  // Buttons (both sets)
-  function doResetView(){ scale = 1; ox = 0; oy = 0; apply(); }
-  document.getElementById('btnReset')?.addEventListener('click', doResetView);
-  document.getElementById('resetView')?.addEventListener('click', doResetView);
-  document.getElementById('btnZoomIn')?.addEventListener('click', () => { scale = Math.min(max, scale * 1.2); apply(); });
-  document.getElementById('btnZoomOut')?.addEventListener('click', () => { scale = Math.max(min, scale / 1.2); apply(); });
-  document.getElementById('zoomIn')?.addEventListener('click', () => { scale = Math.min(max, scale * 1.2); apply(); });
-  document.getElementById('zoomOut')?.addEventListener('click', () => { scale = Math.max(min, scale / 1.2); apply(); });
-
-  document.getElementById('btnFullscreen')?.addEventListener('click', () => { if (wrap.requestFullscreen) wrap.requestFullscreen(); });
-  img.addEventListener('load', () => { scale = 1; ox = 0; oy = 0; apply(); });
-})();
-
-/* ---------- Audio + TTS Guidance (EXIT1..EXIT5, EN/DE) ---------- */
-(function(){
-  const exitSelect = document.getElementById('exitSelect');
-  const langSelect = document.getElementById('langSelect');
-
-  const audioEl    = document.getElementById('routeAudio');
-  const playBtn    = document.getElementById('play');
-  const replayBtn  = document.getElementById('replay');
-  const muteBtn    = document.getElementById('mute');
-  const volSlider  = document.getElementById('vol');
-  const ttsBtn     = document.getElementById('toggleTTS');
-
-  const routeTextEl = document.getElementById('routeText');
-
-  // Optional older buttons
-  const btnSpeak = document.getElementById('btnSpeak');
-  const btnStop  = document.getElementById('btnStop');
-  const btnResetLeft = document.getElementById('btnReset');
-  const btnResetTop  = document.getElementById('resetView');
-
-  // --- Guidance text placeholders (update to match r1.png) ---
-  const ROUTE_TEXT = {
-
-     None: {
-      en: '.',
-      de: '.'
-    },
-    EXIT1: {
-      en: 'From Reception, proceed straight along the main corridor, turn left at the pantry, and follow the green arrows to the EXIT1 staircase.',
-      de: 'Von der Rezeption geradeaus zum Hauptflur, links an der Pantry abbiegen und den grünen Pfeilen zur EXIT1‑Treppenhaus folgen.'
-    },
-    EXIT2: {
-      en: 'From your bay, move to the nearest corridor, turn right at the meeting rooms, and continue to EXIT2. Use the staircase only.',
-      de: 'Von Ihrem Bereich zum nächsten Flur, rechts bei den Meetingräumen abbiegen und weiter zu EXIT2. Nur die Treppe benutzen.'
-    },
-    EXIT3: {
-      en: 'Go past the lab area, keep left at the cross junction, and proceed straight until EXIT3. Follow the illuminated exit signs.',
-      de: 'Am Labor vorbeigehen, an der Kreuzung links halten und geradeaus bis EXIT3. Den beleuchteten Ausgangsschildern folgen.'
-    },
-    EXIT4: {
-      en: 'Head towards the cafeteria, turn right before the glass door, and follow the green path markings to EXIT4.',
-      de: 'Zur Cafeteria gehen, vor der Glastür rechts abbiegen und den grünen Bodenmarkierungen zu EXIT4 folgen.'
-    },
-    EXIT5: {
-      en: 'Proceed to the rear corridor, turn left at the printers, and continue until EXIT5 near the service yard.',
-      de: 'Zum hinteren Flur gehen, bei den Druckern links abbiegen und bis EXIT5 in der Nähe des Servicehofs weitergehen.'
-    }
-  };
-
-  // Prefer recorded audio; allow TTS toggle
-  let useTTS = false;
-  function setTTSState(on){
-    useTTS = !!on;
-    ttsBtn.textContent = 'TTS: ' + (useTTS ? 'On' : 'Off');
-    ttsBtn.setAttribute('aria-pressed', String(useTTS));
-  }
-  ttsBtn.addEventListener('click', () => setTTSState(!useTTS));
-
-  // Your GitHub structure: assets/audio/EXIT#/voice_en.mp3 / voice_de.mp3
-  function audioCandidates(exit, lang){
-    return [
-      `assets/audio/${exit}/voice_${lang}.mp3`, // primary (as per your repo)
-      `assets/audio/${exit}/${lang}.mp3`,       // fallback
-      `assets/audio/${exit}_${lang}.mp3`,       // fallback
-      `assets/audio/${exit}.mp3`                // fallback (single file)
-    ];
-  }
-
-  function setAudioSource(exit, lang){
-    const list = audioCandidates(exit, lang);
-    let idx = 0;
-    function tryNext(){
-      if (idx >= list.length) { audioEl.removeAttribute('src'); return; }
-      const src = list[idx++]; audioEl.src = src; audioEl.load();
-    }
-    audioEl.onerror = () => tryNext();
-    tryNext();
-  }
-
-  function updateUI(){
-    const exit = exitSelect.value;
-    const lang = langSelect.value;
-    const text = ROUTE_TEXT[exit]?.[lang] || 'Guidance text coming soon.';
-    routeTextEl.textContent = text;
-    setAudioSource(exit, lang);
-  }
-
-  // TTS (fallback or explicit)
-  function speakTTS(){
-    const lang = langSelect.value;
-    const text = routeTextEl.textContent || '';
-    if (!('speechSynthesis' in window)){ alert('Speech Synthesis not supported in this browser.'); return; }
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 1; utter.pitch = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const prefer =
-      (lang === 'en' && (voices.find(v => /en-IN/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)))) ||
-      (lang === 'de' && voices.find(v => /^de/i.test(v.lang)));
-    if (prefer) utter.voice = prefer;
+// Play: prefer recorded audio; if not, use TTS
+exitPlay.addEventListener('click', () => {
+  const exitId = exitSel.value;
+  if (!exitId) { exitAudioStatus.textContent = 'Select an exit first.'; return; }
+  const hasSrc = !!exitAudio.getAttribute('src');
+  exitStopAudio(true);
+  if (hasSrc) {
+    exitAudio.volume = parseFloat(exitVolume.value || '1');
+    exitAudio.play().then(() => { exitAudioStatus.textContent = 'Playing recorded audio…'; })
+                    .catch(() => { exitAudioStatus.textContent = 'Could not play audio.'; });
+  } else {
+    if (!('speechSynthesis' in window)) { exitAudioStatus.textContent = 'TTS not supported in this browser.'; return; }
+    const langCode = (exitLang === 'de') ? 'de-DE' : 'en-US';
+    const voice = pickExitVoice(langCode);
+    const utter = new SpeechSynthesisUtterance(buildExitSpeech(exitId, exitLang));
+    if (voice) utter.voice = voice;
+    utter.rate = 1.0; utter.pitch = 1.0;
+    utter.onstart = () => { exitAudioStatus.textContent = `Speaking (${voice ? voice.lang : langCode})…`; };
+    utter.onend   = () => { exitAudioStatus.textContent = 'Done.'; setTimeout(() => exitAudioStatus.textContent = '', 800); };
+    utter.onerror = () => { exitAudioStatus.textContent = 'Speech error. Try again.'; };
     window.speechSynthesis.speak(utter);
   }
+});
 
-  // Playback controls
-  playBtn.addEventListener('click', () => { useTTS ? speakTTS() : audioEl.play().catch(()=>{}); });
-  replayBtn.addEventListener('click', () => {
-    if (useTTS){ window.speechSynthesis.cancel(); speakTTS(); }
-    else { audioEl.currentTime = 0; audioEl.play().catch(()=>{}); }
-  });
-  muteBtn.addEventListener('click', () => {
-    audioEl.muted = !audioEl.muted;
-    muteBtn.textContent = audioEl.muted ? 'Unmute' : 'Mute';
-  });
-  volSlider.addEventListener('input', () => { audioEl.volume = parseFloat(volSlider.value || '1'); });
+// Stop
+exitStop.addEventListener('click', () => exitStopAudio());
 
-  // Hook older buttons
-  btnSpeak?.addEventListener('click', speakTTS);
-  btnStop?.addEventListener('click', () => window.speechSynthesis.cancel());
+// Clear (text + audio + overlay only; keep zoom state)
+document.getElementById('exitClear').onclick = () => {
+  exitSteps.innerHTML = ''; exitClearSvg(); exitStopAudio(); exitAudioStatus.textContent = '';
+};
 
-  exitSelect.addEventListener('change', updateUI);
-  langSelect.addEventListener('change', updateUI);
-
-  // Full reset: audio/TTS + text + overlay + map view
-  function fullReset({resetSelectors = false} = {}){
-    try { audioEl.pause(); audioEl.currentTime = 0; audioEl.muted = false; } catch {}
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    clearRouteOverlay();
-    routeTextEl.textContent = 'Select an exit to see guidance.';
-    if (resetSelectors){ exitSelect.value = 'EXIT1'; langSelect.value = 'en'; }
-    updateUI();
-
-    // Trigger map reset via the left-bar button if present; else force transform
-    const imgResetBtn = document.getElementById('btnReset');
-    if (imgResetBtn){ imgResetBtn.click(); }
-    else {
-      const img = document.getElementById('zoomImg');
-      if (img) img.style.transform = 'translate(0px, 0px) scale(1)';
-    }
+/* ===================== Deep-link init: ?exit=EXIT3&lang=de ===================== */
+(function initFromQuery(){
+  const p = new URLSearchParams(location.search);
+  const qExit = p.get('exit'); const qLang = p.get('lang');
+  if (qLang && (qLang === 'en' || qLang === 'de')) exitLang = qLang;
+  if (qExit && ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(qExit)) {
+    exitSel.value = qExit; selectExit(qExit);
   }
-
-  // Wire both reset buttons to full reset (keep selections by default)
-  btnResetLeft?.addEventListener('click', () => fullReset({resetSelectors:false}));
-  btnResetTop?.addEventListener('click',  () => fullReset({resetSelectors:false}));
-
-  // Deep-link: ?exit=EXIT3&lang=de
-  (function initFromQuery(){
-    const p = new URLSearchParams(location.search);
-    const qExit = p.get('exit'); const qLang = p.get('lang');
-    if (qExit && Array.from(exitSelect.options).some(o => o.value === qExit)) exitSelect.value = qExit;
-    if (qLang && Array.from(langSelect.options).some(o => o.value === qLang)) langSelect.value = qLang;
-  })();
-
-  // Defaults
-  setTTSState(false); // start with recorded audio
-  updateUI();
 })();
 </script>
 
