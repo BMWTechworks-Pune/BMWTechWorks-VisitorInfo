@@ -1,0 +1,235 @@
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BMWTechWorks India – Visitor & Emergency Info</title>
+    <meta name="description" content="BMWTechWorks India – Pune: Visitor information, exit & evacuation plan, meeting rooms, emergency & first aid, assembly points, food & cab, and assistance." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23000'/><circle cx='32' cy='32' r='22' fill='%23fff'/><circle cx='32' cy='32' r='14' fill='%2300a0e3'/></svg>">
+    <style>
+      /* Typography & base */
+      :root {
+        --bg: #0a0c10;
+        --bg-elev: #12151b;
+        --text: #e6e8eb;
+        --muted: #b8bdc3;
+        --accent: #00a0e3; /* BMW blue */
+        --accent-2: #6c7a89;
+        --card: #151922;
+        --border: #232a35;
+        --success: #2bb673;
+        --danger: #ff4d4f;
+        --focus: #7bd3ff;
+      }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, var(--bg) 0%, #0c1219 100%);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      header { display: grid; gap: 6px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+      header .title { font-size: 1.75rem; font-weight: 700; letter-spacing: 0.2px; }
+      header .subtitle { color: var(--muted); }
+
+      /* Utility */
+      .grid { display: grid; gap: 16px; }
+      .grid.cards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      }
+      .card h3 { margin: 0 0 8px; font-size: 1.1rem; }
+      .muted { color: var(--muted); }
+      .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.8rem; color: var(--muted); }
+      .section-title { font-size: 1.25rem; font-weight: 700; margin: 24px 0 8px; }
+      .list { padding-left: 18px; }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+        background: linear-gradient(180deg, #1a202b, #151922);
+        color: var(--text);
+        cursor: pointer;
+      }
+      .btn:hover { border-color: var(--accent); }
+      .btn.secondary { background: transparent; }
+      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 0; }
+      .notice { border-left: 3px solid var(--accent); padding: 12px 14px; background: rgba(0,160,227,0.08); border-radius: 8px; }
+      .back { margin-top: 12px; }
+      footer { margin: 36px 0 12px; color: var(--muted); font-size: 0.9rem; }
+
+      /* Meeting room chips */
+      .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+      .chip { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: #18202b; }
+
+      /* Responsive images / placeholders */
+      .placeholder { border: 1px dashed var(--border); border-radius: 8px; padding: 12px; color: var(--muted); text-align: center; }
+
+      /* Focus styles for accessibility */
+      :where(a, button, .chip).focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <span class="tag">BMWTechWorks</span>
+        <div class="title">BMWTechWorks India – Visitor &amp; Emergency Info</div>
+        <div class="subtitle">BMWTechWorks India – Pune</div>
+        <div class="toolbar" role="toolbar" aria-label="Quick Actions">
+          <button class="btn" id="downloadQR" type="button">⬇ Download QR</button>
+          <button class="btn" id="shareQR" type="button">📤 Share QR</button>
+        </div>
+        <div class="notice" role="note">
+          Scan once only. Information is stored locally on your device.<br />
+          🔒 Privacy Note: No personal data, no location tracking, no cookies. This page works fully offline after first load.
+        </div>
+      </header>
+
+      <section aria-labelledby="company-info">
+        <h2 id="company-info" class="section-title">Company Information</h2>
+        <div class="grid cards">
+          <article class="card" aria-label="Company Links">
+            <h3>BMWTechWorks India</h3>
+            <p>
+              <a href="https://www.bmwgroup.com/en.html" target="_blank" rel="noopener">Website</a> ·
+              <a href="https://www.linkedin.com/company/bmwgroup/" target="_blank" rel="noopener">LinkedIn</a>
+            </p>
+            <p>
+              Amar Tech Park, Balewadi, Pune – 411045 ·
+              <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">Open in Google Maps</a>
+            </p>
+            <button class="btn secondary back" type="button" data-back>← Back</button>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="exit-evac">
+        <h2 id="exit-evac" class="section-title">Exit &amp; Evacuation Plan</h2>
+        <div class="grid cards">
+          <article class="card">
+            <p class="muted">Nearest exit will be highlighted (logic based).</p>
+            <div class="placeholder" aria-label="Exit Plan">Exit Plan</div>
+            <div class="placeholder" aria-label="Audio Mapping">PLACEHOLDER: Exit audio mapping (EXIT 1–5)</div>
+            <button class="btn secondary back" type="button" data-back>← Back</button>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="meeting-rooms">
+        <h2 id="meeting-rooms" class="section-title">Meeting Rooms</h2>
+        <div class="card">
+          <p class="muted">Select room to view route &amp; audio guidance.</p>
+          <div class="chips" role="list">
+            <span class="chip" role="listitem">Success – Board Room</span>
+            <span class="chip" role="listitem">Inspire – Training Room</span>
+            <span class="chip" role="listitem">Joy</span>
+            <span class="chip" role="listitem">Debug</span>
+            <span class="chip" role="listitem">iDrive</span>
+            <span class="chip" role="listitem">M-Mode</span>
+            <span class="chip" role="listitem">Drift</span>
+            <span class="chip" role="listitem">xDrive</span>
+            <span class="chip" role="listitem">Torque</span>
+          </div>
+          <div class="placeholder" style="margin-top:12px;">Meeting Rooms</div>
+          <button class="btn secondary back" type="button" data-back>← Back</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="emergency">
+        <h2 id="emergency" class="section-title">Emergency &amp; First Aid</h2>
+        <article class="card">
+          <ul class="list">
+            <li>First Aid Kit – Reception</li>
+            <li>Nurse Room – Floor 6</li>
+            <li>Wheelchair &amp; Stretcher available</li>
+            <li>Ambulance: 108</li>
+            <li>Emergency Contact: +91-XXXXXXXXXX</li>
+          </ul>
+          <div class="placeholder">Nearby hospitals – PLACEHOLDER</div>
+          <button class="btn secondary back" type="button" data-back>← Back</button>
+        </article>
+      </section>
+
+      <section aria-labelledby="assembly">
+        <h2 id="assembly" class="section-title">Assembly Points</h2>
+        <article class="card">
+          <p>After evacuation, proceed to nearest assembly point.</p>
+          <div class="placeholder">Assembly points map – PLACEHOLDER</div>
+          <button class="btn secondary back" type="button" data-back>← Back</button>
+        </article>
+      </section>
+
+      <section aria-labelledby="food-cab">
+        <h2 id="food-cab" class="section-title">Food &amp; Cab Facility</h2>
+        <div class="grid cards">
+          <article class="card">
+            <p>🚕 Cab: <a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a> · <a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></p>
+            <p>🍔 Food: <a href="https://www.zomato.com/" target="_blank" rel="noopener">Zomato</a> · <a href="https://www.swiggy.com/" target="_blank" rel="noopener">Swiggy</a></p>
+            <button class="btn secondary back" type="button" data-back>← Back</button>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="assistance">
+        <h2 id="assistance" class="section-title">Need Assistance</h2>
+        <article class="card">
+          <p>Escalation Matrix – PLACEHOLDER<br />(IT Helpdesk, Security, Admin, Emergency)</p>
+          <button class="btn secondary back" type="button" data-back>← Back</button>
+        </article>
+      </section>
+
+      <footer>
+        © Developed by SPP Team – BTI Pune 2026
+      </footer>
+    </div>
+
+    <script>
+      // Minimal JS for QR actions & back buttons
+      (function(){
+        const svgQR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><rect width="256" height="256" fill="#fff"/><rect x="16" y="16" width="96" height="96" fill="#000"/><rect x="144" y="16" width="96" height="96" fill="#000"/><rect x="16" y="144" width="96" height="96" fill="#000"/><rect x="120" y="120" width="24" height="24" fill="#000"/><rect x="168" y="168" width="72" height="72" fill="#000"/></svg>`;
+
+        const blob = new Blob([svgQR], { type: 'image/svg+xml' });
+        const qrUrl = URL.createObjectURL(blob);
+
+        const downloadBtn = document.getElementById('downloadQR');
+        const shareBtn = document.getElementById('shareQR');
+
+        downloadBtn?.addEventListener('click', () => {
+          const a = document.createElement('a');
+          a.href = qrUrl;
+          a.download = 'BTI-Visitor-QR.svg';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
+
+        shareBtn?.addEventListener('click', async () => {
+          try {
+            const file = new File([blob], 'BTI-Visitor-QR.svg', { type: 'image/svg+xml' });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              await navigator.share({ files: [file], title: 'BTI Visitor QR' });
+            } else {
+              window.open(qrUrl, '_blank');
+            }
+          } catch (err) {
+            window.open(qrUrl, '_blank');
+          }
+        });
+
+        // Back buttons navigate to top of page
+        document.querySelectorAll('[data-back]').forEach(btn => {
+          btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        });
+      })();
+    </script>
+  </body>
+</html>
