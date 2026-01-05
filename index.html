@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BMW TechWorks Pune – QR Safety & Assistance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; font-family:Arial, sans-serif; background:#f4f6f8; }
+header { background:#0b3c6d; color:#fff; padding:14px; text-align:center; }
+.container { padding:15px; }
+
+button {
+  width:100%; padding:14px; margin:6px 0;
+  font-size:15px; border:none; border-radius:8px;
+  background:#1976d2; color:#fff;
+}
+
+button.secondary { background:#455a64; }
+button.danger { background:#d32f2f; font-weight:bold; }
+
+.section {
+  display:none; background:#fff;
+  padding:15px; border-radius:10px; margin-top:10px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.exit-btn.active { background:#ff9800; }
+
+.lang-toggle {
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(6px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+h3 { margin-top:0; color:#0b3c6d; }
+.small { font-size:13px; color:#555; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2 id="title">BMW TechWorks Pune</h2>
+  <p id="subtitle">Safety • Assistance • Office Support</p>
+
+  <div class="lang-toggle">
+    <button class="secondary" onclick="setLang('en')">EN</button>
+    <button class="secondary" onclick="setLang('de')">DE</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- MAIN MENU -->
+  <div id="menu">
+    <button class="danger" onclick="show('sos')">🚨 SOS – Emergency</button>
+    <button onclick="show('map')">🗺 Floor Layout & Exit</button>
+    <button onclick="show('medical')">🧑‍⚕️ First Aid & Medical Support</button>
+    <button onclick="show('assembly')">📍 Assembly Points</button>
+    <button id="escalationBtn" onclick="show('escalation')">📞 Need Assistance</button>
+    <button onclick="show('cab')">🚕 Cab Facility</button>
+    <button onclick="show('food')">🍔 Food Delivery</button>
+    <button onclick="show('it')">💻 IT Helpdesk</button>
+    <button onclick="show('phrases')">🌍 German ↔ English</button>
+    <button class="secondary" onclick="sharePage()">📤 Share</button>
+    <button class="secondary" onclick="downloadPage()">📥 Download</button>
+  </div>
+
+  <!-- SOS -->
+  <div id="sos" class="section">
+    <h3>Emergency Contacts</h3>
+    <p>Security Desk: <b>1234</b></p>
+    <p>Ambulance: <b>108</b></p>
+    <p>Fire: <b>101</b></p>
+    <a href="tel:108"><button class="danger">📞 Call Ambulance</button></a>
+  </div>
+
+  <!-- MAP -->
+  <div id="map" class="section">
+    <h3>Exit Navigation</h3>
+    <p id="selectedExit" class="small">No exit selected</p>
+
+    <button class="exit-btn" onclick="playExit(1, this)">EXIT 1</button>
+    <button class="exit-btn" onclick="playExit(2, this)">EXIT 2</button>
+    <button class="exit-btn" onclick="playExit(3, this)">EXIT 3</button>
+    <button class="exit-btn" onclick="playExit(4, this)">EXIT 4</button>
+    <button class="exit-btn" onclick="playExit(5, this)">EXIT 5</button>
+  </div>
+
+  <!-- MEDICAL -->
+  <div id="medical" class="section">
+    <h3>First Aid & Medical Support</h3>
+    <ul>
+      <li>First Aid Kit – Reception</li>
+      <li>Nurse Room – Floor 6</li>
+      <li>Wheelchair & Stretcher – Available</li>
+      <li>Ambulance – 108</li>
+    </ul>
+    <p><b>Nearby Hospitals</b></p>
+    <ul>
+      <li>Ruby Hall Clinic – 020-66455000</li>
+      <li>Jehangir Hospital – 020-66819999</li>
+    </ul>
+  </div>
+
+  <!-- ASSEMBLY -->
+  <div id="assembly" class="section">
+    <h3>Assembly Points</h3>
+    <ul>
+      <li>Gate 3 – Open Ground</li>
+      <li>Gate 4 – Parking Area</li>
+    </ul>
+  </div>
+
+  <!-- ESCALATION -->
+  <div id="escalation" class="section">
+    <h3>Need Assistance / Escalation Matrix</h3>
+    <p><b>Level 1:</b> Security Desk / Reception</p>
+    <p><b>Level 2:</b> EHS Lead / Facility Manager</p>
+    <p><b>Level 3:</b> Site Incident Commander</p>
+  </div>
+
+  <!-- CAB -->
+  <div id="cab" class="section">
+    <h3>Cab Facility</h3>
+    <p>Contact reception for cab booking.</p>
+  </div>
+
+  <!-- FOOD -->
+  <div id="food" class="section">
+    <h3>Food Delivery</h3>
+    <ul>
+      <li>Zomato</li>
+      <li>Swiggy</li>
+    </ul>
+  </div>
+
+  <!-- IT -->
+  <div id="it" class="section">
+    <h3>IT Helpdesk</h3>
+    <p>Email: it.support@bmw.com</p>
+    <p>Extension: 5678</p>
+  </div>
+
+  <!-- PHRASES -->
+  <div id="phrases" class="section">
+    <h3>German ↔ English Office Phrases</h3>
+    <ul>
+      <li>Guten Morgen – Good Morning</li>
+      <li>Danke – Thank You</li>
+      <li>Bitte – Please</li>
+      <li>Entschuldigung – Excuse me</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+/* ROLE LOGIC – ONE TIME QR SCAN */
+const params = new URLSearchParams(window.location.search);
+let role = localStorage.getItem("bmw_role");
+
+if (!role && params.get("role")) {
+  role = params.get("role");
+  localStorage.setItem("bmw_role", role);
+}
+
+if (!role) role = "visitor";
+
+/* FULL ACCESS ROLES */
+const FULL_ACCESS = ["employee", "bmw_guest"];
+
+/* Hide escalation for visitor & contractor */
+if (!FULL_ACCESS.includes(role)) {
+  document.getElementById("escalationBtn").style.display = "none";
+}
+
+/* LANGUAGE */
+let lang = localStorage.getItem("lang") || "en";
+let audio = new Audio();
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem("lang", l);
+  alert(l === "de" ? "Sprache auf Deutsch gesetzt" : "Language set to English");
+}
+
+/* UI */
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.style.display='none');
+  document.getElementById(id).style.display='block';
+}
+
+/* EXIT AUDIO + HIGHLIGHT */
+function playExit(n, btn) {
+  document.querySelectorAll('.exit-btn').forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  document.getElementById("selectedExit").innerText =
+    (lang === "de" ? "Ausgang gewählt: " : "Selected Exit: ") + n;
+
+  audio.pause();
+  audio = new Audio(`assets/audio/EXIT${n}/voice_${lang}.mp3`);
+  audio.play();
+}
+
+/* SHARE & DOWNLOAD */
+function sharePage() {
+  if (navigator.share) {
+    navigator.share({ title: 'BMW Safety Info', url: location.href });
+  } else {
+    alert("Sharing not supported on this device.");
+  }
+}
+
+function downloadPage() {
+  alert("Use browser option: 'Add to Home Screen' or bookmark this page.");
+}
+</script>
+
+</body>
+</html>
