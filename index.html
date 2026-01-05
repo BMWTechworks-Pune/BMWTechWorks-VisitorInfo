@@ -4,63 +4,91 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BMWTechWorks India – Safety • Assistance • Office Support</title>
-    <meta name="description" content="Quick access to SOS, floor layout & exit, first aid, assembly points, cab, food delivery, IT helpdesk, language toggle, share and download for BTI Pune." />
+    <title>BMWTechWorks India – Pune</title>
+    <meta name="description" content="BMWTechWorks India Pune – Quick actions: Info, SOS, Floor Layout & Exit, First Aid, Assembly Points, Cab, Food Delivery, IT Helpdesk, German ↔ English, Meeting Rooms, Parking, Social Media, Share & Download." />
     <style>
       :root {
-        /* tuned palette inspired by the provided screenshot */
-        --bg:#f6edd9;            /* warm beige */
-        --panel:#114b5f;         /* deep teal header */
-        --text:#0d1b24;          /* dark text */
-        --muted:#3b5e68;         /* muted */
-        --btn-blue:#0b78b6;      /* primary blue buttons */
-        --btn-blue-text:#ffffff; /* button label */
+        --bg:#eaf4ff;            /* light blue background */
+        --panel:#b7e4c7;         /* light green header */
+        --panel-text:#0b3d2e;    /* dark green text on header */
+        --text:#0e1b25;          /* body text */
+        --muted:#557a89;         /* muted */
+        --btn-blue:#0b78b6;      /* primary blue */
         --btn-red:#d32f2f;       /* SOS red */
         --btn-grey:#5e6a64;      /* share/download grey */
-        --card:#fff6e6;          /* light card */
+        --btn-blue-text:#ffffff; /* button label */
+        --card:#ffffff;          /* card background */
         --shadow:rgba(0,0,0,0.12);
         --radius:12px;
+        --dot:#2bb673;           /* green dot */
       }
       html,body{height:100%;}
       body{margin:0;background:var(--bg);color:var(--text);
            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;
            -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-      .wrap{max-width:720px;margin:0 auto;padding:12px 14px 28px;}
-      .hero{background:var(--panel);color:#eaf7fb;border-radius:0 0 var(--radius) var(--radius);
-            padding:14px;box-shadow:0 6px 18px var(--shadow);} 
-      .hero h1{margin:0;font-size:0.98rem;letter-spacing:0.2px;text-align:center;}
 
-      /* Language toggle */
-      .lang-toggle{display:flex;gap:12px;justify-content:center;margin:14px 0 12px;}
-      .lang-toggle button{flex:1;max-width:150px;padding:12px 0;border-radius:10px;border:none;cursor:pointer;
+      .wrap{max-width:720px;margin:0 auto;padding:10px 12px 24px;}
+      .hero{background:var(--panel);color:var(--panel-text);border-radius:0 0 var(--radius) var(--radius);
+            padding:10px 12px;box-shadow:0 6px 18px var(--shadow);display:flex;align-items:center;gap:10px;}
+      .brand{width:28px;height:28px;display:inline-block;border-radius:50%;overflow:hidden;}
+      .brand svg{display:block;width:100%;height:100%;}
+      .hero h1{margin:0;font-size:0.92rem;letter-spacing:0.2px;}
+
+      .lang-toggle{display:flex;gap:10px;justify-content:center;margin:12px 0 10px;}
+      .lang-toggle button{flex:1;max-width:140px;padding:9px 0;border-radius:10px;border:none;cursor:pointer;
                           background:#4b5b58;color:#d7dedb;box-shadow:0 4px 10px var(--shadow);
-                          font-size:0.95rem;} 
+                          font-size:0.88rem;} 
       .lang-toggle button.active{background:#67736e;color:#fff;}
 
-      /* Button list */
-      .list{display:flex;flex-direction:column;gap:12px;margin:8px 0 18px;}
-      .btn{border:none;border-radius:12px;padding:14px 16px;font-size:0.95rem;cursor:pointer;
+      nav.list{display:flex;flex-direction:column;gap:9px;margin:8px 0 16px;}
+      .btn{border:none;border-radius:12px;padding:11px 13px;font-size:0.88rem;cursor:pointer;
            color:var(--btn-blue-text);background:var(--btn-blue);box-shadow:0 6px 14px var(--shadow);
            display:flex;align-items:center;gap:10px;justify-content:flex-start;}
-      .btn .emoji{font-size:1.1rem;} 
+      .btn .emoji{font-size:1.02rem;} 
       .btn.red{background:var(--btn-red);} 
       .btn.grey{background:var(--btn-grey);} 
       .btn:focus-visible{outline:3px solid #7bd3ff;outline-offset:2px;} 
 
-      /* Card sections */
-      .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 4px 12px var(--shadow);} 
-      .card h2{margin:0 0 8px;font-size:1rem;color:#17394a;} 
+      .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 4px 12px var(--shadow);} 
+      .card h2{margin:0 0 8px;font-size:0.96rem;color:#17394a;} 
+      .card h3{margin:8px 0 6px;font-size:0.92rem;color:#1c3f52;} 
       .card p{margin:0 0 6px;} 
-      .list-ul{margin:0;padding-left:18px;} 
+      .card .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+      .list-ul{margin:0;padding-left:18px;font-size:0.9rem;} 
       a{color:#005ea8;text-decoration:none;} a:hover{text-decoration:underline;} 
+      .placeholder{border:1px dashed #cbd6e8;border-radius:8px;padding:10px;color:#5a6b74;text-align:center;}
+      .imgframe{border-radius:10px;overflow:hidden;border:1px solid #cbd6e8;background:#f5f9ff;}
+      .imgframe img{display:block;width:100%;height:auto;}
 
-      footer{margin:20px 0 8px;text-align:center;color:#5a6b74;font-size:0.88rem;}
+      /* Zoom box */
+      .zoombox{margin-top:8px;}
+      .zoomtools{display:flex;gap:8px;justify-content:flex-end;margin-bottom:6px;}
+      .zoomtools button{padding:6px 10px;border:1px solid #cbd6e8;border-radius:8px;background:#f5f9ff;color:#17394a;cursor:pointer;}
+      .viewport{width:100%;height:320px;border:1px solid #cbd6e8;border-radius:10px;overflow:hidden;background:#f5f9ff;touch-action:none;}
+      .content{transform-origin:0 0;position:relative;width:fit-content;height:fit-content;}
+      .overlay{position:absolute;left:0;top:0;}
+
+      .routebar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center;}
+      .routebar select,.routebar button{padding:8px 10px;border:1px solid #cbd6e8;border-radius:8px;background:#ffffff;cursor:pointer;font-size:0.88rem;}
+      .note{background:#eaf7ff;border-left:3px solid #00a0e3;padding:8px;border-radius:8px;color:#164a68;margin-top:8px;}
+      .legend{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:6px;margin-top:6px;font-size:0.88rem;}
+      .legend-item{background:#f5f9ff;border:1px solid #cbd6e8;border-radius:8px;padding:8px;}
+
+      footer{margin:18px 0 8px;text-align:center;color:#5a6b74;font-size:0.84rem;}
     </style>
   </head>
   <body>
     <div class="wrap">
       <div class="hero" role="banner">
-        <h1 id="title">Safety • Assistance • Office Support</h1>
+        <span class="brand" aria-label="BMW logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="#0a0c10"/>
+            <circle cx="32" cy="32" r="22" fill="#ffffff"/>
+            <path d="M32,10 A22,22 0 0 1 54,32 H32 Z" fill="#00a0e3"/>
+            <path d="M32,54 A22,22 0 0 1 10,32 H32 Z" fill="#00a0e3"/>
+          </svg>
+        </span>
+        <h1 id="title">BMWTechWorks India – PUNE</h1>
       </div>
 
       <div class="lang-toggle" role="group" aria-label="Language selector">
@@ -69,54 +97,59 @@
       </div>
 
       <nav class="list" aria-label="Quick actions">
+        <button class="btn" data-section="info"><span class="emoji">ℹ️</span><span id="btn_info">BMWTechWorks Info</span></button>
         <button class="btn red" data-section="sos"><span class="emoji">🚨</span><span id="btn_sos">SOS – Emergency</span></button>
         <button class="btn" data-section="floor"><span class="emoji">🗺️</span><span id="btn_floor">Floor Layout & Exit</span></button>
         <button class="btn" data-section="firstaid"><span class="emoji">🧑‍⚕️</span><span id="btn_firstaid">First Aid & Medical Support</span></button>
         <button class="btn" data-section="assembly"><span class="emoji">📍</span><span id="btn_assembly">Assembly Points</span></button>
+        <button class="btn" data-section="rooms"><span class="emoji">🏢</span><span id="btn_rooms">Meeting Rooms</span></button>
         <button class="btn" data-section="cab"><span class="emoji">🚕</span><span id="btn_cab">Cab Facility</span></button>
         <button class="btn" data-section="food"><span class="emoji">🍔</span><span id="btn_food">Food Delivery</span></button>
         <button class="btn" data-section="it"><span class="emoji">🖥️</span><span id="btn_it">IT Helpdesk</span></button>
         <button class="btn" data-section="lang"><span class="emoji">🌍</span><span id="btn_lang">German ↔ English</span></button>
+        <button class="btn" data-section="parking"><span class="emoji">🅿️</span><span id="btn_parking">Parking Info</span></button>
+        <button class="btn" data-section="social"><span class="emoji">🔗</span><span id="btn_social">Social Media & Contact</span></button>
         <button class="btn grey" id="share"><span class="emoji">📤</span><span id="btn_share">Share</span></button>
         <button class="btn grey" id="download"><span class="emoji">📥</span><span id="btn_download">Download</span></button>
       </nav>
 
-        <section id="sosCard" class="card" aria-labelledby="sosTitle" hidden>
-        <h2 id="sosTitle">SOS – Emergency</h2>
-        <ul id="sosList" class="list-ul">
-          <li>Ambulance: 108</li>
-          <li>Emergency Contact: +91-9769317569</li>
-          <li>First Aid: Reception • Nurse Room: Floor 6</li>
-        </ul>
+      <!-- Info card (visible by default) -->
+      <section id="infoCard" class="card" aria-labelledby="infoTitle">
+        <h2 id="infoTitle">BMWTechWorks India</h2>
+        <p id="infoAddr">Address: BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045</p>
+        <p><a id="infoLink" href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">View on Google Maps</a></p>
+        <div class="imgframe" aria-label="Google Map">
+          <iframe title="Amar Tech Park Map" src="https://www.google.com/maps?q=Amar+Tech+Park+Balewadi+Pune&output=embed" width="100%" height="280" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </section>
 
-          <section id="firstaidCard" class="card" aria-labelledby="firstaidTitle" hidden>
-        <h2 id="firstaidTitle">First Aid & Medical Support</h2>
-        <ul id="firstaidList" class="list-ul">
-          <li>First Aid Kit – Reception</li>
-          <li>Nurse Room – Floor 6</li>
-          <li>Wheelchair & Stretcher available</li>
-          <li>Nearby hospitals – </li>
-          <li>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency  Ambulance – 020 2799 2799 </li>
-          <li><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></li>
-          <li>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</li>
-          <li><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></li>
-          <li>Ambulance:Nucare Ambulance Contact – 90966 67656</li>
-        </ul>
+      <section id="roomsCard" class="card" aria-labelledby="roomsTitle" hidden>
+        <h2 id="roomsTitle">Meeting Rooms</h2>
+        <div class="zoombox">
+          <div class="zoomtools">
+            <button type="button" id="roomsZoomIn">＋ Zoom In</button>
+            <button type="button" id="roomsZoomOut">－ Zoom Out</button>
+            <button type="button" id="roomsReset">⤿ Reset</button>
+          </div>
+          <div class="viewport" id="roomsViewport">
+            <div class="content" id="roomsContent">
+              <img src="r2.png" id="roomsImage" alt="Meeting rooms floor plan" />
+              <canvas id="roomsOverlay" class="overlay"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="routebar">
+          <label for="fromRoom">From</label>
+          <select id="fromRoom"></select>
+          <label for="toRoom">To</label>
+          <select id="toRoom"></select>
+          <button type="button" id="roomsShowRoute">Show Route</button>
+          <button type="button" id="roomsSpeakRoute">🔊 Play Audio</button>
+        </div>
+        <p id="roomsRouteText" class="note">Select a source and destination room, then tap "Show Route". Follow the green dots.</p>
       </section>
 
-      
-       <section id="cabCard" class="card" aria-labelledby="cabTitle" hidden>
-        <h2 id="cabTitle">Cab Facility</h2>
-        <ul id="cabList" class="list-ul">
-          <li><a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a></li>
-          <li><a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></li>
-        </ul>
-      </section>
-
-      
-      <!-- Content cards: Food Delivery visible by default -->
-      <section id="foodCard" class="card" aria-labelledby="foodTitle">
+      <section id="foodCard" class="card" aria-labelledby="foodTitle" hidden>
         <h2 id="foodTitle">Food Delivery</h2>
         <ul id="foodList" class="list-ul">
           <li><a href="https://www.zomato.com/" target="_blank" rel="noopener">Zomato</a></li>
@@ -124,119 +157,271 @@
         </ul>
       </section>
 
-     
-    
+      <section id="cabCard" class="card" aria-labelledby="cabTitle" hidden>
+        <h2 id="cabTitle">Cab Facility</h2>
+        <ul id="cabList" class="list-ul">
+          <li><a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a></li>
+          <li><a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></li>
+        </ul>
+      </section>
+
+      <section id="sosCard" class="card" aria-labelledby="sosTitle" hidden>
+        <h2 id="sosTitle">SOS – Emergency</h2>
+        <ul id="sosList" class="list-ul">
+          <li>Ambulance: <a href="tel:108" aria-label="Call Ambulance">📞 108</a></li>
+          <li>Emergency Contact: <a href="tel:+919769317569" aria-label="Call Emergency Contact">📞 +91-9769317569</a></li>
+          <li>First Aid: Reception • Nurse Room: Floor 6</li>
+        </ul>
+      </section>
 
       <section id="floorCard" class="card" aria-labelledby="floorTitle" hidden>
         <h2 id="floorTitle">Floor Layout & Exit</h2>
-        <p id="floorDesc">Nearest exit will be highlighted (logic based).</p>
-        <div id="floorPH" style="margin-top:10px;border:1px dashed #c7bfa7;border-radius:8px;padding:10px;color:#5a6b74;">Exit Plan – PLACEHOLDER</div>
+        <div class="zoombox">
+          <div class="zoomtools">
+            <button type="button" id="exitZoomIn">＋ Zoom In</button>
+            <button type="button" id="exitZoomOut">－ Zoom Out</button>
+            <button type="button" id="exitReset">⤿ Reset</button>
+          </div>
+          <div class="viewport" id="exitViewport">
+            <div class="content" id="exitContent">
+              <svg id="exitMap" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Simplified exit plan" style="display:block;width:1200px;height:720px;background:#f5f9ff">
+                <rect x="10" y="10" width="1180" height="700" fill="#e9f2fb" stroke="#cbd6e8" />
+                <!-- floor zones placeholder blocks -->
+                <rect x="20" y="20" width="520" height="240" fill="#dff0ff" stroke="#cbd6e8"/>
+                <rect x="660" y="20" width="520" height="240" fill="#dff0ff" stroke="#cbd6e8"/>
+                <rect x="20" y="300" width="520" height="390" fill="#dff0ff" stroke="#cbd6e8"/>
+                <rect x="660" y="300" width="520" height="390" fill="#dff0ff" stroke="#cbd6e8"/>
+                <!-- exits -->
+                <g fill="#d32f2f" font-family="sans-serif" font-size="20">
+                  <text x="600" y="28">EXIT 1</text>
+                  <text x="600" y="714">EXIT 2</text>
+                  <text x="24" y="310">EXIT 3</text>
+                  <text x="1166" y="310">EXIT 4</text>
+                  <text x="600" y="310">EXIT 5</text>
+                </g>
+              </svg>
+              <canvas id="exitOverlay" class="overlay"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="routebar">
+          <label for="exitFrom">From Room</label>
+          <select id="exitFrom"></select>
+          <label for="exitTo">To Exit</label>
+          <select id="exitTo">
+            <option value="Exit 1">Exit 1</option>
+            <option value="Exit 2">Exit 2</option>
+            <option value="Exit 3">Exit 3</option>
+            <option value="Exit 4">Exit 4</option>
+            <option value="Exit 5">Exit 5</option>
+          </select>
+          <button type="button" id="exitShowRoute">Show Route</button>
+          <button type="button" id="exitSpeakRoute">🔊 Play Audio</button>
+        </div>
+        <p id="exitRouteText" class="note">Select a room and exit, then tap "Show Route". Follow the green dots.</p>
+        <h3>Zones (Legend)</h3>
+        <div class="legend" id="legend">
+          <div class="legend-item" id="zoneA">A – Restricted access — Restricted</div>
+          <div class="legend-item" id="zoneB">B – Non‑Common Access — Restricted</div>
+          <div class="legend-item" id="zoneC">C – Common Access Visitor — Public</div>
+          <div class="legend-item" id="zoneD">D – Collaboration area — Internal</div>
+          <div class="legend-item" id="zoneE">E – Confidential meeting Board Meeting — Restricted</div>
+          <div class="legend-item" id="zoneF">F – Business ODC — Internal</div>
+          <div class="legend-item" id="zoneG">G – Common Meeting room — Internal</div>
+        </div>
+        <p class="note" id="photoNote">Note: Photography is allowed at C & D areas only.</p>
       </section>
 
-   
+      <section id="firstaidCard" class="card" aria-labelledby="firstaidTitle" hidden>
+        <h2 id="firstaidTitle">First Aid & Medical Support</h2>
+        <ul id="firstaidList" class="list-ul">
+          <li>First Aid Kit – Reception</li>
+          <li>Nurse Room – Floor 6</li>
+          <li>Wheelchair & Stretcher available</li>
+          <li>Nearby hospitals – PLACEHOLDER</li>
+        </ul>
+      </section>
+
       <section id="assemblyCard" class="card" aria-labelledby="assemblyTitle" hidden>
         <h2 id="assemblyTitle">Assembly Points</h2>
-        <p id="assemblyDesc">After evacuation, proceed to nearest assembly point.</p>
-        <div id="assemblyPH" style="margin-top:10px;border:1px dashed #c7bfa7;border-radius:8px;padding:10px;color:#5a6b74;">Assembly points map – PLACEHOLDER</div>
+        <div class="grid-2">
+          <div>
+            <p id="ap1Text">Assembly Point No.1 Near Gate No-4</p>
+            <div class="imgframe">
+              <img id="ap1Img" src="Assembly Point No.1 Near Gate No-4.jpg" alt="Assembly Point No.1 Near Gate No-4"
+                   onerror="this.style.display='none'; document.getElementById('ap1ph').hidden=false;">
+            </div>
+            <div id="ap1ph" class="placeholder" hidden>AP1 image – PLACEHOLDER</div>
+          </div>
+          <div>
+            <p id="ap2Text">Assembly Point No.2 Near Gate No-3</p>
+            <div class="imgframe">
+              <img id="ap2Img" src="Assembly Point No.2 Near Gate No-3.jpg" alt="Assembly Point No.2 Near Gate No-3"
+                   onerror="this.style.display='none'; document.getElementById('ap2ph').hidden=false;">
+            </div>
+            <div id="ap2ph" class="placeholder" hidden>AP2 image – PLACEHOLDER</div>
+          </div>
+        </div>
       </section>
 
       <section id="itCard" class="card" aria-labelledby="itTitle" hidden>
         <h2 id="itTitle">IT Helpdesk</h2>
-        <p id="itDesc">Email: ITHelpdesk.PNQ@bmwtechworks.in </p>
+        <p id="itDesc">Email: ITHelpdesk.PNQ@bmwtechworks.in</p>
       </section>
 
       <section id="langCard" class="card" aria-labelledby="langTitle" hidden>
-        <h2 id="langTitle">German ↔ English</h2>
-        
+        <h2 id="langTitle">Basic German to English Phrases</h2>
+        <div class="tablewrap">
+          <table id="langTable" style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+            <thead>
+              <tr>
+                <th id="thGerman" style="text-align:left;padding:8px;border-bottom:1px solid #cbd6e8;">German</th>
+                <th id="thEnglish" style="text-align:left;padding:8px;border-bottom:1px solid #cbd6e8;">English</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:8px;">Hallo</td><td style="padding:8px;">Hello / Namaste</td></tr>
+              <tr><td style="padding:8px;">Ich möchte zu diesem Ort gehen</td><td style="padding:8px;">I want to go to this place</td></tr>
+              <tr><td style="padding:8px;">Wie viel kostet das?</td><td style="padding:8px;">How much money?</td></tr>
+              <tr><td style="padding:8px;">Danke</td><td style="padding:8px;">Thanks</td></tr>
+              <tr><td style="padding:8px;">Ich möchte das</td><td style="padding:8px;">I want this</td></tr>
+              <tr><td style="padding:8px;">Guten Morgen</td><td style="padding:8px;">Good Morning</td></tr>
+              <tr><td style="padding:8px;">Gute Nacht</td><td style="padding:8px;">Good Night</td></tr>
+              <tr><td style="padding:8px;">Wo ist die Toilette?</td><td style="padding:8px;">Where is the restroom?</td></tr>
+              <tr><td style="padding:8px;">Können Sie mir helfen?</td><td style="padding:8px;">Can you help me?</td></tr>
+              <tr><td style="padding:8px;">Ich brauche Wasser</td><td style="padding:8px;">I need water</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="parkingCard" class="card" aria-labelledby="parkingTitle" hidden>
+        <h2 id="parkingTitle">Parking Guidelines</h2>
+        <ul id="parkingList" class="list-ul">
+          <li>Parking is strictly first-come, first-served.</li>
+          <li>60 slots allocated for employees at P3 and P1 levels.</li>
+          <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
+        </ul>
+      </section>
+
+      <section id="socialCard" class="card" aria-labelledby="socialTitle" hidden>
+        <h2 id="socialTitle">Social Media & Contact</h2>
+        <p id="socialDesc">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a> |
+          Website: <a href="https://bmwtechworks.in" target="_blank" rel="noopener">bmwtechworks.in</a>
+        </p>
       </section>
 
       <footer>© Developed by SPP Team – BTI Pune 2026</footer>
     </div>
 
     <script>
-      // Copy deck for EN/DE text switching
+      // EN/DE strings including new button
       const STRINGS = {
         EN: {
-          title: 'Safety • Assistance • Office Support',
+          title: 'BMWTechWorks India – PUNE',
           buttons: {
-            sos:'SOS – Emergency', floor:'Floor Layout & Exit', firstaid:'First Aid & Medical Support',
-            assembly:'Assembly Points', cab:'Cab Facility', food:'Food Delivery', it:'IT Helpdesk',
-            lang:'German ↔ English', share:'Share', download:'Download'
+            info:'BMWTechWorks Info', sos:'SOS – Emergency', floor:'Floor Layout & Exit', firstaid:'First Aid & Medical Support',
+            assembly:'Assembly Points', rooms:'Meeting Rooms', cab:'Cab Facility', food:'Food Delivery', it:'IT Helpdesk', lang:'German ↔ English',
+            parking:'Parking Info', social:'Social Media & Contact', share:'Share', download:'Download'
           },
           sections: {
+            infoTitle:'BMWTechWorks India',
+            infoAddr:'Address: BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045',
+            infoLink:'View on Google Maps',
+            roomsTitle:'Meeting Rooms',
             foodTitle:'Food Delivery',
             cabTitle:'Cab Facility',
             sosTitle:'SOS – Emergency',
-            floorTitle:'Floor Layout & Exit',
+            floorTitle:'Floor Layout & Exit', floorDesc:'Nearest exit will be highlighted (logic based).',
             firstaidTitle:'First Aid & Medical Support',
             assemblyTitle:'Assembly Points',
-            itTitle:'IT Helpdesk',
-            langTitle:'German ↔ English',
-
-            floorDesc:'Nearest exit will be highlighted (logic based).',
-            floorPH:'Exit Plan – PLACEHOLDER',
-
-            assemblyDesc:'After evacuation, proceed to nearest assembly point.',
-            assemblyPH:'Assembly points map – PLACEHOLDER',
-
-            itDesc:'Escalation Matrix – PLACEHOLDER (IT Helpdesk, Security, Admin)',
-            langDesc:'Language toggle for phrases (EN/DE). Audio mapping – PLACEHOLDER.'
+            itTitle:'IT Helpdesk', itDesc:'Email: ITHelpdesk.PNQ@bmwtechworks.in',
+            langTitle:'Basic German to English Phrases', thGerman:'German', thEnglish:'English',
+            parkingTitle:'Parking Guidelines',
+            socialTitle:'Social Media & Contact'
           },
           lists: {
-            sos:[ 'Ambulance: 108', 'Emergency Contact: +91-XXXXXXXXXX', 'First Aid: Reception • Nurse Room: Floor 6' ],
-            firstaid:[ 'First Aid Kit – Reception', 'Nurse Room – Floor 6', 'Wheelchair & Stretcher available', 'Nearby hospitals – PLACEHOLDER' ]
+            sos:[ 'Ambulance: <a href="tel:108">📞 108</a>', 'Emergency Contact: <a href="tel:+919769317569">📞 +91-9769317569</a>', 'First Aid: Reception • Nurse Room: Floor 6' ],
+            firstaid:[ 'First Aid Kit – Reception', 'Nurse Room – Floor 6', 'Wheelchair & Stretcher available', 'Nearby hospitals – PLACEHOLDER' ],
+            parking:[ 'Parking is strictly first-come, first-served.', '60 slots allocated for employees at P3 and P1 levels.', 'No common parking for external visitors/vendors. They must arrange parking outside ATP premises.' ]
           }
         },
         DE: {
-          title: 'Sicherheit • Unterstützung • Büroservice',
+          title: 'BMWTechWorks India – PUNE',
           buttons: {
-            sos:'SOS – Notfall', floor:'Etagenplan & Ausgang', firstaid:'Erste Hilfe & Medizinische Unterstützung',
-            assembly:'Sammelplätze', cab:'Taxi‑Service', food:'Essenslieferung', it:'IT‑Helpdesk',
-            lang:'Deutsch ↔ Englisch', share:'Teilen', download:'Herunterladen'
+            info:'BMWTechWorks Info', sos:'SOS – Notfall', floor:'Etagenplan & Ausgang', firstaid:'Erste Hilfe & Medizinische Unterstützung',
+            assembly:'Sammelplätze', rooms:'Besprechungsräume', cab:'Taxi‑Service', food:'Essenslieferung', it:'IT‑Helpdesk', lang:'Deutsch ↔ Englisch',
+            parking:'Parkinformationen', social:'Soziale Medien & Kontakt', share:'Teilen', download:'Herunterladen'
           },
           sections: {
+            infoTitle:'BMWTechWorks India',
+            infoAddr:'Adresse: BMWTechWorks India, 14 Büros, 1. Stock, Amar Tech Park, Balewadi, Pune, Maharashtra 411045',
+            infoLink:'Auf Google Maps ansehen',
+            roomsTitle:'Besprechungsräume',
             foodTitle:'Essenslieferung',
             cabTitle:'Taxi‑Service',
             sosTitle:'SOS – Notfall',
-            floorTitle:'Etagenplan & Ausgang',
+            floorTitle:'Etagenplan & Ausgang', floorDesc:'Nächstgelegener Ausgang wird hervorgehoben (logikbasiert).',
             firstaidTitle:'Erste Hilfe & Medizinische Unterstützung',
             assemblyTitle:'Sammelplätze',
-            itTitle:'IT‑Helpdesk',
-            langTitle:'Deutsch ↔ Englisch',
-
-            floorDesc:'Nächstgelegener Ausgang wird hervorgehoben (logikbasiert).',
-            floorPH:'Fluchtplan – PLATZHALTER',
-
-            assemblyDesc:'Nach der Evakuierung zum nächstgelegenen Sammelplatz gehen.',
-            assemblyPH:'Sammelplatzkarte – PLATZHALTER',
-
-            itDesc:'Eskalationsmatrix – PLATZHALTER (IT‑Helpdesk, Sicherheit, Verwaltung)',
-            langDesc:'Sprachumschaltung für Phrasen (DE/EN). Audiomapping – PLATZHALTER.'
+            itTitle:'IT‑Helpdesk', itDesc:'E‑Mail: ITHelpdesk.PNQ@bmwtechworks.in',
+            langTitle:'Grundlegende Deutsch‑Englisch‑Phrasen', thGerman:'Deutsch', thEnglish:'Englisch',
+            parkingTitle:'Parkrichtlinien',
+            socialTitle:'Soziale Medien & Kontakt'
           },
           lists: {
-            sos:[ 'Krankenwagen: 108', 'Notfallkontakt: +91-XXXXXXXXXX', 'Erste Hilfe: Rezeption • Krankenzimmer: 6. Etage' ],
-            firstaid:[ 'Erste‑Hilfe‑Kasten – Rezeption', 'Krankenzimmer – 6. Etage', 'Rollstuhl & Trage verfügbar', 'Nahegelegene Krankenhäuser – PLATZHALTER' ]
+            sos:[ 'Krankenwagen: <a href="tel:108">📞 108</a>', 'Notfallkontakt: <a href="tel:+919769317569">📞 +91-9769317569</a>', 'Erste Hilfe: Rezeption • Krankenzimmer: 6. Etage' ],
+            firstaid:[ 'Erste‑Hilfe‑Kasten – Rezeption', 'Krankenzimmer – 6. Etage', 'Rollstuhl & Trage verfügbar', 'Nahegelegene Krankenhäuser – PLATZHALTER' ],
+            parking:[ 'Parken ist strikt nach dem Prinzip „Wer zuerst kommt, mahlt zuerst“.', '60 Stellplätze für Mitarbeiter auf den Ebenen P3 und P1.', 'Keine gemeinsame Parkfläche für externe Besucher/Dienstleister. Sie müssen außerhalb des ATP‑Geländes parken.' ]
           }
         }
       };
 
+      // Rooms & exits coordinate map (approximate percentages over image and svg size)
+      const ROOM_COORDS = {
+        'Success – Board Room': {x: 8,  y: 14},
+        'Inspire – Training Room': {x: 10, y: 28},
+        'Visitor Room': {x: 14, y: 42},
+        'Joy': {x: 22, y: 50},
+        'Debug': {x: 48, y: 50},
+        'iDrive': {x: 62, y: 54},
+        'M-Mode': {x: 72, y: 54},
+        'Drift': {x: 86, y: 56},
+        'xDrive': {x: 90, y: 56},
+        'Torque': {x: 96, y: 56}
+      };
+      const EXITS = {
+        'Exit 1': {x: 50, y: 2},
+        'Exit 2': {x: 50, y: 98},
+        'Exit 3': {x: 2,  y: 50},
+        'Exit 4': {x: 98, y: 50},
+        'Exit 5': {x: 50, y: 50}
+      };
+
+      // Language application
       function applyLang(code){
-        const S = STRINGS[code];
-        if(!S) return;
-        // Title
+        const S = STRINGS[code]; if(!S) return;
         document.getElementById('title').textContent = S.title;
-        // Buttons
+        document.getElementById('btn_info').textContent = S.buttons.info;
         document.getElementById('btn_sos').textContent = S.buttons.sos;
         document.getElementById('btn_floor').textContent = S.buttons.floor;
         document.getElementById('btn_firstaid').textContent = S.buttons.firstaid;
         document.getElementById('btn_assembly').textContent = S.buttons.assembly;
+        document.getElementById('btn_rooms').textContent = S.buttons.rooms;
         document.getElementById('btn_cab').textContent = S.buttons.cab;
         document.getElementById('btn_food').textContent = S.buttons.food;
         document.getElementById('btn_it').textContent = S.buttons.it;
         document.getElementById('btn_lang').textContent = S.buttons.lang;
+        document.getElementById('btn_parking').textContent = S.buttons.parking;
+        document.getElementById('btn_social').textContent = S.buttons.social;
         document.getElementById('btn_share').textContent = S.buttons.share;
         document.getElementById('btn_download').textContent = S.buttons.download;
-        // Section titles & descriptions
+        // Sections
+        document.getElementById('infoTitle').textContent = S.sections.infoTitle;
+        document.getElementById('infoAddr').textContent = S.sections.infoAddr;
+        document.getElementById('infoLink').textContent = S.sections.infoLink;
+        document.getElementById('roomsTitle').textContent = S.sections.roomsTitle;
         document.getElementById('foodTitle').textContent = S.sections.foodTitle;
         document.getElementById('cabTitle').textContent = S.sections.cabTitle;
         document.getElementById('sosTitle').textContent = S.sections.sosTitle;
@@ -244,37 +429,115 @@
         document.getElementById('firstaidTitle').textContent = S.sections.firstaidTitle;
         document.getElementById('assemblyTitle').textContent = S.sections.assemblyTitle;
         document.getElementById('itTitle').textContent = S.sections.itTitle;
-        document.getElementById('langTitle').textContent = S.sections.langTitle;
-        document.getElementById('floorDesc').textContent = S.sections.floorDesc;
-        document.getElementById('floorPH').textContent = S.sections.floorPH;
-        document.getElementById('assemblyDesc').textContent = S.sections.assemblyDesc;
-        document.getElementById('assemblyPH').textContent = S.sections.assemblyPH;
         document.getElementById('itDesc').textContent = S.sections.itDesc;
-        document.getElementById('langDesc').textContent = S.sections.langDesc;
-        // Lists
-        function renderList(id, items){
-          const ul = document.getElementById(id);
-          ul.innerHTML = items.map(i => `<li>${i}</li>`).join('');
-        }
-        renderList('sosList', S.lists.sos);
-        renderList('firstaidList', S.lists.firstaid);
+        document.getElementById('langTitle').textContent = S.sections.langTitle;
+        document.getElementById('thGerman').textContent = S.sections.thGerman;
+        document.getElementById('thEnglish').textContent = S.sections.thEnglish;
+        document.getElementById('parkingTitle').textContent = S.sections.parkingTitle;
+        document.getElementById('socialTitle').textContent = S.sections.socialTitle;
+        document.getElementById('floorDesc').textContent = S.sections.floorDesc;
       }
 
-      // Simple view toggling to match button behavior
+      // Populate room selects
+      function fillRoomSelect(sel){
+        sel.innerHTML = Object.keys(ROOM_COORDS).map(n => `<option value="${n}">${n}</option>`).join('');
+      }
+
+      // Simple pan-zoom util for a content wrapper
+      function makePanZoom(viewportId, contentId, overlayId){
+        const viewport = document.getElementById(viewportId);
+        const content = document.getElementById(contentId);
+        const overlay = document.getElementById(overlayId);
+        let scale = 1, min=0.7, max=3, tx=0, ty=0;
+        function apply(){ content.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+        // Drag
+        let dragging=false, sx=0, sy=0;
+        function startDrag(e){ dragging=true; sx=(e.touches?e.touches[0].clientX:e.clientX); sy=(e.touches?e.touches[0].clientY:e.clientY); }
+        function onDrag(e){ if(!dragging) return; const x=(e.touches?e.touches[0].clientX:e.clientX), y=(e.touches?e.touches[0].clientY:e.clientY); tx+=x-sx; ty+=y-sy; sx=x; sy=y; apply(); }
+        function endDrag(){ dragging=false; }
+        viewport.addEventListener('mousedown', startDrag); viewport.addEventListener('mousemove', onDrag); window.addEventListener('mouseup', endDrag);
+        viewport.addEventListener('touchstart', startDrag,{passive:true}); viewport.addEventListener('touchmove', onDrag,{passive:true}); viewport.addEventListener('touchend', endDrag);
+        // Wheel zoom
+        viewport.addEventListener('wheel', (e)=>{ e.preventDefault(); const delta = Math.sign(e.deltaY)*-0.1; scale = Math.min(max, Math.max(min, scale+delta)); apply(); }, {passive:false});
+        function zoomIn(){ scale=Math.min(max, scale+0.2); apply(); }
+        function zoomOut(){ scale=Math.max(min, scale-0.2); apply(); }
+        function reset(){ scale=1; tx=0; ty=0; apply(); }
+        apply();
+        return {zoomIn, zoomOut, reset, overlay, content};
+      }
+
+      // Draw green dotted route between two percentage points onto a canvas sized to underlying image or svg
+      function drawDots(canvas, width, height, fromPct, toPct){
+        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d');
+        const fx = fromPct.x/100*width, fy = fromPct.y/100*height; const tx = toPct.x/100*width, ty = toPct.y/100*height;
+        const steps = 30; ctx.clearRect(0,0,width,height);
+        for(let i=0;i<=steps;i++){
+          const t = i/steps; const x = fx + (tx-fx)*t; const y = fy + (ty-fy)*t;
+          ctx.beginPath(); ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dot'); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
+        }
+      }
+
+      // Speech (TTS) for route text; uses current language selection
+      function speak(text){
+        const code = localStorage.getItem('BTI_LANG') || 'EN';
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = (code==='DE') ? 'de-DE' : 'en-IN';
+        speechSynthesis.cancel(); speechSynthesis.speak(utter);
+      }
+
+      // Rooms pan-zoom and routing
+      const roomsPZ = makePanZoom('roomsViewport','roomsContent','roomsOverlay');
+      document.getElementById('roomsZoomIn').addEventListener('click', roomsPZ.zoomIn);
+      document.getElementById('roomsZoomOut').addEventListener('click', roomsPZ.zoomOut);
+      document.getElementById('roomsReset').addEventListener('click', roomsPZ.reset);
+      const fromRoomSel = document.getElementById('fromRoom');
+      const toRoomSel = document.getElementById('toRoom');
+      fillRoomSelect(fromRoomSel); fillRoomSelect(toRoomSel);
+      const roomsImg = document.getElementById('roomsImage');
+      roomsImg.addEventListener('load', ()=>{ roomsPZ.overlay.width = roomsImg.naturalWidth; roomsPZ.overlay.height = roomsImg.naturalHeight; roomsPZ.overlay.style.width = roomsImg.width+'px'; roomsPZ.overlay.style.height = roomsImg.height+'px'; });
+      document.getElementById('roomsShowRoute').addEventListener('click', ()=>{
+        const from = ROOM_COORDS[fromRoomSel.value]; const to = ROOM_COORDS[toRoomSel.value]; if(!from||!to) return;
+        // draw route
+        drawDots(roomsPZ.overlay, roomsImg.naturalWidth||roomsImg.width, roomsImg.naturalHeight||roomsImg.height, from, to);
+        const text = `Route from ${fromRoomSel.value} to ${toRoomSel.value}. Follow green dots along the corridor and signages.`;
+        document.getElementById('roomsRouteText').textContent = text;
+      });
+      document.getElementById('roomsSpeakRoute').addEventListener('click', ()=>{
+        const txt = document.getElementById('roomsRouteText').textContent || 'Follow the green dots to reach your destination.'; speak(txt);
+      });
+
+      // Exit pan-zoom and routing
+      const exitPZ = makePanZoom('exitViewport','exitContent','exitOverlay');
+      document.getElementById('exitZoomIn').addEventListener('click', exitPZ.zoomIn);
+      document.getElementById('exitZoomOut').addEventListener('click', exitPZ.zoomOut);
+      document.getElementById('exitReset').addEventListener('click', exitPZ.reset);
+      const exitFromSel = document.getElementById('exitFrom'); fillRoomSelect(exitFromSel);
+      const exitToSel = document.getElementById('exitTo');
+      const exitSvg = document.getElementById('exitMap');
+      function getSvgSize(){ return {w:1200, h:720}; }
+      document.getElementById('exitShowRoute').addEventListener('click', ()=>{
+        const from = ROOM_COORDS[exitFromSel.value]; const to = EXITS[exitToSel.value]; if(!from||!to) return;
+        const {w,h} = getSvgSize(); drawDots(exitPZ.overlay, w, h, from, to);
+        const text = `Evacuation route from ${exitFromSel.value} to ${exitToSel.value}. Proceed calmly and follow the green dots to the exit.`;
+        document.getElementById('exitRouteText').textContent = text;
+      });
+      document.getElementById('exitSpeakRoute').addEventListener('click', ()=>{
+        const txt = document.getElementById('exitRouteText').textContent || 'Proceed calmly and follow green dots to the nearest exit.'; speak(txt);
+      });
+
+      // View toggling
       const map = {
-        food: 'foodCard', cab: 'cabCard', sos: 'sosCard', floor: 'floorCard',
-        firstaid: 'firstaidCard', assembly: 'assemblyCard', it: 'itCard', lang: 'langCard'
+        info:'infoCard', sos:'sosCard', floor:'floorCard', firstaid:'firstaidCard', assembly:'assemblyCard',
+        rooms:'roomsCard', cab:'cabCard', food:'foodCard', it:'itCard', lang:'langCard', parking:'parkingCard', social:'socialCard'
       };
       document.querySelectorAll('[data-section]').forEach(btn => {
         btn.addEventListener('click', () => {
           const key = btn.getAttribute('data-section');
           for (const id of Object.values(map)) {
             const el = document.getElementById(id);
-            if (!el) continue;
-            el.hidden = (id !== map[key]);
+            if (!el) continue; el.hidden = (id !== map[key]);
           }
-          const el = document.getElementById(map[key]);
-          el?.scrollIntoView({ behavior:'smooth', block:'start' });
+          const el = document.getElementById(map[key]); el?.scrollIntoView({ behavior:'smooth', block:'start' });
         });
       });
 
@@ -284,27 +547,20 @@
       function setLang(code){
         if(code==='EN'){ langEN.classList.add('active'); langDE.classList.remove('active'); }
         else { langDE.classList.add('active'); langEN.classList.remove('active'); }
-        applyLang(code);
-        localStorage.setItem('BTI_LANG', code);
+        applyLang(code); localStorage.setItem('BTI_LANG', code);
       }
       langEN.addEventListener('click', () => setLang('EN'));
       langDE.addEventListener('click', () => setLang('DE'));
+      const saved = localStorage.getItem('BTI_LANG') || 'EN'; setLang(saved);
 
-      // initial language (persisted)
-      const saved = localStorage.getItem('BTI_LANG') || 'EN';
-      setLang(saved);
-
-      // Share & Download (QR placeholder as file)
+      // QR share/download
       const svgQR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><rect width="256" height="256" fill="#fff"/><rect x="16" y="16" width="96" height="96" fill="#000"/><rect x="144" y="16" width="96" height="96" fill="#000"/><rect x="16" y="144" width="96" height="96" fill="#000"/><rect x="120" y="120" width="24" height="24" fill="#000"/><rect x="168" y="168" width="72" height="72" fill="#000"/></svg>`;
       const blob = new Blob([svgQR], { type:'image/svg+xml' });
       const qrUrl = URL.createObjectURL(blob);
-
       document.getElementById('download').addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.href = qrUrl; a.download = 'BTI-Visitor-QR.svg';
+        const a = document.createElement('a'); a.href = qrUrl; a.download = 'BTI-Visitor-QR.svg';
         document.body.appendChild(a); a.click(); a.remove();
       });
-
       document.getElementById('share').addEventListener('click', async () => {
         try {
           const file = new File([blob], 'BTI-Visitor-QR.svg', { type:'image/svg+xml' });
