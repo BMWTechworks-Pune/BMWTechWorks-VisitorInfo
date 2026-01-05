@@ -4,232 +4,315 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BMWTechWorks India – Visitor & Emergency Info</title>
-    <meta name="description" content="BMWTechWorks India – Pune: Visitor information, exit & evacuation plan, meeting rooms, emergency & first aid, assembly points, food & cab, and assistance." />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23000'/><circle cx='32' cy='32' r='22' fill='%23fff'/><circle cx='32' cy='32' r='14' fill='%2300a0e3'/></svg>">
+    <title>BMWTechWorks India – Safety • Assistance • Office Support</title>
+    <meta name="description" content="Quick access to SOS, floor layout & exit, first aid, assembly points, cab, food delivery, IT helpdesk, language toggle, share and download for BTI Pune." />
     <style>
-      /* Typography & base */
       :root {
-        --bg: #0a0c10;
-        --bg-elev: #12151b;
-        --text: #e6e8eb;
-        --muted: #b8bdc3;
-        --accent: #00a0e3; /* BMW blue */
-        --accent-2: #6c7a89;
-        --card: #151922;
-        --border: #232a35;
-        --success: #2bb673;
-        --danger: #ff4d4f;
-        --focus: #7bd3ff;
+        /* tuned palette inspired by the provided screenshot */
+        --bg:#f6edd9;            /* warm beige */
+        --panel:#114b5f;         /* deep teal header */
+        --text:#0d1b24;          /* dark text */
+        --muted:#3b5e68;         /* muted */
+        --btn-blue:#0b78b6;      /* primary blue buttons */
+        --btn-blue-text:#ffffff; /* button label */
+        --btn-red:#d32f2f;       /* SOS red */
+        --btn-grey:#5e6a64;      /* share/download grey */
+        --card:#fff6e6;          /* light card */
+        --shadow:rgba(0,0,0,0.12);
+        --radius:12px;
       }
-      html, body { height: 100%; }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-        color: var(--text);
-        background: linear-gradient(180deg, var(--bg) 0%, #0c1219 100%);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      a { color: var(--accent); text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
-      header { display: grid; gap: 6px; padding: 24px 0; border-bottom: 1px solid var(--border); }
-      header .title { font-size: 1.75rem; font-weight: 700; letter-spacing: 0.2px; }
-      header .subtitle { color: var(--muted); }
+      html,body{height:100%;}
+      body{margin:0;background:var(--bg);color:var(--text);
+           font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;
+           -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+      .wrap{max-width:720px;margin:0 auto;padding:12px 14px 28px;}
+      .hero{background:var(--panel);color:#eaf7fb;border-radius:0 0 var(--radius) var(--radius);
+            padding:14px;box-shadow:0 6px 18px var(--shadow);} 
+      .hero h1{margin:0;font-size:0.98rem;letter-spacing:0.2px;text-align:center;}
 
-      /* Utility */
-      .grid { display: grid; gap: 16px; }
-      .grid.cards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-      }
-      .card h3 { margin: 0 0 8px; font-size: 1.1rem; }
-      .muted { color: var(--muted); }
-      .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.8rem; color: var(--muted); }
-      .section-title { font-size: 1.25rem; font-weight: 700; margin: 24px 0 8px; }
-      .list { padding-left: 18px; }
-      .btn {
-        display: inline-flex; align-items: center; gap: 8px;
-        padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
-        background: linear-gradient(180deg, #1a202b, #151922);
-        color: var(--text);
-        cursor: pointer;
-      }
-      .btn:hover { border-color: var(--accent); }
-      .btn.secondary { background: transparent; }
-      .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 0; }
-      .notice { border-left: 3px solid var(--accent); padding: 12px 14px; background: rgba(0,160,227,0.08); border-radius: 8px; }
-      .back { margin-top: 12px; }
-      footer { margin: 36px 0 12px; color: var(--muted); font-size: 0.9rem; }
+      /* Language toggle */
+      .lang-toggle{display:flex;gap:12px;justify-content:center;margin:14px 0 12px;}
+      .lang-toggle button{flex:1;max-width:150px;padding:12px 0;border-radius:10px;border:none;cursor:pointer;
+                          background:#4b5b58;color:#d7dedb;box-shadow:0 4px 10px var(--shadow);
+                          font-size:0.95rem;} 
+      .lang-toggle button.active{background:#67736e;color:#fff;}
 
-      /* Meeting room chips */
-      .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-      .chip { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: #18202b; }
+      /* Button list */
+      .list{display:flex;flex-direction:column;gap:12px;margin:8px 0 18px;}
+      .btn{border:none;border-radius:12px;padding:14px 16px;font-size:0.95rem;cursor:pointer;
+           color:var(--btn-blue-text);background:var(--btn-blue);box-shadow:0 6px 14px var(--shadow);
+           display:flex;align-items:center;gap:10px;justify-content:flex-start;}
+      .btn .emoji{font-size:1.1rem;} 
+      .btn.red{background:var(--btn-red);} 
+      .btn.grey{background:var(--btn-grey);} 
+      .btn:focus-visible{outline:3px solid #7bd3ff;outline-offset:2px;} 
 
-      /* Responsive images / placeholders */
-      .placeholder { border: 1px dashed var(--border); border-radius: 8px; padding: 12px; color: var(--muted); text-align: center; }
+      /* Card sections */
+      .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 4px 12px var(--shadow);} 
+      .card h2{margin:0 0 8px;font-size:1rem;color:#17394a;} 
+      .card p{margin:0 0 6px;} 
+      .list-ul{margin:0;padding-left:18px;} 
+      a{color:#005ea8;text-decoration:none;} a:hover{text-decoration:underline;} 
 
-      /* Focus styles for accessibility */
-      :where(a, button, .chip).focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+      footer{margin:20px 0 8px;text-align:center;color:#5a6b74;font-size:0.88rem;}
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <span class="tag">BMWTechWorks</span>
-        <div class="title">BMWTechWorks India – Visitor &amp; Emergency Info</div>
-        <div class="subtitle">BMWTechWorks India – Pune</div>
-        <div class="toolbar" role="toolbar" aria-label="Quick Actions">
-          <button class="btn" id="downloadQR" type="button">⬇ Download QR</button>
-          <button class="btn" id="shareQR" type="button">📤 Share QR</button>
-        </div>
-        <div class="notice" role="note">
-          Scan once only. Information is stored locally on your device.<br />
-          🔒 Privacy Note: No personal data, no location tracking, no cookies. This page works fully offline after first load.
-        </div>
-      </header>
+    <div class="wrap">
+      <div class="hero" role="banner">
+        <h1 id="title">Safety • Assistance • Office Support</h1>
+      </div>
 
-      <section aria-labelledby="company-info">
-        <h2 id="company-info" class="section-title">Company Information</h2>
-        <div class="grid cards">
-          <article class="card" aria-label="Company Links">
-            <h3>BMWTechWorks India</h3>
-            <p>
-              <a href="https://www.bmwgroup.com/en.html" target="_blank" rel="noopener">Website</a> ·
-              <a href="https://www.linkedin.com/company/bmwgroup/" target="_blank" rel="noopener">LinkedIn</a>
-            </p>
-            <p>
-              Amar Tech Park, Balewadi, Pune – 411045 ·
-              <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">Open in Google Maps</a>
-            </p>
-            <button class="btn secondary back" type="button" data-back>← Back</button>
-          </article>
-        </div>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" id="langEN" class="active">EN</button>
+        <button type="button" id="langDE">DE</button>
+      </div>
+
+      <nav class="list" aria-label="Quick actions">
+        <button class="btn red" data-section="sos"><span class="emoji">🚨</span><span id="btn_sos">SOS – Emergency</span></button>
+        <button class="btn" data-section="floor"><span class="emoji">🗺️</span><span id="btn_floor">Floor Layout & Exit</span></button>
+        <button class="btn" data-section="firstaid"><span class="emoji">🧑‍⚕️</span><span id="btn_firstaid">First Aid & Medical Support</span></button>
+        <button class="btn" data-section="assembly"><span class="emoji">📍</span><span id="btn_assembly">Assembly Points</span></button>
+        <button class="btn" data-section="cab"><span class="emoji">🚕</span><span id="btn_cab">Cab Facility</span></button>
+        <button class="btn" data-section="food"><span class="emoji">🍔</span><span id="btn_food">Food Delivery</span></button>
+        <button class="btn" data-section="it"><span class="emoji">🖥️</span><span id="btn_it">IT Helpdesk</span></button>
+        <button class="btn" data-section="lang"><span class="emoji">🌍</span><span id="btn_lang">German ↔ English</span></button>
+        <button class="btn grey" id="share"><span class="emoji">📤</span><span id="btn_share">Share</span></button>
+        <button class="btn grey" id="download"><span class="emoji">📥</span><span id="btn_download">Download</span></button>
+      </nav>
+
+        <section id="sosCard" class="card" aria-labelledby="sosTitle" hidden>
+        <h2 id="sosTitle">SOS – Emergency</h2>
+        <ul id="sosList" class="list-ul">
+          <li>Ambulance: 108</li>
+          <li>Emergency Contact: +91-9769317569</li>
+          <li>First Aid: Reception • Nurse Room: Floor 6</li>
+        </ul>
       </section>
 
-      <section aria-labelledby="exit-evac">
-        <h2 id="exit-evac" class="section-title">Exit &amp; Evacuation Plan</h2>
-        <div class="grid cards">
-          <article class="card">
-            <p class="muted">Nearest exit will be highlighted (logic based).</p>
-            <div class="placeholder" aria-label="Exit Plan">Exit Plan</div>
-            <div class="placeholder" aria-label="Audio Mapping">PLACEHOLDER: Exit audio mapping (EXIT 1–5)</div>
-            <button class="btn secondary back" type="button" data-back>← Back</button>
-          </article>
-        </div>
+          <section id="firstaidCard" class="card" aria-labelledby="firstaidTitle" hidden>
+        <h2 id="firstaidTitle">First Aid & Medical Support</h2>
+        <ul id="firstaidList" class="list-ul">
+          <li>First Aid Kit – Reception</li>
+          <li>Nurse Room – Floor 6</li>
+          <li>Wheelchair & Stretcher available</li>
+          <li>Nearby hospitals – </li>
+          <li>Jupiter Hospital, Baner 1.5 km – Multispeciality, 24x7 Emergency  Ambulance – 020 2799 2799 </li>
+          <li><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></li>
+          <li>Ashwini Hospital, Balewadi 1.2 km – General Clinic & OPD</li>
+          <li><a href='https://maps.app.goo.gl/6h8X9kYvZr2JupiterHospital' target='_blank'>View</a></li>
+          <li>Ambulance:Nucare Ambulance Contact – 90966 67656</li>
+        </ul>
       </section>
 
-      <section aria-labelledby="meeting-rooms">
-        <h2 id="meeting-rooms" class="section-title">Meeting Rooms</h2>
-        <div class="card">
-          <p class="muted">Select room to view route &amp; audio guidance.</p>
-          <div class="chips" role="list">
-            <span class="chip" role="listitem">Success – Board Room</span>
-            <span class="chip" role="listitem">Inspire – Training Room</span>
-            <span class="chip" role="listitem">Joy</span>
-            <span class="chip" role="listitem">Debug</span>
-            <span class="chip" role="listitem">iDrive</span>
-            <span class="chip" role="listitem">M-Mode</span>
-            <span class="chip" role="listitem">Drift</span>
-            <span class="chip" role="listitem">xDrive</span>
-            <span class="chip" role="listitem">Torque</span>
-          </div>
-          <div class="placeholder" style="margin-top:12px;">Meeting Rooms</div>
-          <button class="btn secondary back" type="button" data-back>← Back</button>
-        </div>
+      
+       <section id="cabCard" class="card" aria-labelledby="cabTitle" hidden>
+        <h2 id="cabTitle">Cab Facility</h2>
+        <ul id="cabList" class="list-ul">
+          <li><a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a></li>
+          <li><a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></li>
+        </ul>
       </section>
 
-      <section aria-labelledby="emergency">
-        <h2 id="emergency" class="section-title">Emergency &amp; First Aid</h2>
-        <article class="card">
-          <ul class="list">
-            <li>First Aid Kit – Reception</li>
-            <li>Nurse Room – Floor 6</li>
-            <li>Wheelchair &amp; Stretcher available</li>
-            <li>Ambulance: 108</li>
-            <li>Emergency Contact: +91-XXXXXXXXXX</li>
-          </ul>
-          <div class="placeholder">Nearby hospitals – PLACEHOLDER</div>
-          <button class="btn secondary back" type="button" data-back>← Back</button>
-        </article>
+      
+      <!-- Content cards: Food Delivery visible by default -->
+      <section id="foodCard" class="card" aria-labelledby="foodTitle">
+        <h2 id="foodTitle">Food Delivery</h2>
+        <ul id="foodList" class="list-ul">
+          <li><a href="https://www.zomato.com/" target="_blank" rel="noopener">Zomato</a></li>
+          <li><a href="https://www.swiggy.com/" target="_blank" rel="noopener">Swiggy</a></li>
+        </ul>
       </section>
 
-      <section aria-labelledby="assembly">
-        <h2 id="assembly" class="section-title">Assembly Points</h2>
-        <article class="card">
-          <p>After evacuation, proceed to nearest assembly point.</p>
-          <div class="placeholder">Assembly points map – PLACEHOLDER</div>
-          <button class="btn secondary back" type="button" data-back>← Back</button>
-        </article>
+     
+    
+
+      <section id="floorCard" class="card" aria-labelledby="floorTitle" hidden>
+        <h2 id="floorTitle">Floor Layout & Exit</h2>
+        <p id="floorDesc">Nearest exit will be highlighted (logic based).</p>
+        <div id="floorPH" style="margin-top:10px;border:1px dashed #c7bfa7;border-radius:8px;padding:10px;color:#5a6b74;">Exit Plan – PLACEHOLDER</div>
       </section>
 
-      <section aria-labelledby="food-cab">
-        <h2 id="food-cab" class="section-title">Food &amp; Cab Facility</h2>
-        <div class="grid cards">
-          <article class="card">
-            <p>🚕 Cab: <a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a> · <a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></p>
-            <p>🍔 Food: <a href="https://www.zomato.com/" target="_blank" rel="noopener">Zomato</a> · <a href="https://www.swiggy.com/" target="_blank" rel="noopener">Swiggy</a></p>
-            <button class="btn secondary back" type="button" data-back>← Back</button>
-          </article>
-        </div>
+   
+      <section id="assemblyCard" class="card" aria-labelledby="assemblyTitle" hidden>
+        <h2 id="assemblyTitle">Assembly Points</h2>
+        <p id="assemblyDesc">After evacuation, proceed to nearest assembly point.</p>
+        <div id="assemblyPH" style="margin-top:10px;border:1px dashed #c7bfa7;border-radius:8px;padding:10px;color:#5a6b74;">Assembly points map – PLACEHOLDER</div>
       </section>
 
-      <section aria-labelledby="assistance">
-        <h2 id="assistance" class="section-title">Need Assistance</h2>
-        <article class="card">
-          <p>Escalation Matrix – PLACEHOLDER<br />(IT Helpdesk, Security, Admin, Emergency)</p>
-          <button class="btn secondary back" type="button" data-back>← Back</button>
-        </article>
+      <section id="itCard" class="card" aria-labelledby="itTitle" hidden>
+        <h2 id="itTitle">IT Helpdesk</h2>
+        <p id="itDesc">Email: ITHelpdesk.PNQ@bmwtechworks.in </p>
       </section>
 
-      <footer>
-        © Developed by SPP Team – BTI Pune 2026
-      </footer>
+      <section id="langCard" class="card" aria-labelledby="langTitle" hidden>
+        <h2 id="langTitle">German ↔ English</h2>
+        
+      </section>
+
+      <footer>© Developed by SPP Team – BTI Pune 2026</footer>
     </div>
 
     <script>
-      // Minimal JS for QR actions & back buttons
-      (function(){
-        const svgQR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><rect width="256" height="256" fill="#fff"/><rect x="16" y="16" width="96" height="96" fill="#000"/><rect x="144" y="16" width="96" height="96" fill="#000"/><rect x="16" y="144" width="96" height="96" fill="#000"/><rect x="120" y="120" width="24" height="24" fill="#000"/><rect x="168" y="168" width="72" height="72" fill="#000"/></svg>`;
+      // Copy deck for EN/DE text switching
+      const STRINGS = {
+        EN: {
+          title: 'Safety • Assistance • Office Support',
+          buttons: {
+            sos:'SOS – Emergency', floor:'Floor Layout & Exit', firstaid:'First Aid & Medical Support',
+            assembly:'Assembly Points', cab:'Cab Facility', food:'Food Delivery', it:'IT Helpdesk',
+            lang:'German ↔ English', share:'Share', download:'Download'
+          },
+          sections: {
+            foodTitle:'Food Delivery',
+            cabTitle:'Cab Facility',
+            sosTitle:'SOS – Emergency',
+            floorTitle:'Floor Layout & Exit',
+            firstaidTitle:'First Aid & Medical Support',
+            assemblyTitle:'Assembly Points',
+            itTitle:'IT Helpdesk',
+            langTitle:'German ↔ English',
 
-        const blob = new Blob([svgQR], { type: 'image/svg+xml' });
-        const qrUrl = URL.createObjectURL(blob);
+            floorDesc:'Nearest exit will be highlighted (logic based).',
+            floorPH:'Exit Plan – PLACEHOLDER',
 
-        const downloadBtn = document.getElementById('downloadQR');
-        const shareBtn = document.getElementById('shareQR');
+            assemblyDesc:'After evacuation, proceed to nearest assembly point.',
+            assemblyPH:'Assembly points map – PLACEHOLDER',
 
-        downloadBtn?.addEventListener('click', () => {
-          const a = document.createElement('a');
-          a.href = qrUrl;
-          a.download = 'BTI-Visitor-QR.svg';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        });
-
-        shareBtn?.addEventListener('click', async () => {
-          try {
-            const file = new File([blob], 'BTI-Visitor-QR.svg', { type: 'image/svg+xml' });
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-              await navigator.share({ files: [file], title: 'BTI Visitor QR' });
-            } else {
-              window.open(qrUrl, '_blank');
-            }
-          } catch (err) {
-            window.open(qrUrl, '_blank');
+            itDesc:'Escalation Matrix – PLACEHOLDER (IT Helpdesk, Security, Admin)',
+            langDesc:'Language toggle for phrases (EN/DE). Audio mapping – PLACEHOLDER.'
+          },
+          lists: {
+            sos:[ 'Ambulance: 108', 'Emergency Contact: +91-XXXXXXXXXX', 'First Aid: Reception • Nurse Room: Floor 6' ],
+            firstaid:[ 'First Aid Kit – Reception', 'Nurse Room – Floor 6', 'Wheelchair & Stretcher available', 'Nearby hospitals – PLACEHOLDER' ]
           }
-        });
+        },
+        DE: {
+          title: 'Sicherheit • Unterstützung • Büroservice',
+          buttons: {
+            sos:'SOS – Notfall', floor:'Etagenplan & Ausgang', firstaid:'Erste Hilfe & Medizinische Unterstützung',
+            assembly:'Sammelplätze', cab:'Taxi‑Service', food:'Essenslieferung', it:'IT‑Helpdesk',
+            lang:'Deutsch ↔ Englisch', share:'Teilen', download:'Herunterladen'
+          },
+          sections: {
+            foodTitle:'Essenslieferung',
+            cabTitle:'Taxi‑Service',
+            sosTitle:'SOS – Notfall',
+            floorTitle:'Etagenplan & Ausgang',
+            firstaidTitle:'Erste Hilfe & Medizinische Unterstützung',
+            assemblyTitle:'Sammelplätze',
+            itTitle:'IT‑Helpdesk',
+            langTitle:'Deutsch ↔ Englisch',
 
-        // Back buttons navigate to top of page
-        document.querySelectorAll('[data-back]').forEach(btn => {
-          btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            floorDesc:'Nächstgelegener Ausgang wird hervorgehoben (logikbasiert).',
+            floorPH:'Fluchtplan – PLATZHALTER',
+
+            assemblyDesc:'Nach der Evakuierung zum nächstgelegenen Sammelplatz gehen.',
+            assemblyPH:'Sammelplatzkarte – PLATZHALTER',
+
+            itDesc:'Eskalationsmatrix – PLATZHALTER (IT‑Helpdesk, Sicherheit, Verwaltung)',
+            langDesc:'Sprachumschaltung für Phrasen (DE/EN). Audiomapping – PLATZHALTER.'
+          },
+          lists: {
+            sos:[ 'Krankenwagen: 108', 'Notfallkontakt: +91-XXXXXXXXXX', 'Erste Hilfe: Rezeption • Krankenzimmer: 6. Etage' ],
+            firstaid:[ 'Erste‑Hilfe‑Kasten – Rezeption', 'Krankenzimmer – 6. Etage', 'Rollstuhl & Trage verfügbar', 'Nahegelegene Krankenhäuser – PLATZHALTER' ]
+          }
+        }
+      };
+
+      function applyLang(code){
+        const S = STRINGS[code];
+        if(!S) return;
+        // Title
+        document.getElementById('title').textContent = S.title;
+        // Buttons
+        document.getElementById('btn_sos').textContent = S.buttons.sos;
+        document.getElementById('btn_floor').textContent = S.buttons.floor;
+        document.getElementById('btn_firstaid').textContent = S.buttons.firstaid;
+        document.getElementById('btn_assembly').textContent = S.buttons.assembly;
+        document.getElementById('btn_cab').textContent = S.buttons.cab;
+        document.getElementById('btn_food').textContent = S.buttons.food;
+        document.getElementById('btn_it').textContent = S.buttons.it;
+        document.getElementById('btn_lang').textContent = S.buttons.lang;
+        document.getElementById('btn_share').textContent = S.buttons.share;
+        document.getElementById('btn_download').textContent = S.buttons.download;
+        // Section titles & descriptions
+        document.getElementById('foodTitle').textContent = S.sections.foodTitle;
+        document.getElementById('cabTitle').textContent = S.sections.cabTitle;
+        document.getElementById('sosTitle').textContent = S.sections.sosTitle;
+        document.getElementById('floorTitle').textContent = S.sections.floorTitle;
+        document.getElementById('firstaidTitle').textContent = S.sections.firstaidTitle;
+        document.getElementById('assemblyTitle').textContent = S.sections.assemblyTitle;
+        document.getElementById('itTitle').textContent = S.sections.itTitle;
+        document.getElementById('langTitle').textContent = S.sections.langTitle;
+        document.getElementById('floorDesc').textContent = S.sections.floorDesc;
+        document.getElementById('floorPH').textContent = S.sections.floorPH;
+        document.getElementById('assemblyDesc').textContent = S.sections.assemblyDesc;
+        document.getElementById('assemblyPH').textContent = S.sections.assemblyPH;
+        document.getElementById('itDesc').textContent = S.sections.itDesc;
+        document.getElementById('langDesc').textContent = S.sections.langDesc;
+        // Lists
+        function renderList(id, items){
+          const ul = document.getElementById(id);
+          ul.innerHTML = items.map(i => `<li>${i}</li>`).join('');
+        }
+        renderList('sosList', S.lists.sos);
+        renderList('firstaidList', S.lists.firstaid);
+      }
+
+      // Simple view toggling to match button behavior
+      const map = {
+        food: 'foodCard', cab: 'cabCard', sos: 'sosCard', floor: 'floorCard',
+        firstaid: 'firstaidCard', assembly: 'assemblyCard', it: 'itCard', lang: 'langCard'
+      };
+      document.querySelectorAll('[data-section]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-section');
+          for (const id of Object.values(map)) {
+            const el = document.getElementById(id);
+            if (!el) continue;
+            el.hidden = (id !== map[key]);
+          }
+          const el = document.getElementById(map[key]);
+          el?.scrollIntoView({ behavior:'smooth', block:'start' });
         });
-      })();
+      });
+
+      // Language toggle state and content
+      const langEN = document.getElementById('langEN');
+      const langDE = document.getElementById('langDE');
+      function setLang(code){
+        if(code==='EN'){ langEN.classList.add('active'); langDE.classList.remove('active'); }
+        else { langDE.classList.add('active'); langEN.classList.remove('active'); }
+        applyLang(code);
+        localStorage.setItem('BTI_LANG', code);
+      }
+      langEN.addEventListener('click', () => setLang('EN'));
+      langDE.addEventListener('click', () => setLang('DE'));
+
+      // initial language (persisted)
+      const saved = localStorage.getItem('BTI_LANG') || 'EN';
+      setLang(saved);
+
+      // Share & Download (QR placeholder as file)
+      const svgQR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><rect width="256" height="256" fill="#fff"/><rect x="16" y="16" width="96" height="96" fill="#000"/><rect x="144" y="16" width="96" height="96" fill="#000"/><rect x="16" y="144" width="96" height="96" fill="#000"/><rect x="120" y="120" width="24" height="24" fill="#000"/><rect x="168" y="168" width="72" height="72" fill="#000"/></svg>`;
+      const blob = new Blob([svgQR], { type:'image/svg+xml' });
+      const qrUrl = URL.createObjectURL(blob);
+
+      document.getElementById('download').addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = qrUrl; a.download = 'BTI-Visitor-QR.svg';
+        document.body.appendChild(a); a.click(); a.remove();
+      });
+
+      document.getElementById('share').addEventListener('click', async () => {
+        try {
+          const file = new File([blob], 'BTI-Visitor-QR.svg', { type:'image/svg+xml' });
+          if (navigator.share && navigator.canShare && navigator.canShare({ files:[file] })) {
+            await navigator.share({ files:[file], title:'BTI Visitor QR' });
+          } else { window.open(qrUrl, '_blank'); }
+        } catch(e){ window.open(qrUrl, '_blank'); }
+      });
     </script>
   </body>
 </html>
