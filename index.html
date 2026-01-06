@@ -1,4 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BMWTechWorks India – PUNE</title>
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;line-height:1.5;color:#111;background:#fff}
+    .wrap{max-width:1000px;margin:0 auto;padding:16px}
+    .sharebar{display:flex;gap:.5rem;flex-wrap:wrap;margin:16px 0}
+    .btn{appearance:none;border:1px solid #ccc;background:#f8f8f8;color:#000;border-radius:8px;padding:.5rem .8rem;cursor:pointer;text-decoration:none}
+    .btn.primary{background:#1C69D4;color:#fff;border-color:#1C69D4}
+    #qrImage{width:220px;border:1px solid #ddd;border-radius:8px;display:block;margin-top:.5rem}
+    /* Preserve original text exactly */
+    pre.original{white-space:pre-wrap;word-wrap:break-word}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Share QR only (no Generate, no Scan). -->
+    <section id="share">
+      <div class="sharebar">
+        <button class="btn primary" id="shareBtn">Share</button>
+        <a id="downloadQR" class="btn" download="BTI-Pune-QR.png">Download QR</a>
+      </div>
+      <img id="qrImage" alt="QR" />
+    </section>
 
+    <!-- Original content preserved verbatim below -->
+    <section id="content">
+      <pre class="original">
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
@@ -534,4 +564,33 @@
       setLang(localStorage.getItem('BTI_LANG') || 'EN');
     </script>
   </body>
+</html>
+</pre>
+    </section>
+  </div>
+
+  <script>
+    // Share button (Web Share API)
+    (function(){
+      const shareBtn = document.getElementById('shareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async ()=>{
+          const data = { title: document.title, text: document.title, url: location.href };
+          if (navigator.share) { try { await navigator.share(data); } catch(e){} }
+          else { alert('Share not supported on this browser.'); }
+        });
+      }
+    })();
+
+    // Download QR (auto, no generate button)
+    (function(){
+      const dl = document.getElementById('downloadQR');
+      const img = document.getElementById('qrImage');
+      const url = location.href;
+      const api = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url);
+      if (img) img.src = api;
+      if (dl) dl.href = api;
+    })();
+  </script>
+</body>
 </html>
