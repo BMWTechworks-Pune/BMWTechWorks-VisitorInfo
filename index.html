@@ -47,6 +47,9 @@
       <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
       <button class="nav" data-panel="translate">🌍 German ↔ English</button>
       <button class="nav" data-panel="parking">🅿️ Parking Info</button>
+      <button class="nav" data="cab">🚕 Cab Facility</button>
+      <button class="nav" data="food">🍔 Food Delivery Apps</button>
+      <button class="nav" data="social">🔗 Social Media Connect</button>
       <button class="nav" data-panel="travel">🧭 Travel Info & Converter & Hotels</button>
       <button class="nav" data-panel="share">📥 Download / Share QR</button>
     </nav>
@@ -88,20 +91,9 @@
           <a class="tel" href="tel:+912027261120">📞 020 27261120</a></div>
       </div>
 
-      <h3>Escalation Matrix – Facilities Team</h3>
-      <div class="grid">
-        <div class="card"><strong>Dhananjay Maske (First Level)</strong><br>
-          Facilities Specialities, Amar Tech Park Facility, Pune<br>
-          <a href="mailto:Dhananjay.maske@bmwtechworks.in?subject=Facility%20Assistance">📧 Email</a> · 
-          <a class="tel" href="tel:+919657893928">📞 9657893928</a></div>
-        <div class="card"><strong>Minal Pinto (Second Level)</strong><br>
-          Head of Facilities & Workplace, Corporate Office, Pune<br>
-          <a href="mailto:Minal.pinto@bmwtechwork.in?subject=Facility%20Assistance">📧 Email</a> · 
-          <a class="tel" href="tel:+919769317569">📞 9769317569</a></div>
-        <div class="card"><strong>Vishwas Muthyala (Third Level)</strong><br>
-          CHRO, Corporate Office, Pune</div>
-      </div>
+      
     </section>
+
 
     <!-- Layout & Exit -->
     <section id="panel-layout" class="panel">
@@ -113,6 +105,35 @@
         <li>EXIT 4</li>
         <li>EXIT 5</li>
       </ul>
+      <h2>BTI Features – Exit Plan, Audio, Routes, EN/DE & Deep Links</h2>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+    <button id="langToggle" class="pill">EN/DE</button>
+    <span id="langLabel" class="muted">Language: EN</span>
+    <button id="captureToggle" class="pill" title="Click map to capture normalized coords">Capture Markers</button>
+    <span id="capStatus" class="muted"></span>
+  </div>
+
+  <div id="planWrap">
+    <div id="planLayer">
+      <img id="planImg" src="assets/exit-plan.png" alt="Exit Plan" />
+      <svg id="routeSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div id="planControls">
+      <button id="zoomIn">＋</button>
+      <button id="zoomOut">－</button>
+      <button id="reset">⟲ Reset</button>
+      <button id="fullscreen">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:10px;">
+    <div class="card">
+      <h3>Audio Guidance</h3>
+      <audio id="guideAudio" src="assets/audio-guidance.wav"></audio>
+      <div style="display:flex; gap:8px; margin-top:6px;"><button id="playAudio">🔊 Play</button><button id="stopAudio">⏹ Stop</button></div>
+    </div>
+
+
     </section>
 
     <!-- ERT Members -->
@@ -166,8 +187,9 @@
       <h2>First Aid & Medical Support</h2>
       <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair & Stretcher – Available:</p>
       <img class="inset" src="Nurse Room.jpg" alt="Nurse room" />
-      <img class="inset" src="Medical Room Timings.jpg" alt="Medical room timings" />
-      <img class="inset" src="First Aid Kit.jpg" alt="First aid kit" />
+      <img class="inset" src=FirstAidKit.jpg alt="First Aid Kit" />
+      <img class="inset" src=NurseRoomMedical.jpg alt="NurseRoomMedical" />
+     
     </section>
 
     <!-- Assembly Points -->
@@ -195,6 +217,24 @@
       <p>Meeting rooms floor plan</p>
       <p>From / To · Show Route · 🔊 Play Audio</p>
       <p>Select a source and destination room, then tap "Show Route". Follow the green dots.</p>
+      <div class="card">
+      <h3>Room Route Finder</h3>
+      <label for="roomSel">Choose room:</label>
+      <select id="roomSel">
+        <option value="">— Select —</option>
+        <option>Success</option>
+        <option>Inspire</option>
+        <option>Joy</option>
+        <option>Debug</option>
+        <option>iDrive</option>
+        <option>M-Mode</option>
+        <option>Drift</option>
+        <option>xDrive</option>
+        <option>Torque</option>
+      </select>
+      <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
+    </div>
+    
     </section>
 
     <!-- IT Helpdesk -->
@@ -203,7 +243,7 @@
       <p>Email: <a href="mailto:ITHelpdesk.PNQ@bmwtechworks.in">ITHelpdesk.PNQ@bmwtechworks.in</a></p>
     </section>
 
-    <!-- Translate -->
+    <!-- Translate -->Need Assistance
     <section id="panel-translate" class="panel">
       <h2>Basic German to English Phrases</h2>
       <table>
@@ -232,6 +272,31 @@
         <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
       </ul>
     </section>
+  
+    <!-- CAB -->
+<section id="cab" class="panel">
+<h2>Cab Facility</h2>
+<ul>
+<li><a href="https://www.olacabs.com/" target="_blank">Ola</a></li>
+<li><a href="https://www.uber.com/in/en/" target="_blank">Uber</a></li>
+</ul>
+</section>
+
+<!-- FOOD -->
+<section id="food" class="panel">
+<h2>Food Delivery</h2>
+<ul>
+<li><a href="https://www.zomato.com/" target="_blank">Zomato</a></li>
+<li><a href="https://www.swiggy.com/" target="_blank">Swiggy</a></li>
+</ul>
+</section>
+
+<!-- SOCIAL -->
+<section id="social" class="panel">
+<h2>Social Media & Contact</h2>
+<a href="https://www.linkedin.com" target="_blank">LinkedIn</a><br>
+<a href="https://bmwtechworks.in" target="_blank">bmwtechworks.in</a>
+</section>
 
     <!-- Travel Info & Converter -->
     <section id="panel-travel" class="panel">
@@ -252,6 +317,7 @@
   tel:+918983001155📞 8983001155</a>
 </li>
 <li><strong>Incognito Restaurant Bar &amp; Cafe</strong> — 
+  https://www.google.com/maps/search/?api=1&query=Panchshil%20Business%20Park%2C%20Baner%20-%20Balewadi%20Rd%2C%20Baner%2C%20Pune%2C%20Maharashtra%20411045
     Panchshil Business Park, Baner - Balewadi Rd, Baner, Pune, Maharashtra 411045
   </a> · ⏰ 11:30 AM to 11:30 PM · 
   <a class="tel" href="tel:+918975530505i>
@@ -259,7 +325,21 @@
 
       </ul>
     </section>
-
+   <section id="assist" class="panel">
+   <h2>Need Assistance</h2>
+      <div class="grid">
+        <div class="card"><strong>Dhananjay Maske (First Level)</strong><br>
+          Facilities Specialities, Amar Tech Park Facility, Pune<br>
+          <a href="mailto:Dhananjay.maske@bmwtechworks.in?subject=Facility%20Assistance">📧 Email</a> · 
+          <a class="tel" href="tel:+919657893928">📞 9657893928</a></div>
+        <div class="card"><strong>Minal Pinto (Second Level)</strong><br>
+          Head of Facilities & Workplace, Corporate Office, Pune<br>
+          <a href="mailto:Minal.pinto@bmwtechwork.in?subject=Facility%20Assistance">📧 Email</a> · 
+          <a class="tel" href="tel:+919769317569">📞 9769317569</a></div>
+        <div class="card"><strong>Vishwas Muthyala (Third Level)</strong><br>
+          CHRO, Corporate Office, Pune</div>
+      </div>
+      </section >
     <!-- Share / QR -->
     <section id="panel-share" class="panel">
       <h2>Share / Download</h2>
@@ -268,7 +348,7 @@
         &nbsp; 
         <a href="#" id="download-qr" class="btn">Download QR</a>
       </p>
-      <div class="qr"><img src="q_code.png" alt="BTI QR" style="max-width:180px;height:auto;" /></div>
+      <div class="qr">[ QR image here ]</div>
     </section>
   </main>
 
