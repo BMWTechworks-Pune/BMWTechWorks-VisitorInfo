@@ -27,6 +27,70 @@
     img.inset{max-width:100%;border:1px solid #d7dde8;border-radius:10px;margin:8px 0}
     footer{padding:24px 16px 40px;text-align:center;color:#5a6b7a}
     a.tel{white-space:nowrap}
+
+
+
+  /* Basic look & feel */
+  .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+  .muted { color: #555; }
+  .controls-bar { display: flex; flex-direction: column; gap: 8px; }
+  .zoom-controls button, .select-controls button, .audio-controls button {
+    padding: 6px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer;
+  }
+  .select-controls select { padding: 4px; }
+  .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .steps-column ol { min-height: 80px; }
+
+  /* Stage: pan/zoom container */
+  #imgStageWrapper {
+    width: 100%;
+    height: 58vh; /* adjust as needed */
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fafafa;
+    position: relative;
+    margin-top: 10px;
+  }
+  #imgStage {
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 0;
+    cursor: grab;
+    position: relative;
+  }
+  #imgStage.grabbing { cursor: grabbing; }
+  #floorImg {
+    position: absolute;
+    left: 0; top: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  #routeCanvas {
+    position: absolute;
+    left: 0; top: 0; pointer-events: none;
+  }
+
+  /* Room markers */
+  .room-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border: 1px solid #b0b0b0;
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+  }
+  .room-marker:hover { background: #fff; }
+  .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
+  .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
+
+  
+    
   </style>
 </head>
 <body>
@@ -47,9 +111,9 @@
       <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
       <button class="nav" data-panel="translate">🌍 German ↔ English</button>
       <button class="nav" data-panel="parking">🅿️ Parking Info</button>
-      <button class="nav" data="cab">🚕 Cab Facility</button>
-      <button class="nav" data="food">🍔 Food Delivery Apps</button>
-      <button class="nav" data="social">🔗 Social Media Connect</button>
+      <button class="nav" data-panel="cab">🚕 Cab Facility</button>
+      <button class="nav" data-panel"food">🍔 Food Delivery Apps</button>
+      <button class="nav" data-panel="social">🔗 Social Media Connect</button>
       <button class="nav" data-panel="travel">🧭 Travel Info & Converter & Hotels</button>
       <button class="nav" data-panel="share">📥 Download / Share QR</button>
     </nav>
@@ -210,32 +274,7 @@
 </p>
     </section>
 
-    <!-- Meeting Rooms -->
-    <section id="panel-rooms" class="panel">
-      <h2>Meeting Rooms</h2>
-      <p>＋ Zoom In － Zoom Out ⤿ Reset</p>
-      <p>Meeting rooms floor plan</p>
-      <p>From / To · Show Route · 🔊 Play Audio</p>
-      <p>Select a source and destination room, then tap "Show Route". Follow the green dots.</p>
-      <div class="card">
-      <h3>Room Route Finder</h3>
-      <label for="roomSel">Choose room:</label>
-      <select id="roomSel">
-        <option value="">— Select —</option>
-        <option>Success</option>
-        <option>Inspire</option>
-        <option>Joy</option>
-        <option>Debug</option>
-        <option>iDrive</option>
-        <option>M-Mode</option>
-        <option>Drift</option>
-        <option>xDrive</option>
-        <option>Torque</option>
-      </select>
-      <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
-    </div>
     
-    </section>
 
     <!-- IT Helpdesk -->
     <section id="panel-it" class="panel">
@@ -274,7 +313,7 @@
     </section>
   
     <!-- CAB -->
-<section id="cab" class="panel">
+<section id="panel-cab" class="panel">
 <h2>Cab Facility</h2>
 <ul>
 <li><a href="https://www.olacabs.com/" target="_blank">Ola</a></li>
@@ -283,7 +322,7 @@
 </section>
 
 <!-- FOOD -->
-<section id="food" class="panel">
+<section id="panel-food" class="panel">
 <h2>Food Delivery</h2>
 <ul>
 <li><a href="https://www.zomato.com/" target="_blank">Zomato</a></li>
@@ -292,12 +331,77 @@
 </section>
 
 <!-- SOCIAL -->
-<section id="social" class="panel">
+<section id="spanel-ocial" class="panel">
 <h2>Social Media & Contact</h2>
 <a href="https://www.linkedin.com" target="_blank">LinkedIn</a><br>
 <a href="https://bmwtechworks.in" target="_blank">bmwtechworks.in</a>
 </section>
 
+    <section id="panel-rooms" class="panel" style="display:none">
+  <h2>Meeting Rooms</h2>
+  <p>＋ Zoom In － Zoom Out ⤿ Reset</p>
+  <p>Meeting rooms floor plan</p>
+  <p>From / To · Show Route · 🔊 Play Audio</p>
+  <p>Select a source and destination room, then tap <strong>"Show Route"</strong>. Follow the green dots.</p>
+
+  <div class="card">
+    <h3>Room Route Finder</h3>
+
+    <div class="controls-bar">
+      <div class="zoom-controls">
+        <button id="zoomIn" title="Zoom In">＋</button>
+        <button id="zoomOut" title="Zoom Out">－</button>
+        <button id="zoomReset" title="Reset Zoom/Pan">⤿ Reset</button>
+      </div>
+
+      <div class="select-controls">
+        <label for="fromRoom">From:</label>
+        <select id="fromRoom"></select>
+
+        <label for="toRoom" style="margin-left:8px">To:</label>
+        <select id="toRoom"></select>
+
+        <button id="showRoute" style="margin-left:8px">Show Route</button>
+
+        <span style="margin-left:12px">
+          Select by clicking map as:
+          <label><input type="radio" name="selectMode" value="from" checked> Source</label>
+          <label style="margin-left:6px"><input type="radio" name="selectMode" value="to"> Destination</label>
+        </span>
+      </div>
+
+      <div class="audio-controls" style="margin-top:8px">
+        <button id="playEN">🔊 Play Audio (English)</button>
+        <button id="playDE" style="margin-left:8px">🔊 Audio abspielen (Deutsch)</button>
+      </div>
+    </div>
+
+    <!-- Stage: image + overlay canvas + clickable labels -->
+    <div id="imgStageWrapper">
+      <div id="imgStage">
+        r2.png
+        <canvas id="routeCanvas"></canvas>
+
+        <!-- Clickable room markers (positions defined via JS % to match image size) -->
+        <!-- They are created dynamically in JS to keep all coordinates in one place -->
+      </div>
+    </div>
+
+    <!-- Route steps (bilingual) -->
+    <div class="steps-wrap">
+      <div class="steps-column">
+        <h4>Route (English)</h4>
+        <ol id="routeStepsEN" class="muted" style="margin-top:8px"></ol>
+      </div>
+      <div class="steps-column">
+        <h4>Route (Deutsch)</h4>
+        <ol id="routeStepsDE" class="muted" style="margin-top:8px"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
     <!-- Travel Info & Converter -->
     <section id="panel-travel" class="panel">
       <h2>Travel Info and Currency converter</h2>
@@ -325,7 +429,9 @@
 
       </ul>
     </section>
-   <section id="assist" class="panel">
+   <!-- Need Assitance  --> 
+    
+   <section id="panel-assist" class="panel">
    <h2>Need Assistance</h2>
       <div class="grid">
         <div class="card"><strong>Dhananjay Maske (First Level)</strong><br>
@@ -354,7 +460,7 @@
 
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
   <footer>
-    © Developed by SSP Team – BTI Pune 2026
+    © Developed by SSP Team – BTI Pune @copyright 2026
   </footer>
 
   <script>
@@ -378,6 +484,387 @@
     document.getElementById('download-qr')?.addEventListener('click', e=>{
       e.preventDefault();
     });
+    (function(){
+  // --- Rooms seen on the plan (approximate % positions relative to image natural size) ---
+  // r2.png natural size is ~890 x 404 (W x H). We'll define coordinates as percentages.
+  const rooms = [
+    {name:'Success', label:'Success – Board room', xPct: 10.0, yPct: 15.0},  // left-top cluster
+    {name:'Inspire', label:'Inspire – Training room', xPct: 11.5, yPct: 35.0},
+    {name:'Visitor', label:'Visitor Room', xPct: 10.5, yPct: 50.0},
+    {name:'Joy',     label:'Joy', xPct: 20.5, yPct: 60.0},
+
+    {name:'Debug',   label:'Debug', xPct: 44.0, yPct: 50.0},                  // middle
+    {name:'iDrive',  label:'iDrive', xPct: 58.5, yPct: 52.0},
+    {name:'M-Mode',  label:'M-Mode', xPct: 67.5, yPct: 52.0},
+    {name:'Drift',   label:'Drift', xPct: 77.5, yPct: 52.0},
+    {name:'Xdrive',  label:'Xdrive', xPct: 85.5, yPct: 52.0},
+    {name:'Torque',  label:'Torque', xPct: 92.5, yPct: 52.0}
+  ];
+
+  // --- Corridor graph (approx) ---
+  // Horizontal main corridor ~60–65% down the image across width.
+  // Junctions across the main corridor (x from left to right). yPct ~64.
+  const corridorJunctions = [
+    {id:'J1', xPct: 14.5, yPct: 64.0},
+    {id:'J2', xPct: 44.0, yPct: 64.0}, // near Debug vertical
+    {id:'J3', xPct: 58.5, yPct: 64.0},
+    {id:'J4', xPct: 67.5, yPct: 64.0},
+    {id:'J5', xPct: 77.5, yPct: 64.0},
+    {id:'J6', xPct: 85.5, yPct: 64.0},
+    {id:'J7', xPct: 92.5, yPct: 64.0}
+  ];
+  // Vertical left spine connecting upper left cluster to main corridor
+  const leftSpineTop = {id:'LTop', xPct: 14.5, yPct: 18.0};
+  const leftSpineMid = {id:'LMid', xPct: 14.5, yPct: 35.0};
+  const leftSpineLow = {id:'LLow', xPct: 14.5, yPct: 50.0};
+
+  // Edges among corridor nodes (undirected)
+  const edges = [
+    ['J1','J2'], ['J2','J3'], ['J3','J4'], ['J4','J5'], ['J5','J6'], ['J6','J7'],
+    ['LTop','LMid'], ['LMid','LLow'], ['LLow','J1'] // left vertical spine down to main corridor
+  ];
+
+  // Room connectors to nearest junctions/spines
+  const connectors = {
+    'Success': 'LTop',
+    'Inspire': 'LMid',
+    'Visitor': 'LLow',
+    'Joy':     'J1',
+    'Debug':   'J2',
+    'iDrive':  'J3',
+    'M-Mode':  'J4',
+    'Drift':   'J5',
+    'Xdrive':  'J6',
+    'Torque':  'J7'
+  };
+
+  // Build node map (corridor + spine nodes + room nodes)
+  const nodes = {};
+  [...corridorJunctions, leftSpineTop, leftSpineMid, leftSpineLow].forEach(n => nodes[n.id] = n);
+  // Add synthetic "room nodes" (for path start/end) connected to their connector
+  rooms.forEach(r => {
+    const id = `R:${r.name}`;
+    nodes[id] = {id, xPct:r.xPct, yPct:r.yPct};
+    edges.push([id, connectors[r.name]]);
+  });
+
+  // Helper: shortest path on the graph (Dijkstra with unit weights)
+  function shortestPath(startId, endId) {
+    const adj = {};
+    Object.keys(nodes).forEach(k => adj[k] = []);
+    edges.forEach(([a,b]) => { adj[a].push(b); adj[b].push(a); });
+
+    const dist = {}, prev = {}, Q = new Set(Object.keys(nodes));
+    Object.keys(nodes).forEach(k => dist[k] = Infinity);
+    dist[startId] = 0;
+
+    while (Q.size) {
+      // find min-distance node in Q
+      let u = null, best = Infinity;
+      for (const k of Q) { if (dist[k] < best) { best = dist[k]; u = k; } }
+      if (u === null) break;
+      Q.delete(u);
+      if (u === endId) break;
+      for (const v of adj[u]) {
+        const alt = dist[u] + 1;
+        if (alt < dist[v]) { dist[v] = alt; prev[v] = u; }
+      }
+    }
+    // reconstruct path
+    const path = [];
+    let u = endId;
+    if (!(u in prev) && u !== startId) {
+      // unreachable (shouldn't happen with our simple graph)
+      return [startId, endId];
+    }
+    while (u !== undefined) {
+      path.unshift(u);
+      if (u === startId) break;
+      u = prev[u];
+    }
+    return path;
+  }
+
+  // Directions generator (English + German) based on path geometry
+  function directionsForPath(path) {
+    // Convert node ids into coordinates
+    const pts = path.map(id => nodes[id]);
+    const stepsEN = [];
+    const stepsDE = [];
+
+    function step(en,de){ stepsEN.push(en); stepsDE.push(de); }
+
+    const startRoom = path[0].startsWith('R:') ? path[0].slice(2) : 'Start';
+    const endRoom   = path[path.length-1].startsWith('R:') ? path[path.length-1].slice(2) : 'End';
+
+    step(`Start at ${startRoom}.`, `Beginne bei ${startRoom}.`);
+
+    for (let i=1;i<pts.length;i++){
+      const a = pts[i-1], b = pts[i];
+      const dx = b.xPct - a.xPct;
+      const dy = b.yPct - a.yPct;
+      const horiz = Math.abs(dx) > Math.abs(dy);
+
+      if (horiz) {
+        if (dx > 0) {
+          step(`Proceed east along the main corridor.`, `Gehe nach Osten entlang des Hauptkorridors.`);
+        } else {
+          step(`Proceed west along the main corridor.`, `Gehe nach Westen entlang des Hauptkorridors.`);
+        }
+      } else {
+        if (dy > 0) {
+          step(`Head south to the lower junction.`, `Gehe nach Süden zur unteren Kreuzung.`);
+        } else {
+          step(`Head north to the upper junction.`, `Gehe nach Norden zur oberen Kreuzung.`);
+        }
+      }
+    }
+    step(`Turn towards ${endRoom} and enter.`, `Biege zu ${endRoom} ab und betrete den Raum.`);
+
+    return {en:stepsEN, de:stepsDE};
+  }
+
+  // --- DOM wiring ---
+  const panel = document.getElementById('panel-rooms');
+  const stage = document.getElementById('imgStage');
+  const img   = document.getElementById('floorImg');
+  const canvas= document.getElementById('routeCanvas');
+  const ctx   = canvas.getContext('2d');
+
+  const zoomInBtn = document.getElementById('zoomIn');
+  const zoomOutBtn= document.getElementById('zoomOut');
+  const zoomResetBtn = document.getElementById('zoomReset');
+
+  const fromSel = document.getElementById('fromRoom');
+  const toSel   = document.getElementById('toRoom');
+  const showBtn = document.getElementById('showRoute');
+
+  const stepsEN = document.getElementById('routeStepsEN');
+  const stepsDE = document.getElementById('routeStepsDE');
+
+  const playEN = document.getElementById('playEN');
+  const playDE = document.getElementById('playDE');
+
+  // Populate selects
+  function populateSelects(){
+    const options = ['','Success','Inspire','Visitor','Joy','Debug','iDrive','M-Mode','Drift','Xdrive','Torque'];
+    function fill(sel){
+      sel.innerHTML = '';
+      options.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v ? v : '— Select —';
+        sel.appendChild(opt);
+      });
+    }
+    fill(fromSel); fill(toSel);
+  }
+  populateSelects();
+
+  // Create clickable room markers using positions (% of image)
+  function createMarkers(){
+    // Remove any existing
+    [...stage.querySelectorAll('.room-marker')].forEach(el => el.remove());
+    const rect = img.getBoundingClientRect();
+    const natW = img.naturalWidth, natH = img.naturalHeight;
+
+    rooms.forEach(r => {
+      const marker = document.createElement('div');
+      marker.className = 'room-marker';
+      marker.dataset.room = r.name;
+      marker.textContent = r.name;
+      stage.appendChild(marker);
+      // position in pixels (relative to natural size; will be transformed with stage)
+      const x = natW * (r.xPct/100), y = natH * (r.yPct/100);
+      marker.style.left = `${x}px`;
+      marker.style.top  = `${y}px`;
+
+      marker.addEventListener('click', () => {
+        const mode = document.querySelector('input[name="selectMode"]:checked').value;
+        if (mode === 'from') {
+          fromSel.value = r.name;
+        } else {
+          toSel.value = r.name;
+        }
+        highlightSelections();
+      });
+    });
+    highlightSelections();
+  }
+
+  function highlightSelections(){
+    const from = fromSel.value, to = toSel.value;
+    [...stage.querySelectorAll('.room-marker')].forEach(m => {
+      m.classList.remove('selected-from','selected-to');
+      if (m.dataset.room === from) m.classList.add('selected-from');
+      if (m.dataset.room === to)   m.classList.add('selected-to');
+    });
+  }
+
+  // Pan/Zoom handling
+  let scale = 1, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0;
+  function applyTransform(){
+    stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+  zoomInBtn.addEventListener('click', () => { scale = Math.min(3.0, scale*1.2); applyTransform(); });
+  zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.5, scale/1.2); applyTransform(); });
+  zoomResetBtn.addEventListener('click', () => { scale=1; tx=0; ty=0; applyTransform(); });
+
+  stage.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; stage.classList.add('grabbing'); });
+  window.addEventListener('mouseup', () => { dragging = false; stage.classList.remove('grabbing'); });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    tx += dx; ty += dy;
+    lastX = e.clientX; lastY = e.clientY;
+    applyTransform();
+  });
+
+  // Resize canvas to image natural size so coordinates align
+  function resizeCanvasToImage(){
+    canvas.width  = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+  }
+
+  // Draw route as green dotted polyline
+  function drawRoute(path){
+    resizeCanvasToImage();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Convert to pixel points
+    const points = path.map(id => {
+      const p = nodes[id];
+      return { x: canvas.width*(p.xPct/100), y: canvas.height*(p.yPct/100) };
+    });
+
+    // Draw dotted line (green dots)
+    ctx.fillStyle = '#16a34a'; // green
+    ctx.strokeStyle = '#16a34a';
+    ctx.lineWidth = 2;
+
+    // draw small circles along each segment
+    const dotEveryPx = 16;
+    for (let i=1;i<points.length;i++){
+      const a = points[i-1], b = points[i];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const len = Math.hypot(dx,dy);
+      const steps = Math.max(1, Math.floor(len / dotEveryPx));
+      for (let s=0;s<=steps;s++){
+        const t = s/steps;
+        const x = a.x + dx*t;
+        const y = a.y + dy*t;
+        ctx.beginPath();
+        ctx.arc(x, y, 3.2, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // Start/end markers
+    if (points.length) {
+      ctx.fillStyle = '#0078d4'; // Start: blue
+      ctx.beginPath(); ctx.arc(points[0].x, points[0].y, 5, 0, Math.PI*2); ctx.fill();
+
+      ctx.fillStyle = '#e81123'; // End: red
+      const last = points[points.length-1];
+      ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+  // Show route handler
+  function showRouteHandler(){
+    const from = fromSel.value, to = toSel.value;
+    stepsEN.innerHTML = ''; stepsDE.innerHTML = '';
+    if (!from || !to) {
+      stepsEN.innerHTML = `<li>Please select both source and destination.</li>`;
+      stepsDE.innerHTML = `<li>Bitte wähle sowohl Start als auch Ziel aus.</li>`;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      return;
+    }
+    if (from === to) {
+      stepsEN.innerHTML = `<li>Source and destination are the same. You are already at ${from}.</li>`;
+      stepsDE.innerHTML = `<li>Start und Ziel sind identisch. Du bist bereits bei ${from}.</li>`;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      return;
+    }
+
+    const startId = `R:${from}`;
+    const endId   = `R:${to}`;
+    const path = shortestPath(startId, endId);
+
+    drawRoute(path);
+
+    const dirs = directionsForPath(path);
+    dirs.en.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsEN.appendChild(li); });
+    dirs.de.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsDE.appendChild(li); });
+    highlightSelections();
+  }
+
+  showBtn.addEventListener('click', showRouteHandler);
+
+  // Speech synthesis
+  function speakText(text, lang){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    // Try to pick a matching voice (if available)
+    const voices = window.speechSynthesis.getVoices();
+    const match = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase()));
+    if (match) utter.voice = match;
+    window.speechSynthesis.cancel(); // stop any previous
+    window.speechSynthesis.speak(utter);
+  }
+
+  playEN.addEventListener('click', () => {
+    const text = [...stepsEN.querySelectorAll('li')].map(li => li.textContent).join('. ');
+    if (!text) return;
+    speakText(text, 'en-US');
+  });
+  playDE.addEventListener('click', () => {
+    const text = [...stepsDE.querySelectorAll('li')].map(li => li.textContent).join('. ');
+    if (!text) return;
+    speakText(text, 'de-DE');
+  });
+
+  // Hook up nav button to show this panel
+  const navButtons = document.querySelectorAll('.nav[data-panel]');
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-panel'); // "rooms"
+      document.querySelectorAll('.panel').forEach(p => {
+        p.style.display = (p.id === `panel-${target}`) ? 'block' : 'none';
+      });
+      // When shown, ensure everything is sized/ready
+      if (target === 'rooms') {
+        // Wait for image to load first time
+        if (img.complete) {
+          resizeCanvasToImage();
+          createMarkers();
+          applyTransform();
+          // Deep link support e.g., ?from=Joy&to=Debug
+          const params = new URLSearchParams(window.location.search);
+          const fromP = params.get('from'), toP = params.get('to');
+          if (fromP && rooms.find(r=>r.name===fromP)) fromSel.value = fromP;
+          if (toP   && rooms.find(r=>r.name===toP))   toSel.value   = toP;
+          highlightSelections();
+          if (fromSel.value && toSel.value) showRouteHandler();
+        } else {
+          img.addEventListener('load', () => {
+            resizeCanvasToImage();
+            createMarkers();
+            applyTransform();
+          }, {once:true});
+        }
+      }
+    });
+  });
+
+  // If panel already visible on load, initialize once image is ready
+  if (panel.style.display !== 'none') {
+    if (img.complete) { resizeCanvasToImage(); createMarkers(); applyTransform(); }
+    else { img.addEventListener('load', () => { resizeCanvasToImage(); createMarkers(); applyTransform(); }, {once:true}); }
+  }
+
+})();
+    
   </script>
 </body>
 </html>
