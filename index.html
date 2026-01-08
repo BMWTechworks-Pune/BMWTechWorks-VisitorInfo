@@ -28,87 +28,139 @@
     footer{padding:24px 16px 40px;text-align:center;color:#5a6b7a}
     a.tel{white-space:nowrap}
 
+    /* Basic look & feel */
+    .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+    .muted { color: #555; }
+    .controls-bar { display: flex; flex-direction: column; gap: 8px; }
+    .zoom-controls button, .select-controls button, .audio-controls button {
+      padding: 6px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer;
+    }
+    .select-controls select { padding: 4px; }
+    .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    .steps-column ol { min-height: 80px; }
 
-
-  /* Basic look & feel */
-  .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
-  .muted { color: #555; }
-  .controls-bar { display: flex; flex-direction: column; gap: 8px; }
-  .zoom-controls button, .select-controls button, .audio-controls button {
-    padding: 6px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer;
-  }
-  .select-controls select { padding: 4px; }
-  .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  .steps-column ol { min-height: 80px; }
-
-  /* Stage: pan/zoom container */
-  #imgStageWrapper {
-    width: 100%;
-    height: 58vh; /* adjust as needed */
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fafafa;
-    position: relative;
-    margin-top: 10px;
-  }
-  #imgStage {
-    width: 100%;
-    height: 100%;
-    transform-origin: 0 0;
-    cursor: grab;
-    position: relative;
-  }
-  #imgStage.grabbing { cursor: grabbing; }
-  #floorImg {
-    position: absolute;
-    left: 0; top: 0;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-  #routeCanvas {
-    position: absolute;
-    left: 0; top: 0; pointer-events: none;
-  }
-
-  /* Room markers */
-  .room-marker {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    border: 1px solid #b0b0b0;
-    border-radius: 6px;
-    padding: 3px 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    user-select: none;
-    cursor: pointer;
-  }
-  .room-marker:hover { background: #fff; }
-  .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
-  .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
-
-  
     
+/* Buttons inside share panel */
+.btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: #0b2540;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { background: #eaf3ff; border-color: var(--blue); }
+
+/* Ensure QR container looks tidy */
+.qr img { border-radius: 8px; }
+
+    
+    /* Stage: pan/zoom container */
+    #imgStageWrapper {
+      width: 100%;
+      height: 58vh; /* adjust as needed */
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fafafa;
+      position: relative;
+      margin-top: 10px;
+    }
+    #imgStage {
+      width: 100%;
+      height: 100%;
+      transform-origin: 0 0;
+      cursor: grab;
+      position: relative;
+    }
+    #imgStage.grabbing { cursor: grabbing; }
+    #floorImg {
+      position: absolute;
+      left: 0; top: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    #routeCanvas {
+      position: absolute;
+      left: 0; top: 0; pointer-events: none;
+    }
+
+    /* Room markers */
+    .room-marker {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid #b0b0b0;
+      border-radius: 6px;
+      padding: 3px 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
+    }
+    .room-marker:hover { background: #fff; }
+    .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
+    .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
+
+    /* --- Added: BMW-style header brand + light-grey language buttons --- */
+    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-logo { width: 40px; height: 40px; object-fit: contain; }
+    .brand-title {
+      font-family: "BMW Type Next", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI",
+                   "Noto Sans", "Liberation Sans", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.2px;
+      color: #000;
+      white-space: nowrap;
+    }
+    .lang-switch { display: inline-flex; align-items: center; gap: 8px; }
+    .lang-btn {
+      appearance: none;
+      border: 1px solid #d0d0d0;
+      background: #f2f2f2; /* light grey */
+      color: #1a1a1a;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .lang-btn:hover { background: #e8e8e8; border-color: #c4c4c4; }
+    .lang-btn[aria-pressed="true"] {
+      background: #e0e0e0;
+      border-color: #bdbdbd;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .brand-title { font-size: 1rem; white-space: normal; }
+      .brand-logo { width: 32px; height: 32px; }
+    }
   </style>
 </head>
 <body>
- 
+
 <header>
-  <!-- Header with BMW logo and language buttons -->
-  <table width="100%">
-    <tr>
-      <td align="left">
-        BMW.jpeg
-        <strong>BMWTechWorks India – PUNE</strong>
-      </td>
-      <td align="right">
-        <button>EN</button>
-        <button>DE</button>
-      </td>
-    </tr>
-  </table>
+  <!-- Header with BMW logo and language buttons (updated: no table) -->
+  <div class="top">
+    <div class="brand">
+      <img
+        src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg"
+        alt="BMW logo"
+        class="brand-logo"
+        decoding="async"
+        loading="lazy"
+     age selection">
+      <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
+    </div>
+  </div>
 
   <!-- Navigation buttons -->
   <nav>
@@ -126,13 +178,10 @@
     <button class="nav" data-panel="cab">🚕 Cab Facility</button>
     <button class="nav" data-panel="food">🍔 Food Delivery Apps</button>
     <button class="nav" data-panel="social">🔗 Social Media Connect</button>
-    <button class="nav" data-panel="travel">🧭 Travel Info, Converter & Hotels</button>
+    <button class="nav" data-panel="travel">🧭 Travel Info, Converter &amp; Hotels</button>
     <button class="nav" data-panel="share">📥 Download / Share QR</button>
   </nav>
 </header>
-``
-
-
   <main>
     <!-- Info -->
     <section id="panel-info" class="panel active">
@@ -167,9 +216,7 @@
           <a class="tel" href="tel:+912025881611">📞 020 25881611</a></div>
         <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br>
           <a class="tel" href="tel:+912027261120">📞 020 27261120</a></div>
-      </div>
-
-      
+      </div> 
     </section>
 
 
@@ -327,52 +374,131 @@
     </section>
   
 
+
 <!-- CAB -->
 <section id="panel-cab" class="panel">
   <h2>Cab Facility</h2>
   <ul>
-    <li>https://www.olacabs.com/Ola</a></li>
-    <li>https://www.uber.com/in/en/Uber</a></li>
+    <li>
+      https://www.olacabs.com/
+        🚖 Book via Ola
+      </a>
+    </li>
+    <li>
+      https://www.uber.com/in/en/
+        🚕 Book via Uber
+      </a>
+    </li>
   </ul>
-</section>
 
-    <section id="panel-assist" class="panel">
+  <!-- Back to QR page link -->
+  <p style="margin-top:12px;">
+    #panel-share⬅ Back to QR Download / Share</a>
+  </p>
+</section>
+``
+
+
+   
+<!-- Need Assistance -->
+<section id="panel-assist" class="panel">
   <h2>Need Assistance</h2>
   <div class="grid">
+    <!-- First Level -->
     <div class="card">
       <strong>Dhananjay Maske (First Level)</strong><br>
       Facilities Specialities, Amar Tech Park Facility, Pune<br>
       mailto:Dhananjay.maske@bmwtechworks.in?subject=Facility%20Assistance📧 Email</a> · 
-      tel:+919657893928📞 9657893928</a>
+      tel:+919657893928📞 +91 9657893928</a>
     </div>
+
+    <!-- Second Level -->
     <div class="card">
       <strong>Minal Pinto (Second Level)</strong><br>
       Head of Facilities &amp; Workplace, Corporate Office, Pune<br>
-      mailto:Minal.pinto@bmwtechwork.in?subject=Facility%20Assistance📧 Email</a> · 
-      tel:+919769317569📞 9769317569</a>
+      mailto:Minal.pinto@bmwtechworks.in?subject=Facility%20Assistance📧 Email</a> · 
+      tel:+919769317569📞 +91 9769317569</a>
     </div>
+
+    <!-- Third Level -->
     <div class="card">
       <strong>Vishwas Muthyala (Third Level)</strong><br>
-      CHRO, Corporate Office, Pune
+      CHRO, Corporate Office, Pune<br>
+      mailto:Vishwas.muthyala@bmwtechworks.in?subject=Facility%20Assistance📧 Email</a>
     </div>
   </div>
 </section>
+
     
 <!-- FOOD -->
 <section id="panel-food" class="panel">
   <h2>Food Delivery</h2>
   <ul>
-    <li>https://www.zomato.com/Zomato</a></li>
-    <li>https://www.swiggy.com/Swiggy</a></li>
+    <li>
+      https://www.zomato.com/
+        🍽 Order via Zomato
+      </a>
+    </li>
+    <li>
+      https://www.swiggy.com/
+        🍔 Order via Swiggy
+      </a>
+    </li>
   </ul>
+
+  <!-- Back to QR page link -->
+  <p style="margin-top:12px;">
+    #panel-share⬅ Back to QR Download / Share</a>
+  </p>
 </section>
+
+    
+    
+    
 
 <!-- SOCIAL -->
 <section id="panel-social" class="panel">
   <h2>Social Media &amp; Contact</h2>
-  <li>https://www.linkedin.comLinkedIn</a></li>
-  <li>https://bmwtechworks.inbmwtechworks.in</a></li>
+  <ul>
+    <li>
+      https://www.linkedin.com
+        🔗 LinkedIn
+      </a>
+    </li>
+    <li>
+      https://bmwtechworks.in
+        🌐 BMWTechWorks Official Site
+      </a>
+    </li>
+  </ul>
+
+  <!-- Back to QR page link -->
+  <p style="margin-top:12px;">
+    #panel-share⬅ Back to QR Download / Share</a>
+  </p>
 </section>
+
+
+    
+<!-- Share / QR -->
+<section id="panel-share" class="panel active">
+  <h2>Share / Download</h2>
+
+  <p>
+    #Share</a>
+    &nbsp;
+    #Download QR</a>
+  </p>
+
+  <div class="qr">
+    ./q_code.png
+    <div class="footer-note" style="margin-top:8px;">
+      Tip: Scan this QR to open the Visitor Info page.
+    </div>
+  </div>
+</section>
+
+    
 
 
     <section id="panel-rooms" class="panel" style="display:none">
@@ -481,16 +607,7 @@
 
 
     
-    <!-- Share / QR -->
-    <section id="panel-share" class="panel">
-      <h2>Share / Download</h2>
-      <p>
-        <a href="#" class="btn">Share</a>
-        &nbsp; 
-        <a href="#" id="download-qr" class="btn">Download QR</a>
-      </p>
-      <div class="qr">[ QR image here ]</div>
-    </section>
+
   </main>
 
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
@@ -899,7 +1016,64 @@
   }
 
 })();
+
     
+
+  (function() {
+    // Set your canonical page URL (used for sharing and copying)
+    const pageUrl = window.location.origin + window.location.pathname; // e.g., your GitHub Pages URL
+    const shareBtn = document.getElementById('share-btn');
+    const downloadBtn = document.getElementById('download-qr');
+    const qrImg = document.getElementById('qr-img');
+
+    // SHARE: Web Share API with fallback to clipboard
+    shareBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const shareData = {
+        title: 'BMWTechWorks Visitor Info',
+        text: 'Open the BMWTechWorks Visitor Info page via QR or link.',
+        url: pageUrl
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.warn('Share canceled or failed:', err);
+        }
+        return;
+      }
+
+      // Fallback: copy URL to clipboard
+      try {
+        await navigator.clipboard.writeText(pageUrl);
+        alert('Link copied! You can paste it in chat or email:\n\n' + pageUrl);
+      } catch (err) {
+        // Last-resort fallback: prompt
+        prompt('Copy this link:', pageUrl);
+      }
+    });
+
+    // DOWNLOAD: trigger download of the QR image as PNG
+    downloadBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        // If img src is same-origin file, we can directly download via <a download="">
+        const a = document.createElement('a');
+        a.href = qrImg.src;
+        a.download = 'BMWTechWorks-QR.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (err) {
+        console.error('Download failed:', err);
+        alert('Download failed. Please right-click the QR and choose "Save image as..."');
+      }
+    });
+  })();
+
+
+         
   </script>
 </body>
 </html>
