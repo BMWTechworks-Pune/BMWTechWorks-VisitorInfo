@@ -1,208 +1,266 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>BMWTechWorks India – Pune</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{margin:0;font-family:system-ui;background:#f6f8fb}
-header{background:#fff;border-bottom:1px solid #ccc;position:sticky;top:0}
-.top{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{width:38px}
-nav{display:flex;flex-wrap:wrap;gap:6px;padding:8px 16px}
-.nav{border:1px solid #ccc;background:#fff;padding:6px 10px;border-radius:8px;cursor:pointer}
-.nav.active{background:#eaf3ff}
-.panel{display:none;padding:16px}
-.panel.active{display:block}
-.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:12px;margin:6px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
-.controls button{margin:4px}
-img.map{max-width:100%;transition:.2s;transform-origin:center}
-.pathBox{background:#fff;border:1px solid #ccc;padding:10px;border-radius:8px;margin-top:8px}
-a{text-decoration:none;color:#0b5ed7}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BMWTechWorks India – PUNE Visitor Info</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.45; color: #1d1d1f; margin: 0; background: #f7f9fc; }
+    main { max-width: 1024px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+    h1, h2, h3, h4, h5 { margin: 1.2rem 0 0.6rem; }
+    section { background: #fff; border: 1px solid #e3e7ee; border-radius: 12px; padding: 1rem; margin: 0 0 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    ul { padding-left: 1.2rem; }
+    a { color: #0b5fe3; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .link-list li { margin: 0.3rem 0; }
+    .back-link { display: inline-block; margin-top: 0.8rem; }
+    .card { border: 1px solid #e3e7ee; border-radius: 10px; padding: 0.8rem; margin: 0.4rem 0; background: #fafcff; }
+
+    /* Ensure nothing blocks clicks */
+    a, button { pointer-events: auto !important; }
+  </style>
 </head>
-
 <body>
+  <main>
+    <header>
+      <h1>BMWTechWorks India – PUNE</h1>
+      <p>View on Google Maps</p>
+      <p><em>Note: Photography is allowed at C &amp; D areas only.</em></p>
+    </header>
 
-<header>
-<div class="top">
-<div class="brand">
-<img src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg">
-<strong>BMWTechWorks India – Pune</strong>
-</div>
-<div>
-<button>EN</button>
-<button>DE</button>
-</div>
-</div>
+    <section id="panel-sos">
+      <h3>SOS – Emergency</h3>
+      <ul class="link-list">
+        <li>Ambulance — Emergency Medical Service — tel:108📞 108</a></li>
+        <li>Facilities BTI Team — Dhananjay — <a href="tel:+919657+91 9657893928</a></li>
+        <li>Table Space Duty Cell (24×7) — Security — tel:+918951322756📞 8951322756</a></li>
+        <li>ATP Ambulance (24×7) — Amar Tech Park Ambulance — <el:+918421737018📞 +91 8421737018</a></li>
+        <li>Integrated Emergency Number (24×7) – Medical, Police, Fire — <a href="tel:</a></li>
+        <li>Nearest Hospital — Jupiter Hospital, Baner — tel:+912027992299📞 020 27992299</a></li>
+        <li>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad — tel:+912066434366📞 020 66434366</a> · <a href="tel:+917447477993" class="/li>
+        <li>Nearest Police Station — Aundh Police Station — tel:+912025881611📞 020 25881611</a></li>
+        <li>Nearest Police Station — Wakad Police Station — <a href2027261120📞 020 27261120</a></li>
+      </ul>
+    </section>
 
-<nav>
-<button class="nav active" data="info">ℹ️ BMW Info</button>
-<button class="nav" data="sos">🚨 SOS</button>
-<button class="nav" data="assist">🆘 Assistance</button>
-<button class="nav" data="layout">🗺️ Floor</button>
-<button class="nav" data="ert">🛡️ ERT</button>
-<button class="nav" data="firstaid">🧑‍⚕️ First Aid</button>
-<button class="nav" data="assembly">📍 Assembly</button>
-<button class="nav" data="rooms">🏢 Meeting Rooms</button>
-<button class="nav" data="exitnav">🚪 Exit Navigation</button>
-<button class="nav" data="it">🖥️ IT</button>
-<button class="nav" data="parking">🅿️ Parking</button>
-<button class="nav" data="cab">🚕 Cab</button>
-<button class="nav" data="food">🍔 Food</button>
-<button class="nav" data="social">🔗 Social</button>
-<button class="nav" data="travel">🧭 Travel</button>
-<button class="nav" data="qr">📥 QR</button>
-</nav>
-</header>
+    <section id="panel-floor">
+      <h3>Floor Layout &amp; Exit</h3>
+      <ul>
+        <li>EXIT 1</li>
+        <li>EXIT 2</li>
+        <li>EXIT 3</li>
+        <li>EXIT 4</li>
+        <li>EXIT 5</li>
+      </ul>
+    </section>
 
-<!-- INFO -->
-<section id="info" class="panel active"><div class="card">
-BMWTechWorks India, Amar Tech Park, Balewadi, Pune – 411045
-</div></section>
+    <section id="panel-bti">
+      <h3>BTI Features – Exit Plan, Audio, Routes, EN/DE &amp; Deep Links</h3>
+      <p>EN/DE Language: EN &nbsp; Capture Markers</p>
+      <p>Exit Plan</p>
+      <p>＋ － ⟲ Reset ⛶ Fullscreen</p>
+      <h4>Audio Guidance</h4>
+      <p>🔊 Play &nbsp; ⏹ Stop</p>
+    </section>
 
-<!-- SOS -->
-<section id="sos" class="panel"><div class="grid">
-<div class="card">Emergency <a href="tel:112">📞112</a></div>
-<div class="card">Ambulance <a href="tel:108">📞108</a></div>
-</div></section>
+    <section id="panel-ert">
+      <h3>Emergency Response Team (ERT)</h3>
+      <table>
+        <tr>
+          <th>Department</th>
+          <th>Nominated ERT Members</th>
+        </tr>
+        <tr>
+          <td>🛠️ DPE</td>
+          <td>👤 Yogesh Tambat — tel:+919921599599📞 9921599599</a>; 👤 Zulqurnain Khan — <a href="tel:+919284564945"945</a></td>
+        </tr>
+        <tr>
+          <td>💻 Digital Company</td>
+          <td>👤 Rishabh Kundal</td>
+        </tr>
+        <tr>
+          <td>🏭 Software Factory</td>
+          <td>👤 Sandesh Gharal — <a href="tel:+919004102339" class>; 👤 Shubham Jambekar — tel:+919594607904📞 9594607904</a></td>
+        </tr>
+        <tr>
+          <td>🚗 Driving ECU</td>
+          <td>👤 Vivek Patil — tel:+917499767366📞 7499767366</a>; 👤 Ganesh Garg — <al:+917566050340📞 7566050340</a></td>
+        </tr>
+        <tr>
+          <td>🔧 SSP</td>
+          <td>👤 Aniket Patil — <a href="tel:+9198348054805515</a>; 👤 Chahul Turkar — tel:+919850807794📞 9850807794</a></td>
+        </tr>
+        <tr>
+          <td>🧠 AIML &amp; Infotainment</td>
+          <td>👤 Pravinkumar Kale — <a href="tel:+9183800730793079</a>; 👤 Vipin Yadav — <a href="tel:+919205768368" class="tel>
+        </tr>
+        <tr>
+          <td>📶 Connected Vehicle</td>
+          <td>👤 Rajiv Rengasamy — tel:+919944360128📞 9944360128</a>; 👤 Soham Dalwadi — <a href="tel:+917984473137" class></td>
+        </tr>
+        <tr>
+          <td>🏢 Facilities</td>
+          <td>👤 Dhananjay Maske — tel:+919657893928📞 9657893928</a></td>
+        </tr>
+        <tr>
+          <td>🆘 ERT Support</td>
+          <td>👤 Dilip Patil — <a href="tel:+919922423897" class=" 👤 Onkar Shintre — <a href="tel:+918618301593" class="tel>
+        </tr>
+      </table>
+    </section>
 
-<!-- ASSIST -->
-<section id="assist" class="panel"><div class="card">
-Dhananjay Maske<br>
-<a href="tel:+919657893928">📞 +91 9657893928</a><br>
-<a href="mailto:Dhananjay.maske@bmwtechworks.in">📧 Email</a>
-</div></section>
+    <section id="panel-firstaid">
+      <h3>First Aid &amp; Medical Support</h3>
+      <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair &amp; Stretcher – Available:</p>
+      <p>Nurse room &nbsp; First Aid Kit &nbsp; NurseRoomMedical</p>
+    </section>
 
-<section id="layout" class="panel"><div class="card">Follow exit signage & floor maps.</div></section>
-<section id="ert" class="panel"><div class="card">ERT members available on each floor.</div></section>
-<section id="firstaid" class="panel"><div class="card">First Aid kits near pantry & reception.</div></section>
-<section id="assembly" class="panel"><div class="card">Assembly Point near main gate.</div></section>
+    <section id="panel-assembly">
+      <h3>Assembly Points</h3>
+      <ul>
+        <li>Assembly Point No.1 Near Gate No-4</li>
+        <li>Assembly Point No.2 Near Gate No-3</li>
+      </ul>
+      <p>Assembly Point 1 &nbsp; Assembly Point 2</p>
+      <p><strong>General Evacuation Procedure – Earthquake</strong><br/>
+      When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:<br/>
+      <strong>DROP:</strong> Get down on your hands and knees to prevent being knocked over.<br/>
+      <strong>Cover:</strong> Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture.<br/>
+      <strong>Hold :</strong> Stay in position and hold onto your shelter until the shaking stops.<br/>
+      <strong>If You Get Trapped :</strong> Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.</p>
+      <p><strong>General Evacuation Procedure – FIRE.</strong><br/>
+      1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass &amp; a fire alarm sounds as an audible beeper.<br/>
+      2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit.<br/>
+      3. Do not collect bags, laptops, or valuables &amp; Do not run, move quickly and calmly.<br/>
+      4. Use stairs only. Do not use lifts &amp; assemble at the designated safe assembly area.<br/>
+      5. Do not re-enter until the all-clear is given by the ERT.</p>
+    </section>
 
-<!-- MEETING ROOMS -->
-<section id="rooms" class="panel">
-<h3>Meeting Rooms</h3>
-<div class="controls">
-<button onclick="zr('r')">➕</button>
-<button onclick="zo('r')">➖</button>
-<button onclick="zreset('r')">🔄</button>
-</div>
-<img id="rmap" class="map" src="r2.png">
-<br>
-From <select id="rf"><option>Joy</option><option>Debug</option><option>iDrive</option></select>
-To <select id="rt"><option>Torque</option><option>XDrive</option><option>Drift</option></select>
-<button onclick="routeRoom()">Show</button>
-<button onclick="speak(roomText)">🔊</button>
-<div class="pathBox" id="rtext"></div>
-</section>
+    <section id="panel-it">
+      <h3>IT Helpdesk</h3>
+      <p>Email: <a href="mailto:ITHelpdesk.PNQ@bmwtechworks.ink.PNQ@bmwtechworks.in</a></p>
+    </section>
 
-<!-- EXIT NAVIGATION -->
-<section id="exitnav" class="panel">
-<h3>Exit Navigation</h3>
-<div class="controls">
-<button onclick="zr('e')">➕</button>
-<button onclick="zo('e')">➖</button>
-<button onclick="zreset('e')">🔄</button>
-</div>
-<img id="emap" class="map" src="r5.png">
-<br>
-Exit:
-<select id="exitSel">
-<option>Exit 1</option>
-<option>Exit 2</option>
-<option>Exit 3</option>
-<option>Exit 4</option>
-<option>Exit 5</option>
-</select>
-<button onclick="routeExit()">Show Path</button>
-<button onclick="speak(exitText)">🔊</button>
-<div class="pathBox" id="etext"></div>
-</section>
+    <section id="panel-german">
+      <h3>Basic German to English Phrases</h3>
+      <table>
+        <tr><th>German</th><th>English</th></tr>
+        <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
+        <tr><td>Ich möchte zu diesem Ort gehen</td><td>I want to go to this place</td></tr>
+        <tr><td>Wie viel kostet das?</td><td>How much money?</td></tr>
+        <tr><td>Danke</td><td>Thanks</td></tr>
+        <tr><td>Ich möchte das</td><td>I want this</td></tr>
+        <tr><td>Guten Morgen</td><td>Good Morning</td></tr>
+        <tr><td>Gute Nacht</td><td>Good Night</td></tr>
+        <tr><td>Wo ist die Toilette?</td><td>Where is the restroom?</td></tr>
+        <tr><td>Können Sie mir helfen?</td><td>Can you help me?</td></tr>
+        <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
+      </table>
+    </section>
 
-<section id="it" class="panel"><div class="card">IT Helpdesk Ext: 1234</div></section>
-<section id="parking" class="panel"><div class="card">Basement parking – access card required</div></section>
+    <section id="panel-parking">
+      <h3>Parking Guidelines</h3>
+      <ul>
+        <li>Parking is strictly first-come, first-served.</li>
+        <li>60 slots allocated for employees at P3 and P1 levels.</li>
+        <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
+      </ul>
+    </section>
 
-<section id="cab" class="panel">
-<a href="https://www.olacabs.com" target="_blank">Ola</a><br>
-<a href="https://www.uber.com/in/en" target="_blank">Uber</a><br>
-<a href="#" onclick="goQR()">⬅ Back</a>
-</section>
+    <section id="panel-cab">
+      <h3>Cab Facility</h3>
+      <ul class="link-list">
+        <li><a href="https://wwwcom/https://www.olacabs.com/ 🚖 Book via Ola</a></li>
+        <li>https://www.uber.com/in/en/https://www.uber.com/in/en/ 🚕 Book via Uber</a></li>
+      </ul>
+      #panel-share⬅ Back to QR Download / Share</a>
+    </section>
 
-<section id="food" class="panel">
-<a href="https://www.zomato.com" target="_blank">Zomato</a><br>
-<a href="https://www.swiggy.com" target="_blank">Swiggy</a><br>
-<a href="#" onclick="goQR()">⬅ Back</a>
-</section>
+    <section id="panel-assist">
+      <h3>Need Assistance</h3>
+      <div class="card">
+        <p><strong>Dhananjay Maske (First Level)</strong><br/>Facilities Specialities, Amar Tech Park Facility, Pune</p>
+        <p><a href="mailto:Dhananjay.maske@bmwtechworks.in?subject=Facility%20Assistance" class=":+919657893928📞 +91 9657893928</a></p>
+      </div>
+      <div class="card">
+        <p><strong>Minal Pinto (Second Level)</strong><br/>Head of Facilities &amp; Workplace, Corporate Office, Pune</p>
+        <p><a href="mailto:Minal.pinto@bmwtechworks.in?subject=Facility%20Ass Email</a> · <a href="tel:+919769+91 9769317569</a></p>
+      </div>
+      <div class="card">
+        <p><strong>Vishwas Muthyala (Third Level)</strong><br/>CHRO, Corporate Office, Pune</p>
+        <p><a href="mailto:Vishwas.muthyala@bmwtechworks.in?subject%20Assistance📧 Email</a></p>
+      </div>
+    </section>
 
-<section id="social" class="panel">
-<a href="https://www.linkedin.com" target="_blank">LinkedIn</a><br>
-<a href="https://bmwtechworks.in" target="_blank">Official Site</a><br>
-<a href="#" onclick="goQR()">⬅ Back</a>
-</section>
+    <section id="panel-food">
+      <h3>Food Delivery</h3>
+      <ul class="link-list">
+        <li><a href="https://www.zomato.com/" target="_blank" rel="noopenerato</a></li>
+        <li><a href="https://www.swiggy.com/" target="_blank� Order via Swiggy</a></li>
+      </ul>
+      #panel-share⬅ Back to QR Download / Share</a>
+    </section>
 
-<section id="travel" class="panel">
-<a href="https://www.xe.com" target="_blank">Currency Converter</a><br>
-<a href="#" onclick="goQR()">⬅ Back</a>
-</section>
+    <section id="panel-social">
+      <h3>Social Media &amp; Contact</h3>
+      <ul class="link-list">
+        <li>https://www.linkedin.comhttps://www.linkedin.com 🔗 LinkedIn</a></li>
+        <li><a href="https://bmwtechworks.in" target="_blank" relTechWorks Official Site</a></li>
+      </ul>
+      #panel-share⬅ Back to QR Download / Share</a>
+    </section>
 
-<section id="qr" class="panel">
-<img src="q_code.png" width="150"><br>
-<button onclick="share()">Share</button>
-<button onclick="download()">Download</button>
-</section>
+    <section id="panel-share">
+      <h3>Share / Download</h3>
+      <p>#Share &nbsp; #Download QR</p>
+      <p>./q_code.png./q_code.png</a></p>
+      <p><small>Tip: Scan this QR to open the Visitor Info page.</small></p>
+    </section>
 
-<script>
-/* NAV */
-const nav=document.querySelectorAll(".nav"),panels=document.querySelectorAll(".panel");
-nav.forEach(n=>n.onclick=()=>{
-panels.forEach(p=>p.classList.remove("active"));
-nav.forEach(b=>b.classList.remove("active"));
-document.getElementById(n.dataset).classList.add("active");
-n.classList.add("active");
-});
-function goQR(){document.querySelector('[data="qr"]').click();}
+    <section id="panel-meeting">
+      <h3>Meeting Rooms</h3>
+      <p>＋ Zoom In &nbsp; － Zoom Out &nbsp; ⤿ Reset</p>
+      <p>Meeting rooms floor plan</p>
+      <p>From / To · Show Route · 🔊 Play Audio</p>
+      <p>Select a source and destination room, then tap "Show Route". Follow the green dots.</p>
+      <h4>Room Route Finder</h4>
+      <p>＋ － ⤿ Reset</p>
+      <p>From: &nbsp; To: &nbsp; Show Route</p>
+      <p>Select by clicking map as: Source &nbsp; Destination</p>
+      <p>🔊 Play Audio (English) &nbsp; 🔊 Audio abspielen (Deutsch)</p>
+      <p><img src="r2.png" alt="Route map" style="max-width:100ute (Deutsch)</h5>
+    </section>
 
-/* QR */
-function share(){navigator.share?navigator.share({url:location.href}):alert("Share not supported")}
-function download(){const a=document.createElement("a");a.href="q_code.png";a.download="QR.png";a.click()}
+    <section id="panel-travel">
+      <h3>Travel Info and Currency Converter</h3>
+      <ul class="link-list">
+        <li>https://www.xe.com/currencyconverter/INR → EUR Converter (XE)</a></li>
+      </ul>
+      <p>· ⏰ 12 PM to 12 AM · · ⏰ 11:30 AM to 1:00 AM ·</p>
+      <p>Incognito Restaurant Bar &amp; Cafe — <a href="tel:+918975530505" class="tel</p>
+    </section>
+  </main>
 
-/* ZOOM */
-let zrmap=1,zemap=1;
-function zr(t){let m=t=='r'?rmap:emap;(t=='r'?zrmap:zemap)+=.1;m.style.transform=`scale(${t=='r'?zrmap:zemap})`}
-function zo(t){let m=t=='r'?rmap:emap;(t=='r'?zrmap:zemap)-=.1;m.style.transform=`scale(${t=='r'?zrmap:zemap})`}
-function zreset(t){let m=t=='r'?rmap:emap;(t=='r'?zrmap=1:zemap=1);m.style.transform="scale(1)"}
-
-/* MEETING ROUTES */
-let roomText="";
-function routeRoom(){
-const k=rf.value+"-"+rt.value;
-const r={
-"Joy-Torque":"From Joy walk straight, cross Debug, turn right to Torque.",
-"Debug-Drift":"Exit Debug, turn left, Drift ahead."
-};
-roomText=r[k]||"Route not defined";
-rtext.innerText=roomText;
-}
-
-/* EXIT ROUTES */
-let exitText="";
-function routeExit(){
-const e={
-"Exit 1":"Walk left corridor, follow red arrows, reach Exit 1.",
-"Exit 2":"Move towards pantry area, turn left to Exit 2.",
-"Exit 3":"Go straight, cross central aisle, Exit 3 ahead.",
-"Exit 4":"Turn right at M-Mode, Exit 4 near meeting rooms.",
-"Exit 5":"Walk straight till end, Exit 5 on right."
-};
-exitText=e[exitSel.value];
-etext.innerText=exitText;
-}
-
-/* AUDIO */
-function speak(t){if(t)speechSynthesis.speak(new SpeechSynthesisUtterance(t))}
-</script>
-
+  <script>
+    // Smooth scroll for in-page back links
+    document.addEventListener('click', function (e) {
+      const link = e.target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      // Allow external links (http/https/mailto/tel) to proceed normally
+      if (/^(https?:|mailto:|tel:)/i.test(href)) return;
+      // Handle hash navigation for Back links
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const id = href.slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.pushState(null, '', href);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
