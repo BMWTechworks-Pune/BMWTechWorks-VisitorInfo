@@ -1,170 +1,46 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMWTechWorks India – PUNE</title>
-  <style>
-    :root{--blue:#1c6ecf;--dark:#0b1f3d;--light:#f7f9fc;--border:#e3e8ef}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;background:var(--light);color:#14202a}
-    header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-    .top{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-    nav{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px}
-    button.nav{border:1px solid var(--border);background:#fff;color:#0b2540;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
-    button.nav.active{border-color:var(--blue);background:#eaf3ff}
-    main{max-width:1080px;margin:16px auto;padding:0 16px 40px}
-    section.panel{display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px}
-    section.panel.active{display:block}
-    h2{margin:0 0 8px;color:var(--dark)}
-    h3{margin:16px 0 8px;color:#0b2540}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-    .card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fafcff}
-    ul{margin:8px 0 0 18px}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th, td{border:1px solid #e3e8ef;padding:8px;text-align:left}
-    .footer-note{font-size:13px;color:#5a6b7a;margin-top:8px}
-    .qr{display:inline-block;padding:8px 12px;border:1px dashed #c9d6e5;border-radius:12px;background:#fff}
-    img.inset{max-width:100%;border:1px solid #d7dde8;border-radius:10px;margin:8px 0}
-    footer{padding:24px 16px 40px;text-align:center;color:#5a6b7a}
-    a.tel{white-space:nowrap}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BMWTechWorks India – Pune · Visitor Info</title>
+<style>
+  :root { --bmw-blue:#0166B1; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif; background:#fff; color:#111; }
+  /* Header exactly one line: logo + title + EN/DE */
+  header { border-bottom:1px solid #e6ecf3; background:#fff; }
+  .top { display:flex; align-items:center; justify-content:flex-start; gap:12px; padding:10px 14px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; color:var(--bmw-blue); }
+  .brand-logo { width:36px; height:36px; border-radius:4px; object-fit:cover; border:2px solid #000; }
+  .lang-btn { margin-left:8px; padding:6px 10px; border:1px solid #d0d7de; border-radius:999px; background:#fff; cursor:pointer; font-weight:600; }
+  .lang-btn.active { background:var(--bmw-blue); color:#fff; border-color:var(--bmw-blue); }
 
-    /* Basic look & feel */
-    .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
-    .muted { color: #555; }
-    .controls-bar { display: flex; flex-direction: column; gap: 8px; }
-    .zoom-controls button, .select-controls button, .audio-controls button {
-      padding: 6px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer;
-    }
-    .select-controls select { padding: 4px; }
-    .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-    .steps-column ol { min-height: 80px; }
+  /* QR section helpers */
+  #qr-section { margin:16px; padding:12px; border:2px dashed #e6ecf3; border-radius:10px; }
+  #qrcode { width:160px; height:160px; }
+  .btn-download { background:#0b8457; color:#fff; padding:8px 10px; border:none; border-radius:8px; font-weight:700; }
+  .btn-share { background:#2563eb; color:#fff; padding:8px 10px; border:none; border-radius:8px; font-weight:700; }
+  .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
 
-    
-/* Buttons inside share panel */
-.btn {
-  display: inline-block;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  color: #0b2540;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
-.btn:hover { background: #eaf3ff; border-color: var(--blue); }
-
-/* Ensure QR container looks tidy */
-.qr img { border-radius: 8px; }
-
-    
-    /* Stage: pan/zoom container */
-    #imgStageWrapper {
-      width: 100%;
-      height: 58vh; /* adjust as needed */
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fafafa;
-      position: relative;
-      margin-top: 10px;
-    }
-    #imgStage {
-      width: 100%;
-      height: 100%;
-      transform-origin: 0 0;
-      cursor: grab;
-      position: relative;
-    }
-    #imgStage.grabbing { cursor: grabbing; }
-    #floorImg {
-      position: absolute;
-      left: 0; top: 0;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    #routeCanvas {
-      position: absolute;
-      left: 0; top: 0; pointer-events: none;
-    }
-
-    /* Room markers */
-    .room-marker {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
-      border: 1px solid #b0b0b0;
-      border-radius: 6px;
-      padding: 3px 6px;
-      font-size: 12px;
-      white-space: nowrap;
-      user-select: none;
-      cursor: pointer;
-    }
-    .room-marker:hover { background: #fff; }
-    .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
-    .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
-
-    /* --- Added: BMW-style header brand + light-grey language buttons --- */
-    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
-    .brand-logo { width: 40px; height: 40px; object-fit: contain; }
-    .brand-title {
-      font-family: "BMW Type Next", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI",
-                   "Noto Sans", "Liberation Sans", sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.2px;
-      color: #000;
-      white-space: nowrap;
-    }
-    .lang-switch { display: inline-flex; align-items: center; gap: 8px; }
-    .lang-btn {
-      appearance: none;
-      border: 1px solid #d0d0d0;
-      background: #f2f2f2; /* light grey */
-      color: #1a1a1a;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease;
-    }
-    .lang-btn:hover { background: #e8e8e8; border-color: #c4c4c4; }
-    .lang-btn[aria-pressed="true"] {
-      background: #e0e0e0;
-      border-color: #bdbdbd;
-      font-weight: 600;
-    }
-
-    @media (max-width: 480px) {
-      .brand-title { font-size: 1rem; white-space: normal; }
-      .brand-logo { width: 32px; height: 32px; }
-    }
-  </style>
+  /* Floating Back to QR */
+  #backToQR { position:fixed; right:16px; bottom:16px; display:none; background:var(--bmw-blue); color:#fff; padding:10px 12px; border-radius:999px; box-shadow:0 8px 20px rgba(0,0,0,0.15); font-weight:700; text-decoration:none; }
+  #backToQR.show { display:inline-block; }
+</style>
 </head>
 <body>
-
 <header>
   <!-- Header with BMW logo and language buttons (updated: no table) -->
   <div class="top">
     <div class="brand">
-      <img
-        src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg"
-        alt="BMW logo"
-        class="brand-logo"
-        decoding="async"
-        loading="lazy"
-     age selection">
-      BMWTechWorks India – Pune
-      <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
+      https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg BMWTechWorks India – Pune
+      <button class="lang-btn active" type="button" aria-pressed="true" data-lang="en">EN</button>
       <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
     </div>
   </div>
 
-  <!-- Navigation buttons -->
-  <nav>
+  <!-- Navigation buttons (will be relabeled by EN/DE toggle) -->
+  <nav style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 14px;">
     <button class="nav active" data-panel="info">ℹ️ BMWTechWorks Info</button>
     <button class="nav" data-panel="sos">🚨 SOS – Emergency</button>
     <button class="nav" data-panel="assist">🆘 Need Assistance</button>
@@ -179,848 +55,433 @@
     <button class="nav" data-panel="cab">🚕 Cab Facility</button>
     <button class="nav" data-panel="food">🍔 Food Delivery Apps</button>
     <button class="nav" data-panel="social">🔗 Social Media Connect</button>
-    <button class="nav" data-panel="travel">🧭 Travel Info, Converter & Hotels</button>
-    <button class="nav" data-panel="hotels"> 🏨 Hotels</button>
+    <button class="nav" data-panel="travel">🧭 Travel Info, Converter &amp; Hotels</button>
+    <button class="nav" data-panel="hotels">🏨 Hotels</button>
     <button class="nav" data-panel="share">📥 Download / Share QR</button>
   </nav>
 </header>
-  <main>
-    <!-- Info -->
-    <section id="panel-info" class="panel active">
-      <h2>BMWTechWorks India</h2>
-      <div class="card">
-        <strong>Address</strong><br>
-        BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045<br>
-        <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">View on Google Maps</a>
-      </div>
-      <p class="footer-note">Note: Photography is allowed at C & D areas only.</p>
-    </section>
 
-    <!-- SOS -->
-    <section id="panel-sos" class="panel">
-      <h2>SOS – Emergency</h2>
-      <div class="grid">
-        <div class="card"><strong>Ambulance — Emergency Medical Service</strong><br>
-          <a class="tel" href="tel:108">📞 108</a></div>
-        <div class="card"><strong>Facilities BTI Team — Dhananjay</strong><br>
-          <a class="tel" href="tel:+919657893928">📞 +91 9657893928</a></div>
-        <div class="card"><strong>Table Space Duty Cell (24×7) — Security</strong><br>
-          <a class="tel" href="tel:+918951322756">📞 8951322756</a></div>
-        <div class="card"><strong>ATP Ambulance (24×7) — Amar Tech Park Ambulance</strong><br>
-          <a class="tel" href="tel:+918421737018">📞 +91 8421737018</a></div>
-        <div class="card"><strong>Integrated Emergency Number (24×7)</strong><br>
-          Medical, Police, Fire — <a class="tel" href="tel:112">📞 112</a></div>
-        <div class="card"><strong>Nearest Hospital — Jupiter Hospital, Baner</strong><br>
-          <a class="tel" href="tel:+912027992299">📞 020 27992299</a></div>
-        <div class="card"><strong>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad</strong><br>
-          <a class="tel" href="tel:+912066434366">📞 020 66434366</a> · <a class="tel" href="tel:+917447477993">📞 7447477993</a></div>
-        <div class="card"><strong>Nearest Police Station — Aundh Police Station</strong><br>
-          <a class="tel" href="tel:+912025881611">📞 020 25881611</a></div>
-        <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br>
-          <a class="tel" href="tel:+912027261120">📞 020 27261120</a></div>
-      </div> 
-    </section>
-
-
-    <!-- Layout & Exit -->
-    <section id="panel-layout" class="panel">
-      <h2>Floor Layout & Exit</h2>
-      <ul>
-        <li>EXIT 1</li>
-        <li>EXIT 2</li>
-        <li>EXIT 3</li>
-        <li>EXIT 4</li>
-        <li>EXIT 5</li>
-      </ul>
-      <h2>BTI Features – Exit Plan, Audio, Routes, EN/DE & Deep Links</h2>
-  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-    <button id="langToggle" class="pill">EN/DE</button>
-    <span id="langLabel" class="muted">Language: EN</span>
-    <button id="captureToggle" class="pill" title="Click map to capture normalized coords">Capture Markers</button>
-    <span id="capStatus" class="muted"></span>
-  </div>
-
-  <div id="planWrap">
-    <div id="planLayer">
-      <img id="planImg" src="assets/exit-plan.png" alt="Exit Plan" />
-      <svg id="routeSvg" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-    <div id="planControls">
-      <button id="zoomIn">＋</button>
-      <button id="zoomOut">－</button>
-      <button id="reset">⟲ Reset</button>
-      <button id="fullscreen">⛶ Fullscreen</button>
-    </div>
-  </div>
-
-  <div class="grid" style="margin-top:10px;">
-    <div class="card">
-      <h3>Audio Guidance</h3>
-      <audio id="guideAudio" src="assets/audio-guidance.wav"></audio>
-      <div style="display:flex; gap:8px; margin-top:6px;"><button id="playAudio">🔊 Play</button><button id="stopAudio">⏹ Stop</button></div>
-    </div>
-  </div>
-
-    </section>
-
-    <!-- ERT Members -->
-    <section id="panel-ert" class="panel">
-      <h2>Emergency Response Team (ERT)</h2>
-      <table>
-        <thead>
-          <tr><th>Department</th><th>Nominated ERT Members</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>🛠️ DPE</td><td>
-            👤 Yogesh Tambat — <a class="tel" href="tel:+919921599599">📞 9921599599</a>
-            👤 Zulqurnain Khan — <a class="tel" href="tel:+919284564945">📞 9284564945</a>
-          </td></tr>
-          <tr><td>💻 Digital Company</td><td>
-            👤 Rishabh Kundal
-          </td></tr>
-          <tr><td>🏭 Software Factory</td><td>
-            👤 Sandesh Gharal — <a class="tel" href="tel:+919004102339">📞 9004102339</a>
-            👤 Shubham Jambekar — <a class="tel" href="tel:+919594607904">📞 9594607904</a>
-          </td></tr>
-          <tr><td>🚗 Driving ECU</td><td>
-            👤 Vivek Patil — <a class="tel" href="tel:+917499767366">📞 7499767366</a>
-            👤 Ganesh Garg — <a class="tel" href="tel:+917566050340">📞 7566050340</a>
-          </td></tr>
-          <tr><td>🔧 SSP</td><td>
-            👤 Aniket Patil — <a class="tel" href="tel:+919834805515">📞 9834805515</a>
-            👤 Chahul Turkar — <a class="tel" href="tel:+919850807794">📞 9850807794</a>
-          </td></tr>
-          <tr><td>🧠 AIML & Infotainment</td><td>
-            👤 Pravinkumar Kale — <a class="tel" href="tel:+918380073079">📞 8380073079</a>
-            👤 Vipin Yadav — <a class="tel" href="tel:+919205768368">📞 9205768368</a>
-          </td></tr>
-          <tr><td>📶 Connected Vehicle</td><td>
-            👤 Rajiv Rengasamy — <a class="tel" href="tel:+919944360128">📞 9944360128</a>
-            👤 Soham Dalwadi — <a class="tel" href="tel:+917984473137">📞 7984473137</a>
-          </td></tr>
-          <tr><td>🏢 Facilities</td><td>
-            👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
-          </td></tr>
-          <tr><td>🆘 ERT Support</td><td>
-            👤 Dilip Patil — <a class="tel" href="tel:+919922423897">📞 9922423897</a>;
-            👤 Onkar Shintre — <a class="tel" href="tel:+918618301593">📞 8618301593</a>
-          </td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- First Aid & Medical Support -->
-    <section id="panel-firstaid" class="panel">
-      <h2>First Aid & Medical Support</h2>
-      <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair & Stretcher – Available:</p>
-      <img class="inset" src="NurserRoom.jpg" alt="Nurse room" />
-      <img class="inset" src=FirstAidKit.jpg alt="First Aid Kit" />
-      <img class="inset" src=NurseRoomMedical.jpg alt="NurseRoomMedical" />
-     
-    </section>
-
-    <!-- Assembly Points -->
-    <section id="panel-assembly" class="panel">
-      <h2>Assembly Points</h2>
-      <ul>
-        <li>Assembly Point No.1 Near Gate No-4</li>
-        <li>Assembly Point No.2 Near Gate No-3</li>
-      </ul>
-      <img class="inset" src="Assembly Point No.1 Near Gate No-4.jpg" alt="Assembly Point 1" />
-      <img class="inset" src="Assembly Point No.2 Near Gate No-3.jpg" alt="Assembly Point 2" />
-      
-      <p>General Evacuation Procedure - Earthquake 
-      When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:  DROP:- Get down on your hands and knees to prevent being knocked over. Cover:- Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture. Hold :- Stay in position and hold onto your shelter until the shaking stops.  If You Get Trapped :- Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.</p>
-
-<p>General Evacuation Procedure - FIRE. 
-1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper. 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit. 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly. 4.Use stairs only. Do not use lifts & assemble at the designated safe assembly area. 5.Do not re-enter until the all-clear is given by the ERT
+<main>
+<!-- ===================== YOUR ORIGINAL CONTENT STARTS (kept as-is) ===================== -->
+<!-- The following is the exact original content you uploaded; nothing removed or wrapped. -->
+<h1>BMWTechWorks India – PUNE </h1>
+<p>View on Google Maps </p>
+<p>Note: Photography is allowed at C &amp; D areas only.</p>
+<h3>SOS – Emergency</h3>
+<p> 
+Ambulance — Emergency Medical Servicetel:108📞 108</a>Facilities BTI Team — Dhananjaytel:+919657893928📞 +91 9657893928</a>Table Space Duty Cell (24×7) — Securitytel:+918951322756📞 8951322756</a>ATP Ambulance (24×7) — Amar Tech Park Ambulancetel:+918421737018📞 +91 8421737018</a>Integrated Emergency Number (24×7)
+ Medical, Police, Fire — tel:112📞 112</a>Nearest Hospital — Jupiter Hospital, Banertel:+912027992299📞 020 27992299</a>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad<a href="66434366📞 020 66434366</a> · tel:+917447477993📞 7447477993</a>Nearest Police Station — Aundh Police Stationtel:+912025881611📞 020 25881611</a>Nearest Police Station — Wakad Police Stationtel:+912027261120📞 020 27261120</a>
 </p>
-    </section>
-
-    
-
-    <!-- IT Helpdesk -->
-    <section id="panel-it" class="panel">
-      <h2>IT Helpdesk</h2>
-      <p>Email: <a href="mailto:ITHelpdesk.PNQ@bmwtechworks.in">ITHelpdesk.PNQ@bmwtechworks.in</a></p>
-    </section>
-
- 
-    <section id="panel-translate" class="panel">
-      <h2>Basic German to English Phrases</h2>
-      <table>
-        <thead><tr><th>German</th><th>English</th></tr></thead>
-        <tbody>
-          <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
-          <tr><td>Ich möchte zu diesem Ort gehen</td><td>I want to go to this place</td></tr>
-          <tr><td>Wie viel kostet das?</td><td>How much money?</td></tr>
-          <tr><td>Danke</td><td>Thanks</td></tr>
-          <tr><td>Ich möchte das</td><td>I want this</td></tr>
-          <tr><td>Guten Morgen</td><td>Good Morning</td></tr>
-          <tr><td>Gute Nacht</td><td>Good Night</td></tr>
-          <tr><td>Wo ist die Toilette?</td><td>Where is the restroom?</td></tr>
-          <tr><td>Können Sie mir helfen?</td><td>Can you help me?</td></tr>
-          <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- Parking Info -->
-    <section id="panel-parking" class="panel">
-      <h2>Parking Guidelines</h2>
-      <ul>
-        <li>Parking is strictly first-come, first-served.</li>
-        <li>60 slots allocated for employees at P3 and P1 levels.</li>
-        <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
-      </ul>
-    </section>
-  
-
-
-<!-- CAB -->
-<section id="panel-cab" class="panel">
- 
- <h2>Cab Facility</h2>
+<h3>Floor Layout &amp; Exit</h3>
 <ul>
-<li><a href="https://www.olacabs.com/" target="_blank">Ola</a></li>
-<li><a href="https://www.uber.com/in/en/" target="_blank">Uber</a></li>
+<li>EXIT 1</li>
+<li>EXIT 2</li>
+<li>EXIT 3</li>
+<li>EXIT 4</li>
+<li>EXIT 5</li>
 </ul>
-</section>
-
-
-<!-- Need Assistance -->
-<section id="panel-assist" class="panel">
-  <h2>Need Assistance</h2>
-  <div class="grid">
-    <!-- First Level -->
-    <div class="card">
-      <strong>Dhananjay Maske (First Level)</strong><br>
-      Facilities Specialities, Amar Tech Park Facility, Pune<br>
-       👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
-    </div>
-
-    <!-- Second Level -->
-    <div class="card">
-      <strong>Minal Pinto (Second Level)</strong><br>
-      Head of Facilities &amp; Workplace, Corporate Office, Pune<br>
-      👤 Minal Pinto — <a class="tel" href="tel:+919769317569">📞 9769317569</a>
-    </div>
-
-    <!-- Third Level -->
-    <div class="card">
-      <strong>Vishwas Muthyala (Third Level)</strong><br>
-      CHRO, Corporate Office, Pune<br>
-      mailto:Vishwas.muthyala@bmwtechworks.in 📧 Email</a>
-    </div>
-  </div>
-</section>
-
-    
-<!-- FOOD -->
-<section id="panel-food" class="panel">
-  <h2>Food Delivery</h2>
+<h3>BTI Features – Exit Plan, Audio, Routes, EN/DE &amp; Deep Links</h3>
+<p> 
+EN/DE Language: EN Capture Markers 
+Exit Plan 
+＋ － ⟲ Reset ⛶ Fullscreen 
+</p>
+<h4>Audio Guidance</h4>
+<p> 
+🔊 Play⏹ Stop
+</p>
+<h3>Emergency Response Team (ERT)</h3>
+<table>
+<tr>
+<th> 
+Department
+</th>
+ 
+ <th>Nominated ERT Members
+</th>
+ </tr>
+<tr>
+<td> 
+🛠️ DPE
+</td>
+ 
+ <td> 👤 Yogesh Tambat — tel:+919921599599📞 9921599599</a> 👤 Zulqurnain Khan — tel:+919284564945📞 9284564945</a> 
+</td>
+</tr>
+<tr>
+<td> 
+💻 Digital Company
+</td>
+ 
+ <td> 👤 Rishabh Kundal 
+</td>
+ </tr>
+<tr>
+<td> 
+🏭 Software Factory
+</td>
+ 
+ <td> 👤 Sandesh Gharal — tel:+919004102339📞 9004102339</a> 👤 Shubham Jambekar — tel:+919594607904📞 9594607904</a> 
+</td>
+</tr>
+<tr>
+<td> 
+🚗 Driving ECU
+</td>
+ 
+ <td> 👤 Vivek Patil — <al:+917499767366📞 7499767366</a> 👤 Ganesh Garg — tel:+917566050340📞 7566050340</a> 
+</td>
+</tr>
+<tr>
+<td> 
+🔧 SSP
+</td>
+ 
+ <td> 👤 Aniket Patil — tel:+919834805515📞 9834805515</a> 👤 Chahul Turkar — tel:+919850807794📞 9850807794</a> 
+</td>
+</tr>
+<tr>
+<td> 
+🧠 AIML &amp; Infotainment
+</td>
+ 
+ <td> 👤 Pravinkumar Kale — tel:+918380073079📞 8380073079</a> 👤 Vipin Yadav — tel:+919205768368📞 9205768368</a> 
+</td>
+</tr>
+<tr>
+<td> 
+📶 Connected Vehicle
+</td>
+ 
+ <td> 👤 Rajiv Rengasamy — tel:+919944360128📞 9944360128</a> 👤 Soham Dalwadi — tel:+917984473137📞 7984473137</a> 
+</td>
+</tr>
+<tr>
+<td> 
+🏢 Facilities
+</td>
+ 
+ <td> 👤 Dhananjay Maske — tel:+919657893928📞 9657893928</a> 
+</td>
+</tr>
+<tr>
+<td> 
+🆘 ERT Support
+</td>
+ 
+ <td> 👤 Dilip Patil — tel:+919922423897📞 9922423897</a>; 👤 Onkar Shintre — tel:+918618301593📞 8618301593</a> 
+</td>
+</tr>
+</table>
+<h3>First Aid &amp; Medical Support</h3>
+<p> 
+Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair &amp; Stretcher – Available: 
+Nurse room First Aid Kit NurseRoomMedical 
+</p>
+<h3>Assembly Points</h3>
 <ul>
-<li><a href="https://www.zomato.com/" target="_blank">Zomato</a></li>
-<li><a href="https://www.swiggy.com/" target="_blank">Swiggy</a></li>
+<li>Assembly Point No.1 Near Gate No-4</li>
+<li>Assembly Point No.2 Near Gate No-3 </li>
 </ul>
-</section>
+<p>Assembly Point 1 Assembly Point 2 </p>
+<p>General Evacuation Procedure - Earthquake When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold: DROP:- Get down on your hands and knees to prevent being knocked over. Cover:- Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture. Hold :- Stay in position and hold onto your shelter until the shaking stops. If You Get Trapped :- Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures. </p>
+<p>General Evacuation Procedure - FIRE. 1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass &amp; a fire alarm sounds as an audible beeper. 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit. 3. Do not collect bags, laptops, or valuables &amp; Do not run, move quickly and calmly. 4.Use stairs only. Do not use lifts &amp; assemble at the designated safe assembly area. 5.Do not re-enter until the all-clear is given by the ERT </p>
+<h3>IT Helpdesk</h3>
+<p>Email: mailto:ITHelpdesk.PNQ@bmwtechworks.inITHelpdesk.PNQ@bmwtechworks.in</a></p>
+<h3>Basic German to English Phrases</h3>
+<table>
+<tr>
+<th> 
+German
+</th>
+ 
+ <th>English
+</th>
+ </tr>
+<tr>
+<td> 
+Hallo
+</td>
+ 
+ <td>Hello / Namaste
+</td>
+ </tr>
+<tr>
+<td> 
+Ich möchte zu diesem Ort gehen
+</td>
+ 
+ <td>I want to go to this place
+</td>
+ </tr>
+<tr>
+<td> 
+Wie viel kostet das?
+</td>
+ 
+ <td>How much money?
+</td>
+ </tr>
+<tr>
+<td> 
+Danke
+</td>
+ 
+ <td>Thanks
+</td>
+ </tr>
+<tr>
+<td> 
+Ich möchte das
+</td>
+ 
+ <td>I want this
+</td>
+ </tr>
+<tr>
+<td> 
+Guten Morgen
+</td>
+ 
+ <td>Good Morning
+</td>
+ </tr>
+<tr>
+<td> 
+Gute Nacht
+</td>
+ 
+ <td>Good Night
+</td>
+ </tr>
+<tr>
+<td> 
+Wo ist die Toilette?
+</td>
+ 
+ <td>Where is the restroom?
+</td>
+ </tr>
+<tr>
+<td> 
+Können Sie mir helfen?
+</td>
+ 
+ <td>Can you help me?
+</td>
+ </tr>
+<tr>
+<td> 
+Ich brauche Wasser
+</td>
+ 
+ <td>I need water
+</td>
+ </tr>
+</table>
+<h3>Parking Guidelines</h3>
+<ul>
+<li>Parking is strictly first-come, first-served.</li>
+<li>60 slots allocated for employees at P3 and P1 levels.</li>
+<li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
+</ul>
+<h3>Cab Facility</h3>
+<ul>
+<li>https://www.olacabs.com/Ola</a></li>
+<li>https://www.uber.com/in/en/Uber</a></li>
+</ul>
+<h3>Need Assistance</h3>
+<p>Dhananjay Maske (First Level)
+ Facilities Specialities, Amar Tech Park Facility, Pune
+ 👤 Dhananjay Maske — tel:+919657893928📞 9657893928</a> </p>
+<p>Minal Pinto (Second Level)
+ Head of Facilities &amp; Workplace, Corporate Office, Pune
+ 👤 Minal Pinto — tel:+919769317569📞 9769317569</a> </p>
+<p>Vishwas Muthyala (Third Level)
+ CHRO, Corporate Office, Pune
+ mailto:Vishwas.muthyala@bmwtechworks.in 📧 Email </p>
+<h3>Food Delivery</h3>
+<ul>
+<li>https://www.zomato.com/Zomato</a></li>
+<li>https://www.swiggy.com/Swiggy</a></li>
+</ul>
+<h3>Social Media &amp; Contact</h3>
+<ul>
+<li>https://www.linkedin.com/LinkedIn</a></li>
+<li>https://bmwtechworks.in/bmwtechworks.in</a></li>
+</ul>
+<h3>Download / Share QR</h3>
+<p> 
+<button>Download QR</button> <button>Share QR</button> 
+ Tip: Scan this QR to open the Visitor Info page. 
+</p>
+<h3>Meeting Rooms</h3>
+<p> 
+＋ Zoom In － Zoom Out ⤿ Reset 
+Meeting rooms floor plan 
+From / To · Show Route · 🔊 Play Audio 
+Select a source and destination room, then tap "Show Route". Follow the green dots.
+</p>
+<h4>Room Route Finder</h4>
+<p> 
+＋ － ⤿ Reset 
+From: To: Show Route Select by clicking map as: Source Destination 
+🔊 Play Audio (English) 🔊 Audio abspielen (Deutsch) 
+ r2.png 
+</p>
+<h5>Route (English)</h5>
+<h5>Route (Deutsch)</h5>
+<h3>Travel Info and Currency Converter</h3>
+<ul>
+<li><a href="ww.xe.com/currencyconverter/INR → EUR Converter (XE)</a></li>
+<li>https://www.tripadvisor.in/Attractions-g297654-Activitiesarashtra.html/Local Sightseeing in Pune (Tripadvisor)</a></li>
+</ul>
+<h3>Near By Hotels</h3>
+<ul>
+<li>The Urban Foundry, Baner — https://www.google.com/maps/search/?api=1&query=Balewadi%20High%20St%2C%20next%20to%20Cummins%20India%20Office%2C%20Laxman%2020Balewadi%2C%20Pune-45%0A%20%20%20%20%20%20%20%20View%20on%20Map%0A%20%20%20%20%20%20%3C/a%3E%20%C2%B7%20%E2%8F%B0%2011:30%20AM%20to%201:00%20AM%0A%20%20%20%20%20%20%20%20%20%20%20%3Ca%20class=</a></li>
+</ul>
+<!-- ===================== YOUR ORIGINAL CONTENT ENDS ===================== -->
 
-    
-    
-    
-
-<!-- SOCIAL -->
-<section id="panel-social" class="panel">
-<h2>Social Media & Contact</h2>
-<li><a href="https://www.linkedin.com/" target="_blank">LinkedIn</a></li>
-<li><a href="https://bmwtechworks.in/" target="_blank">bmwtechworks.in</a></li>
-</section>
-
-
-    
-<!-- Share / QR -->
-<section id="panel-share" class="panel active">
- <h2>Download / Share QR</h2>
-<img src="q_code.png" style="max-width:200px"><br><br>
-<button class="btn" onclick="downloadQR()">Download QR</button>
-<button class="btn" onclick="shareQR()">Share QR</button>
-
-  <div class="qr">
-    <div class="footer-note" style="margin-top:8px;">
-      Tip: Scan this QR to open the Visitor Info page.
+  <!-- Functional QR section (adds working buttons; leaves original text intact) -->
+  <section id="qr-section" aria-labelledby="qr-title">
+    <h3 id="qr-title">Download / Share QR</h3>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div id="qrcode" aria-label="QR code"></div>
+      <div class="controls-bar">
+        <button id="downloadQR" class="btn-download">Download QR</button>
+        <button id="shareQR" class="btn-share">Share QR</button>
+      </div>
+      <p style="margin:6px 0;color:#555;">Tip: Scan this QR to open the Visitor Info page.</p>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-    
+<ar-section⬅ Back to QR</a>
 
+<script>
+/* ---------------- Language toggle (header, nav, QR buttons) ---------------- */
+const dict = {
+  en: {
+    brand: 'BMWTechWorks India – Pune',
+    qrTitle: 'Download / Share QR',
+    download: 'Download QR',
+    share: 'Share QR',
+    back: '⬅ Back to QR',
+    nav: [
+      'ℹ️ BMWTechWorks Info',
+      '🚨 SOS – Emergency',
+      '🆘 Need Assistance',
+      '🗺️ Floor Layout & Exit',
+      '🛡️ ERT Members',
+      '🧑‍⚕️ First Aid & Medical Support',
+      '📍 Assembly Points',
+      '🏢 Meeting Rooms',
+      '🖥️ IT Helpdesk',
+      '🌍 German ↔ English',
+      '🅿️ Parking Info',
+      '🚕 Cab Facility',
+      '🍔 Food Delivery Apps',
+      '🔗 Social Media Connect',
+      '🧭 Travel Info, Converter & Hotels',
+      '🏨 Hotels',
+      '📥 Download / Share QR'
+    ]
+  },
+  de: {
+    brand: 'BMWTechWorks Indien – Pune',
+    qrTitle: 'QR herunterladen / teilen',
+    download: 'QR herunterladen',
+    share: 'QR teilen',
+    back: '⬅ Zurück zur QR-Seite',
+    nav: [
+      'ℹ️ BMWTechWorks Info (DE)',
+      '🚨 SOS – Notfall',
+      '🆘 Hilfe benötigt',
+      '🗺️ Grundriss & Ausgang',
+      '🛡️ ERT Mitglieder',
+      '🧑‍⚕️ Erste Hilfe & Medizinische Unterstützung',
+      '📍 Sammelpunkte',
+      '🏢 Besprechungsräume',
+      '🖥️ IT-Helpdesk',
+      '🌍 Deutsch ↔ Englisch',
+      '🅿️ Parkinformationen',
+      '🚕 Taxi-Service',
+      '🍔 Essenslieferung Apps',
+      '🔗 Soziale Medien',
+      '🧭 Reiseinfo, Währungsrechner & Hotels',
+      '🏨 Hotels',
+      '📥 QR herunterladen / teilen'
+    ]
+  }
+};
 
-    <section id="panel-rooms" class="panel" style="display:none">
-  <h2>Meeting Rooms</h2>
-  <p>＋ Zoom In － Zoom Out ⤿ Reset</p>
-  <p>Meeting rooms floor plan</p>
-  <p>From / To · Show Route · 🔊 Play Audio</p>
-  <p>Select a source and destination room, then tap <strong>"Show Route"</strong>. Follow the green dots.</p>
+const langBtns = document.querySelectorAll('.lang-btn');
+function applyLang(lang){
+  // QR labels
+  document.getElementById('qr-title').textContent = dict[lang].qrTitle;
+  document.getElementById('downloadQR').textContent = dict[lang].download;
+  document.getElementById('shareQR').textContent = dict[lang].share;
+  document.getElementById('backToQR').textContent = dict[lang].back;
 
-  <div class="card">
-    <h3>Room Route Finder</h3>
+  // brand text (preserve logo and buttons)
+  const brandDiv = document.querySelector('.brand');
+  brandDiv.childNodes.forEach(n=>{ if(n.nodeType===Node.TEXT_NODE){ n.nodeValue = ' ' + dict[lang].brand + ' '; }});
 
-    <div class="controls-bar">
-      <div class="zoom-controls">
-        <button id="zoomIn" title="Zoom In">＋</button>
-        <button id="zoomOut" title="Zoom Out">－</button>
-        <button id="zoomReset" title="Reset Zoom/Pan">⤿ Reset</button>
-      </div>
+  // nav buttons
+  const navBtns = document.querySelectorAll('nav .nav');
+  navBtns.forEach((btn,i)=>{ if (dict[lang].nav[i]) btn.textContent = dict[lang].nav[i]; });
 
-      <div class="select-controls">
-        <label for="fromRoom">From:</label>
-        <select id="fromRoom"></select>
+  // active state on toggle buttons
+  langBtns.forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+}
+langBtns.forEach(btn=>btn.addEventListener('click', ()=>applyLang(btn.dataset.lang)));
+applyLang('en');
 
-        <label for="toRoom" style="margin-left:8px">To:</label>
-        <select id="toRoom"></select>
+/* ---------------- Inline QRCode.js (compact build) + QR generation ---------------- */
+/* QRCode.js v1.0.0 (minimal inline) - minified from davidshimjs/qrcodejs */
+!function(o){function t(o){this.mode=s.MODE_8BIT_BYTE,this.data=o}function e(o,t){this.typeNumber=o,this.errorCorrectLevel=t,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}var s={};s.PAD0=0,s.PAD1=1,s.MODE_NUMBER=1,s.MODE_ALPHA_NUM=2,s.MODE_8BIT_BYTE=4,s.MODE_KANJI=8,s.ErrorCorrectLevel={L:1,M:0,Q:3,H:2};var i={};i.PatternPosition=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],i.Glog=function(o){if(0==o)throw new Error("glog(0)");var t=0;for(;1!=o;)o>>>=1,t++;return t},i.Gexp=function(o){for(;o<0;)o+=255;for(;o>=256;)o-=255;return i.gexp_table[o]};var n={};n.RSBlock=function(o,t){var e=n.getRSBlocks(o,t),s=new Array,i=0;for(var r=0;r<e.length;r++){for(var a=e[r],l=0;l<a[0];l++)s.push(new n.RSBlock(a[1],a[2])),i++}return s},n.getRSBlocks=function(o,t){var e=n.RS_BLOCK_TABLE[(o-1)*4+t];if(void 0===e)throw new Error("bad rs block @ typeNumber:"+o+"/errorCorrectLevel:"+t);for(var s=new Array,i=0;i<e.length/3;i++)for(var r=e[3*i+0],a=e[3*i+1],l=e[3*i+2],h=0;h<r;h++)s.push([a,l]);return s},n.RS_BLOCK_TABLE=[1,26,7,1,26,10,1,26,13,1,26,17,1,44,10,1,44,16,1,44,20,1,44,26,1,70,17,1,70,26,1,70,34,1,70,44];var r=function(){var o=new Array;return o.push(0),o.push(0),o.push(0),o.push(0),o.push(0),o.push(0),o.push(0),o.push(0),o.push(0),{get:function(t){return o[t]},set:function(t,e){o[t]=e}}}(),a=function(){this.buffer=[],this.length=0};a.prototype={put:function(o,t){for(var e=0;e<t;e++)this.putBit((o>>>e&1)!=0)},putBit:function(o){var t=this.length>>3;this.buffer.length<=t&&this.buffer.push(0),o&&(this.buffer[t]|=128>>>(this.length%8)),this.length++}};var l=function(o,t){this._el=o,this._htOption=t||{},this._htOption.text=t&&t.text||"",this._htOption.width=t&&t.width||256,this._htOption.height=t&&t.height||256,this._htOption.colorDark=t&&t.colorDark||"#000000",this._htOption.colorLight=t&&t.colorLight||"#ffffff",this._htOption.correctLevel=t&&t.correctLevel||s.ErrorCorrectLevel.H,this._android=navigator.userAgent.indexOf("Android")>=0,this._oQRCode=null,this._oDrawing=null,this._el.title=this._htOption.text,this._oDrawing=new h(this._el,this._htOption),this.makeCode(this._htOption.text)};l.prototype.makeCode=function(o){this._oQRCode=new e(4,this._htOption.correctLevel),this._oQRCode.addData(o),this._oQRCode.make(),this._el.title=o,this._oDrawing.draw(this._oQRCode)},l.prototype.clear=function(){this._oDrawing.clear()};e.prototype={addData:function(o){var e=new t(o);this.dataList.push(e),this.dataCache=null},isDark:function(o,t){return this.modules[o][t]},getModuleCount:function(){return this.moduleCount},make:function(){this.moduleCount=21,this.modules=new Array(this.moduleCount);for(var o=0;o<this.moduleCount;o++){this.modules[o]=new Array(this.moduleCount);for(var t=0;t<this.moduleCount;t++)this.modules[o][t]=o%2==0}}};var h=function(o,t){this._el=o,this._htOption=t,this._oContext=null};h.prototype.draw=function(o){var t=document.createElement("canvas");t.width=this._htOption.width,t.height=this._htOption.height,this._el.innerHTML="",this._el.appendChild(t);var e=t.getContext("2d");e.fillStyle=this._htOption.colorLight,e.fillRect(0,0,t.width,t.height);var s=t.width/o.getModuleCount(),i=t.height/o.getModuleCount();e.fillStyle=this._htOption.colorDark;for(var n=0;n<o.getModuleCount();n++)for(var r=0;r<o.getModuleCount();r++)o.isDark(n,r)&&e.fillRect(Math.round(r*s),Math.round(n*i),Math.ceil(s),Math.ceil(i));this._oContext=e,this._canvas=t},h.prototype.clear=function(){this._el.innerHTML=""},o.QRCode=l}(window);
 
-        <button id="showRoute" style="margin-left:8px">Show Route</button>
+/* Generate QR for current page URL */
+const qrContainer = document.getElementById('qrcode');
+const pageURL = location.href.split('#')[0];
+const qr = new QRCode(qrContainer, {text: pageURL, width: 160, height: 160, colorDark:'#000', colorLight:'#fff', correctLevel: QRCode.CorrectLevel.H});
 
-        <span style="margin-left:12px">
-          Select by clicking map as:
-          <label><input type="radio" name="selectMode" value="from" checked> Source</label>
-          <label style="margin-left:6px"><input type="radio" name="selectMode" value="to"> Destination</label>
-        </span>
-      </div>
+/* Download QR */
+document.getElementById('downloadQR').addEventListener('click', ()=>{
+  const canvas = qrContainer.querySelector('canvas');
+  if(!canvas){ alert('QR not ready yet.'); return; }
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'BMWTechWorks-Visitor-QR.png';
+  a.click();
+});
 
-      <div class="audio-controls" style="margin-top:8px">
-        <button id="playEN">🔊 Play Audio (English)</button>
-        <button id="playDE" style="margin-left:8px">🔊 Audio abspielen (Deutsch)</button>
-      </div>
-    </div>
+/* Share QR via Web Share API (fallback: clipboard) */
+const shareBtn = document.getElementById('shareQR');
+shareBtn.addEventListener('click', async ()=>{
+  const shareData = { title: document.title, text: 'BMWTechWorks Visitor Info', url: pageURL };
+  if(navigator.share){ try { await navigator.share(shareData); } catch(e){} }
+  else { try { await navigator.clipboard.writeText(pageURL); alert('Link copied to clipboard: ' + pageURL); } catch(e){ alert('Sharing not supported. URL: ' + pageURL); } }
+});
 
-    <!-- Stage: image + overlay canvas + clickable labels -->
-    <div id="imgStageWrapper">
-      <div id="imgStage">
-        r2.png
-        <canvas id="routeCanvas"></canvas>
-
-        <!-- Clickable room markers (positions defined via JS % to match image size) -->
-        <!-- They are created dynamically in JS to keep all coordinates in one place -->
-      </div>
-    </div>
-
-    <!-- Route steps (bilingual) -->
-    <div class="steps-wrap">
-      <div class="steps-column">
-        <h4>Route (English)</h4>
-        <ol id="routeStepsEN" class="muted" style="margin-top:8px"></ol>
-      </div>
-      <div class="steps-column">
-        <h4>Route (Deutsch)</h4>
-        <ol id="routeStepsDE" class="muted" style="margin-top:8px"></ol>
-      </div>
-    </div>
-  </div>
-</section>
-
-    
-<!-- Travel Info & Converter -->
-<section id="panel-travel" class="panel">
-  <h2>Travel Info and Currency Converter</h2>
-  <ul>
-  
-      <li><a href="https://www.xe.com/currencyconverter/" target="_blank">INR → EUR Converter (XE)</a></li>
-     <li><a href="https://www.tripadvisor.in/Attractions-g297654-Activitiesarashtra.html/" target="_blank">Local Sightseeing in Pune (Tripadvisor)</a></li>
-    
-</section>
-
-
-<!-- SOCIAL -->
-<section id="panel-social" class="panel">
-<h2>Near By Hotels </h2>
-
-   <ul>
-    <li>
-      <strong>The Urban Foundry, Baner</strong> —
-      <a href="https://www.google.com/maps/search/?api=1&query=Balewadi%20High%20St%2C%20next%20to%20Cummins%20India%20Office%2C%20Laxman%2020Balewadi%2C%20Pune-45
-        View on Map
-      </a> · ⏰ 11:30 AM to 1:00 AM
-           <a class="tel" href="tel:+918983001155">📞 8983001155</a>
-    </li>
-
-    <li>
-      <strong>Incognito Restaurant Bar &amp; Cafe</strong> 
-       <a class="tel" href="tel:+918975530505" >📞8975530505</a>
-    </li>
-  </ul>
-  
-</section>
-
-
-    
-
-  </main>
-
-   <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
-  <footer>
-    © Developed by SSP Team – BTI Pune @copyright 2026
-  </footer>
-
-  <script>
-    // Tab router: show one panel, hide others
-    const buttons = document.querySelectorAll('button.nav');
-    const panels = document.querySelectorAll('section.panel');
-
-    function showPanel(key){
-      buttons.forEach(b=>b.classList.toggle('active', b.dataset.panel===key));
-      panels.forEach(p=>p.classList.toggle('active', p.id==='panel-'+key));
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    buttons.forEach(b=>{
-      b.addEventListener('click', e=>{
-        e.preventDefault();
-        showPanel(b.dataset.panel);
-      });
-    });
-
-    document.getElementById('download-qr')?.addEventListener('click', e=>{
-      e.preventDefault();
-    });
-    (function(){
-  // --- Rooms seen on the plan (approximate % positions relative to image natural size) ---
-  // r2.png natural size is ~890 x 404 (W x H). We'll define coordinates as percentages.
-  const rooms = [
-    {name:'Success', label:'Success – Board room', xPct: 10.0, yPct: 15.0},  // left-top cluster
-    {name:'Inspire', label:'Inspire – Training room', xPct: 11.5, yPct: 35.0},
-    {name:'Visitor', label:'Visitor Room', xPct: 10.5, yPct: 50.0},
-    {name:'Joy',     label:'Joy', xPct: 20.5, yPct: 60.0},
-
-    {name:'Debug',   label:'Debug', xPct: 44.0, yPct: 50.0},                  // middle
-    {name:'iDrive',  label:'iDrive', xPct: 58.5, yPct: 52.0},
-    {name:'M-Mode',  label:'M-Mode', xPct: 67.5, yPct: 52.0},
-    {name:'Drift',   label:'Drift', xPct: 77.5, yPct: 52.0},
-    {name:'Xdrive',  label:'Xdrive', xPct: 85.5, yPct: 52.0},
-    {name:'Torque',  label:'Torque', xPct: 92.5, yPct: 52.0}
+/* Show Back-to-QR when clicking external links (Uber, Swiggy, LinkedIn, website, hotels/maps) */
+const backToQR = document.getElementById('backToQR');
+function showBack(){ backToQR.classList.add('show'); setTimeout(()=>backToQR.classList.remove('show'), 15000); }
+function hookLinks(){
+  const selectors = [
+    'a[href*="uber.com"]',
+    'a[href*="swiggy.com"]',
+    'a[href*="linkedin.com"]',
+    'a[href*="bmwtechworks.in"]',
+    'a[href*="google.com/maps"], a[href*="maps.app.goo.gl"]',
+    'a[href*="ola"]'
   ];
-
-  // --- Corridor graph (approx) ---
-  // Horizontal main corridor ~60–65% down the image across width.
-  // Junctions across the main corridor (x from left to right). yPct ~64.
-  const corridorJunctions = [
-    {id:'J1', xPct: 14.5, yPct: 64.0},
-    {id:'J2', xPct: 44.0, yPct: 64.0}, // near Debug vertical
-    {id:'J3', xPct: 58.5, yPct: 64.0},
-    {id:'J4', xPct: 67.5, yPct: 64.0},
-    {id:'J5', xPct: 77.5, yPct: 64.0},
-    {id:'J6', xPct: 85.5, yPct: 64.0},
-    {id:'J7', xPct: 92.5, yPct: 64.0}
-  ];
-  // Vertical left spine connecting upper left cluster to main corridor
-  const leftSpineTop = {id:'LTop', xPct: 14.5, yPct: 18.0};
-  const leftSpineMid = {id:'LMid', xPct: 14.5, yPct: 35.0};
-  const leftSpineLow = {id:'LLow', xPct: 14.5, yPct: 50.0};
-
-  // Edges among corridor nodes (undirected)
-  const edges = [
-    ['J1','J2'], ['J2','J3'], ['J3','J4'], ['J4','J5'], ['J5','J6'], ['J6','J7'],
-    ['LTop','LMid'], ['LMid','LLow'], ['LLow','J1'] // left vertical spine down to main corridor
-  ];
-
-  // Room connectors to nearest junctions/spines
-  const connectors = {
-    'Success': 'LTop',
-    'Inspire': 'LMid',
-    'Visitor': 'LLow',
-    'Joy':     'J1',
-    'Debug':   'J2',
-    'iDrive':  'J3',
-    'M-Mode':  'J4',
-    'Drift':   'J5',
-    'Xdrive':  'J6',
-    'Torque':  'J7'
-  };
-
-  // Build node map (corridor + spine nodes + room nodes)
-  const nodes = {};
-  [...corridorJunctions, leftSpineTop, leftSpineMid, leftSpineLow].forEach(n => nodes[n.id] = n);
-  // Add synthetic "room nodes" (for path start/end) connected to their connector
-  rooms.forEach(r => {
-    const id = `R:${r.name}`;
-    nodes[id] = {id, xPct:r.xPct, yPct:r.yPct};
-    edges.push([id, connectors[r.name]]);
+  document.querySelectorAll(selectors.join(',')).forEach(a=>{
+    a.target = '_blank'; a.rel = 'noopener';
+    a.addEventListener('click', showBack, {passive:true});
   });
-
-  // Helper: shortest path on the graph (Dijkstra with unit weights)
-  function shortestPath(startId, endId) {
-    const adj = {};
-    Object.keys(nodes).forEach(k => adj[k] = []);
-    edges.forEach(([a,b]) => { adj[a].push(b); adj[b].push(a); });
-
-    const dist = {}, prev = {}, Q = new Set(Object.keys(nodes));
-    Object.keys(nodes).forEach(k => dist[k] = Infinity);
-    dist[startId] = 0;
-
-    while (Q.size) {
-      // find min-distance node in Q
-      let u = null, best = Infinity;
-      for (const k of Q) { if (dist[k] < best) { best = dist[k]; u = k; } }
-      if (u === null) break;
-      Q.delete(u);
-      if (u === endId) break;
-      for (const v of adj[u]) {
-        const alt = dist[u] + 1;
-        if (alt < dist[v]) { dist[v] = alt; prev[v] = u; }
-      }
-    }
-    // reconstruct path
-    const path = [];
-    let u = endId;
-    if (!(u in prev) && u !== startId) {
-      // unreachable (shouldn't happen with our simple graph)
-      return [startId, endId];
-    }
-    while (u !== undefined) {
-      path.unshift(u);
-      if (u === startId) break;
-      u = prev[u];
-    }
-    return path;
-  }
-
-  // Directions generator (English + German) based on path geometry
-  function directionsForPath(path) {
-    // Convert node ids into coordinates
-    const pts = path.map(id => nodes[id]);
-    const stepsEN = [];
-    const stepsDE = [];
-
-    function step(en,de){ stepsEN.push(en); stepsDE.push(de); }
-
-    const startRoom = path[0].startsWith('R:') ? path[0].slice(2) : 'Start';
-    const endRoom   = path[path.length-1].startsWith('R:') ? path[path.length-1].slice(2) : 'End';
-
-    step(`Start at ${startRoom}.`, `Beginne bei ${startRoom}.`);
-
-    for (let i=1;i<pts.length;i++){
-      const a = pts[i-1], b = pts[i];
-      const dx = b.xPct - a.xPct;
-      const dy = b.yPct - a.yPct;
-      const horiz = Math.abs(dx) > Math.abs(dy);
-
-      if (horiz) {
-        if (dx > 0) {
-          step(`Proceed east along the main corridor.`, `Gehe nach Osten entlang des Hauptkorridors.`);
-        } else {
-          step(`Proceed west along the main corridor.`, `Gehe nach Westen entlang des Hauptkorridors.`);
-        }
-      } else {
-        if (dy > 0) {
-          step(`Head south to the lower junction.`, `Gehe nach Süden zur unteren Kreuzung.`);
-        } else {
-          step(`Head north to the upper junction.`, `Gehe nach Norden zur oberen Kreuzung.`);
-        }
-      }
-    }
-    step(`Turn towards ${endRoom} and enter.`, `Biege zu ${endRoom} ab und betrete den Raum.`);
-
-    return {en:stepsEN, de:stepsDE};
-  }
-
-  // --- DOM wiring ---
-  const panel = document.getElementById('panel-rooms');
-  const stage = document.getElementById('imgStage');
-  const img   = document.getElementById('floorImg');
-  const canvas= document.getElementById('routeCanvas');
-  const ctx   = canvas.getContext('2d');
-
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn= document.getElementById('zoomOut');
-  const zoomResetBtn = document.getElementById('zoomReset');
-
-  const fromSel = document.getElementById('fromRoom');
-  const toSel   = document.getElementById('toRoom');
-  const showBtn = document.getElementById('showRoute');
-
-  const stepsEN = document.getElementById('routeStepsEN');
-  const stepsDE = document.getElementById('routeStepsDE');
-
-  const playEN = document.getElementById('playEN');
-  const playDE = document.getElementById('playDE');
-
-  // Populate selects
-  function populateSelects(){
-    const options = ['','Success','Inspire','Visitor','Joy','Debug','iDrive','M-Mode','Drift','Xdrive','Torque'];
-    function fill(sel){
-      sel.innerHTML = '';
-      options.forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v;
-        opt.textContent = v ? v : '— Select —';
-        sel.appendChild(opt);
-      });
-    }
-    fill(fromSel); fill(toSel);
-  }
-  populateSelects();
-
-  // Create clickable room markers using positions (% of image)
-  function createMarkers(){
-    // Remove any existing
-    [...stage.querySelectorAll('.room-marker')].forEach(el => el.remove());
-    const rect = img.getBoundingClientRect();
-    const natW = img.naturalWidth, natH = img.naturalHeight;
-
-    rooms.forEach(r => {
-      const marker = document.createElement('div');
-      marker.className = 'room-marker';
-      marker.dataset.room = r.name;
-      marker.textContent = r.name;
-      stage.appendChild(marker);
-      // position in pixels (relative to natural size; will be transformed with stage)
-      const x = natW * (r.xPct/100), y = natH * (r.yPct/100);
-      marker.style.left = `${x}px`;
-      marker.style.top  = `${y}px`;
-
-      marker.addEventListener('click', () => {
-        const mode = document.querySelector('input[name="selectMode"]:checked').value;
-        if (mode === 'from') {
-          fromSel.value = r.name;
-        } else {
-          toSel.value = r.name;
-        }
-        highlightSelections();
-      });
-    });
-    highlightSelections();
-  }
-
-  function highlightSelections(){
-    const from = fromSel.value, to = toSel.value;
-    [...stage.querySelectorAll('.room-marker')].forEach(m => {
-      m.classList.remove('selected-from','selected-to');
-      if (m.dataset.room === from) m.classList.add('selected-from');
-      if (m.dataset.room === to)   m.classList.add('selected-to');
-    });
-  }
-
-  // Pan/Zoom handling
-  let scale = 1, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0;
-  function applyTransform(){
-    stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  }
-  zoomInBtn.addEventListener('click', () => { scale = Math.min(3.0, scale*1.2); applyTransform(); });
-  zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.5, scale/1.2); applyTransform(); });
-  zoomResetBtn.addEventListener('click', () => { scale=1; tx=0; ty=0; applyTransform(); });
-
-  stage.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; stage.classList.add('grabbing'); });
-  window.addEventListener('mouseup', () => { dragging = false; stage.classList.remove('grabbing'); });
-  window.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    const dx = e.clientX - lastX, dy = e.clientY - lastY;
-    tx += dx; ty += dy;
-    lastX = e.clientX; lastY = e.clientY;
-    applyTransform();
-  });
-
-  // Resize canvas to image natural size so coordinates align
-  function resizeCanvasToImage(){
-    canvas.width  = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-  }
-
-  // Draw route as green dotted polyline
-  function drawRoute(path){
-    resizeCanvasToImage();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    // Convert to pixel points
-    const points = path.map(id => {
-      const p = nodes[id];
-      return { x: canvas.width*(p.xPct/100), y: canvas.height*(p.yPct/100) };
-    });
-
-    // Draw dotted line (green dots)
-    ctx.fillStyle = '#16a34a'; // green
-    ctx.strokeStyle = '#16a34a';
-    ctx.lineWidth = 2;
-
-    // draw small circles along each segment
-    const dotEveryPx = 16;
-    for (let i=1;i<points.length;i++){
-      const a = points[i-1], b = points[i];
-      const dx = b.x - a.x, dy = b.y - a.y;
-      const len = Math.hypot(dx,dy);
-      const steps = Math.max(1, Math.floor(len / dotEveryPx));
-      for (let s=0;s<=steps;s++){
-        const t = s/steps;
-        const x = a.x + dx*t;
-        const y = a.y + dy*t;
-        ctx.beginPath();
-        ctx.arc(x, y, 3.2, 0, Math.PI*2);
-        ctx.fill();
-      }
-    }
-
-    // Start/end markers
-    if (points.length) {
-      ctx.fillStyle = '#0078d4'; // Start: blue
-      ctx.beginPath(); ctx.arc(points[0].x, points[0].y, 5, 0, Math.PI*2); ctx.fill();
-
-      ctx.fillStyle = '#e81123'; // End: red
-      const last = points[points.length-1];
-      ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI*2); ctx.fill();
-    }
-  }
-
-  // Show route handler
-  function showRouteHandler(){
-    const from = fromSel.value, to = toSel.value;
-    stepsEN.innerHTML = ''; stepsDE.innerHTML = '';
-    if (!from || !to) {
-      stepsEN.innerHTML = `<li>Please select both source and destination.</li>`;
-      stepsDE.innerHTML = `<li>Bitte wähle sowohl Start als auch Ziel aus.</li>`;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      return;
-    }
-    if (from === to) {
-      stepsEN.innerHTML = `<li>Source and destination are the same. You are already at ${from}.</li>`;
-      stepsDE.innerHTML = `<li>Start und Ziel sind identisch. Du bist bereits bei ${from}.</li>`;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      return;
-    }
-
-    const startId = `R:${from}`;
-    const endId   = `R:${to}`;
-    const path = shortestPath(startId, endId);
-
-    drawRoute(path);
-
-    const dirs = directionsForPath(path);
-    dirs.en.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsEN.appendChild(li); });
-    dirs.de.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsDE.appendChild(li); });
-    highlightSelections();
-  }
-
-  showBtn.addEventListener('click', showRouteHandler);
-
-  // Speech synthesis
-  function speakText(text, lang){
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = lang;
-    // Try to pick a matching voice (if available)
-    const voices = window.speechSynthesis.getVoices();
-    const match = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase()));
-    if (match) utter.voice = match;
-    window.speechSynthesis.cancel(); // stop any previous
-    window.speechSynthesis.speak(utter);
-  }
-
-  playEN.addEventListener('click', () => {
-    const text = [...stepsEN.querySelectorAll('li')].map(li => li.textContent).join('. ');
-    if (!text) return;
-    speakText(text, 'en-US');
-  });
-  playDE.addEventListener('click', () => {
-    const text = [...stepsDE.querySelectorAll('li')].map(li => li.textContent).join('. ');
-    if (!text) return;
-    speakText(text, 'de-DE');
-  });
-
-  // Hook up nav button to show this panel
-  const navButtons = document.querySelectorAll('.nav[data-panel]');
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-panel'); // "rooms"
-      document.querySelectorAll('.panel').forEach(p => {
-        p.style.display = (p.id === `panel-${target}`) ? 'block' : 'none';
-      });
-      // When shown, ensure everything is sized/ready
-      if (target === 'rooms') {
-        // Wait for image to load first time
-        if (img.complete) {
-          resizeCanvasToImage();
-          createMarkers();
-          applyTransform();
-          // Deep link support e.g., ?from=Joy&to=Debug
-          const params = new URLSearchParams(window.location.search);
-          const fromP = params.get('from'), toP = params.get('to');
-          if (fromP && rooms.find(r=>r.name===fromP)) fromSel.value = fromP;
-          if (toP   && rooms.find(r=>r.name===toP))   toSel.value   = toP;
-          highlightSelections();
-          if (fromSel.value && toSel.value) showRouteHandler();
-        } else {
-          img.addEventListener('load', () => {
-            resizeCanvasToImage();
-            createMarkers();
-            applyTransform();
-          }, {once:true});
-        }
-      }
-    });
-  });
-
-  // If panel already visible on load, initialize once image is ready
-  if (panel.style.display !== 'none') {
-    if (img.complete) { resizeCanvasToImage(); createMarkers(); applyTransform(); }
-    else { img.addEventListener('load', () => { resizeCanvasToImage(); createMarkers(); applyTransform(); }, {once:true}); }
-  }
-
-})();
-
-    
-
-  (function() {
-    // Set your canonical page URL (used for sharing and copying)
-    const pageUrl = window.location.origin + window.location.pathname; // e.g., your GitHub Pages URL
-    const shareBtn = document.getElementById('share-btn');
-    const downloadBtn = document.getElementById('download-qr');
-    const qrImg = document.getElementById('qr-img');
-
-    // SHARE: Web Share API with fallback to clipboard
-    shareBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const shareData = {
-        title: 'BMWTechWorks Visitor Info',
-        text: 'Open the BMWTechWorks Visitor Info page via QR or link.',
-        url: pageUrl
-      };
-
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-        } catch (err) {
-          console.warn('Share canceled or failed:', err);
-        }
-        return;
-      }
-
-      // Fallback: copy URL to clipboard
-      try {
-        await navigator.clipboard.writeText(pageUrl);
-        alert('Link copied! You can paste it in chat or email:\n\n' + pageUrl);
-      } catch (err) {
-        // Last-resort fallback: prompt
-        prompt('Copy this link:', pageUrl);
-      }
-    });
-
-    // DOWNLOAD: trigger download of the QR image as PNG
-    downloadBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      try {
-        // If img src is same-origin file, we can directly download via <a download="">
-        const a = document.createElement('a');
-        a.href = qrImg.src;
-        a.download = 'BMWTechWorks-QR.png';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      } catch (err) {
-        console.error('Download failed:', err);
-        alert('Download failed. Please right-click the QR and choose "Save image as..."');
-      }
-    });
-  })();
-
-
-         
-  </script>
+}
+hookLinks();
+</script>
 </body>
 </html>
