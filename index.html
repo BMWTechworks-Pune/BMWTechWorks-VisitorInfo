@@ -116,7 +116,7 @@
       font-weight: 700;
       font-size: 1.1rem;
       letter-spacing: 0.2px;
-      color: #0066B1;
+      color: #66B2FF;
       white-space: nowrap;
     }
     .lang-switch { display: inline-flex; align-items: center; gap: 8px; }
@@ -170,19 +170,19 @@
     <button class="nav" data-panel="sos">🚨 SOS – Emergency</button>
     <button class="nav" data-panel="assist">🆘 Need Assistance</button>
     <button class="nav" data-panel="layout">🗺️ Floor Layout &amp; Exit</button>
-    <button class="nav" data-panel="ert">🛡️ ERT Members</button>
+    <button class="nav" data-panel="ert">🛡️ Emergency ERT Members</button>
     <button class="nav" data-panel="firstaid">🧑‍⚕️ First Aid &amp; Medical Support</button>
     <button class="nav" data-panel="assembly">📍 Assembly Points</button>
     <button class="nav" data-panel="rooms">🏢 Meeting Rooms</button>
     <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
     <button class="nav" data-panel="translate">🌍 German ↔ English</button>
     <button class="nav" data-panel="parking">🅿️ Parking Info</button>
-    <button class="nav" data-panel="cab">🚕 Cab Facility</button>
+    <button class="nav" data-panel="cab">🚕 Cab Online Facility</button>
     <button class="nav" data-panel="food">🍔 Food Delivery Apps</button>
     <button class="nav" data-panel="social">🔗 Social Media Connect</button>
     <button class="nav" data-panel="travel">🧭 Travel Info, Converter & Hotels</button>
     <button class="nav" data-panel="hotels"> 🏨 Hotels</button>
-    <button class="nav" data-panel="share">📥 Download / Share QR</button>
+    <button class="nav" data-panel="share">📥 QR Share & Download</button>
   </nav>
 </header>
   <main>
@@ -462,18 +462,20 @@
 
     
 <!-- Share / QR -->
-<section id="panel-share" class="panel active">
- <h2>Download / Share QR</h2>
-<img src="q_code.png" style="max-width:200px"><br><br>
-<button class="btn" onclick="downloadQR()">Download QR</button>
-<button class="btn" onclick="shareQR()">Share QR</button>
+
+<section id="panel-share" class="panel">
+  <h2>Download / Share QR</h2>
+
+  q_code.png<br><br>
+
+  <button class="btn" id="downloadQRBtn">Download QR</button>
+  <button class="btn" id="shareQRBtn">Share QR</button>
 
   <div class="qr">
-    <div class="footer-note" style="margin-top:8px;">
-      Tip: Scan this QR to open the Visitor Info page.
-    </div>
+    <div class="footer-note" style="margin-top:8px;">Tip: Scan this QR to open the Visitor Info page.</div>
   </div>
 </section>
+
 
     
 
@@ -541,7 +543,7 @@
 <!-- Nearby Hotels -->
 
 <!-- SOCIAL -->
-<section id="panel-hotel" class="panel panel-hotels">
+<section id="panel-hotel" class="panel">
  <h2 class="panel-title">Nearby Hotels</h2>
 
   <ul class="hotel-list">
@@ -1337,8 +1339,41 @@
 
     
 
-  // Set to the same URL encoded in q_code.png (your generic landing page)
+
+  // Tab router: show one panel, hide others
+  const buttons = document.querySelectorAll('button.nav');
+  const panels  = document.querySelectorAll('section.panel');
+
+  function showPanel(key) {
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.panel === key));
+    panels.forEach(p => p.classList.toggle('active', p.id === 'panel-' + key));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  buttons.forEach(b => {
+    b.addEventListener('click', e => {
+      e.preventDefault();
+      showPanel(b.dataset.panel);
+    });
+  });
+
+  // ---- Share / Download wiring ----
   const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(LANDING_URL);
+      return true;
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = LANDING_URL;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch {}
+      document.body.removeChild(ta);
+      return true;
+    }
+  }
 
   async function shareQR() {
     try {
@@ -1349,15 +1384,16 @@
           url: LANDING_URL
         });
       } else {
-        await copyLink(true);
+        await copyLink();
         alert('Sharing is not supported on this device. The link has been copied to your clipboard.');
       }
     } catch (err) {
       console.error('Share failed:', err);
+      await copyLink();
+      alert('Could not share automatically. The link has been copied to your clipboard.');
     }
   }
 
-  // Robust download that works on iOS/desktop: fetch as Blob and download
   async function downloadQR() {
     const img = document.getElementById('siteQR');
     if (!img) {
@@ -1367,34 +1403,32 @@
     try {
       const response = await fetch(img.src, { mode: 'cors' });
       if (!response.ok) throw new Error('Network response was not ok');
-      const blob = await response.blob();
 
+      const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = blobUrl;
       a.download = 'BTI-Visitor-QR.png';
       document.body.appendChild(a);
       a.click();
-
       setTimeout(() => {
         URL.revokeObjectURL(blobUrl);
         a.remove();
       }, 1000);
     } catch (e) {
       console.error('Download failed:', e);
-      // iOS fallback: open in new tab so user can long-press → Save Image
-      try {
-        window.open(img.src, '_blank');
-      } catch (_) {
-        alert('Could not auto-download the QR. Please open the image and long-press to “Save Image”.');
+      try { window.open(img.src, '_blank'); }
+      catch (_) {
+        alert('Open the image and long-press to “Save Image”.');
       }
     }
   }
 
- 
-
+  // Wire up action buttons in the Share panel
   document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
   document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
+
+
 
          
   </script>
