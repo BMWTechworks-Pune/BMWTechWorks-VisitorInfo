@@ -463,29 +463,30 @@
 
     
 <!-- Share / QR -->
- <section id="panel-share" class="panel">
-      <h2>Download / Share / Scan QR</h2>
+ 
+<!-- Share / QR -->
+<section id="panel-share" class="panel active">
+  <h2>Download / Share / Scan QR</h2>
 
-      <!-- IMPORTANT: id=siteQR so downloadQR() can find it -->
-      q_code.png
+  <!-- Important: use RAW url or same-origin file and give an ID -->
+  <img id="siteQR"
+       src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/q_code.png"
+      addEventListener instead of inline onclick -->
+  <button class="btn" id="downloadQRBtn">⬇️ Download QR</button>
+  <button class="btn" id="shareQRBtn">📤 Share Link</button>
+  <button class="btn" id="scanQRBtn">📷 Scan QR</button>
 
-      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap">
-        <button class="btn" id="downloadQRBtn">⬇️ Download QR</button>
-        <button class="btn" id="shareQRBtn">📤 Share Link</button>
-        <button class="btn" id="scanQRBtn">📷 Scan QR</button>
-      </div>
+  <div id="qrScanArea" style="margin-top:12px; display:none">
+    <video id="qrVideo" playsinline style="width:320px; max-width:100%; border:1px solid #e3e8ef; border-radius:10px"></video>
+    <div id="scanResult" class="footer-note" style="margin-top:8px;"></div>
+    <button class="btn" id="stopScanBtn">⛔ Stop Scan</button>
+  </div>
 
-      <!-- Live camera preview for scanning -->
-      <div id="qrScanArea">
-        <video id="qrVideo" playsinline></video>
-        <div id="scanResult" class="footer-note"></div>
-        <button class="btn" id="stopScanBtn">⛔ Stop Scan</button>
-      </div>
+  <div class="footer-note" style="margin-top:8px;">
+    Tip: Scan this QR to open the Visitor Info page.
+  </div>
+</section>
 
-      <div class="footer-note" style="margin-top:8px;">
-        Tip: Scan this QR to open the Visitor Info page.
-      </div>
-    </section>
 
     
 
@@ -1318,144 +1319,121 @@
 })();
 
     
+
+<script>
   // Set to the same URL encoded in q_code.png (your generic landing page)
-    const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
-
-    // Helper used by share fallback
-    async function copyLink(showToast) {
-      try {
-        await navigator.clipboard.writeText(LANDING_URL);
-        if (showToast) console.log('Link copied:', LANDING_URL);
-      } catch (e) {
-        console.warn('Clipboard not available. Showing prompt fallback.');
-        window.prompt('Copy this link:', LANDING_URL);
-      }
+  try {  const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
+      await navigator.clipboard.writeText(LANDING_URL);
+      if (showToast) console.log('Link copied:', LANDING_URL);
+    } catch (e) {
+      window.prompt('Copy this link:', LANDING_URL);
     }
+  }
 
-    async function shareQR() {
-      try {
-        if (navigator.share) {
-          await navigator.share({
-            title: 'BTI Visitor Mini-site',
-            text: 'Open the BTI Visitor Mini-site without scanning.',
-            url: LANDING_URL
-          });
-        } else {
-          await copyLink(true);
-          alert('Sharing is not supported on this device. The link has been copied to your clipboard.');
-        }
-      } catch (err) {
-        console.error('Share failed:', err);
+  async function shareQR() {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'BTI Visitor Mini-site',
+          text: 'Open the BTI Visitor Mini-site without scanning.',
+          url: LANDING_URL
+        });
+      } else {
+        await copyLink(true);
+        alert('Sharing is not supported on this device. The link has been copied to your clipboard.');
       }
+    } catch (err) {
+      console.error('Share failed:', err);
     }
+  }
 
-    // Robust download that works on iOS/desktop: fetch as Blob and download
-    async function downloadQR() {
-      const img = document.getElementById('siteQR');
-      if (!img) {
-        alert('QR image not found to download.');
-        return;
-      }
-      try {
-        const response = await fetch(img.src, { mode: 'cors' });
-        if (!response.ok) throw new Error('Network response was not ok');
-        const blob = await response.blob();
+  // Robust download that works on iOS/desktop: fetch as Blob and download
+  async function downloadQR() {
+    const img = document.getElementById('siteQR');
+    if (!img) { alert('QR image not found to download.'); return; }
+    try {
+      const response = await fetch(img.src, { mode: 'cors' });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
 
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = 'BTI-Visitor-QR.png';
-        document.body.appendChild(a);
-        a.click();
-
-        setTimeout(() => {
-          URL.revokeObjectURL(blobUrl);
-          a.remove();
-        }, 1000);
-      } catch (e) {
-        console.error('Download failed:', e);
-        // iOS fallback: open in new tab so user can long-press → Save Image
-        try {
-          window.open(img.src, '_blank');
-        } catch (_) {
-          alert('Could not auto-download the QR. Please open the image and long-press to “Save Image”.');
-        }
-      }
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = 'BTI-Visitor-QR.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(blobUrl); a.remove(); }, 1000);
+    } catch (e) {
+      console.error('Download failed:', e);
+      // iOS fallback: open in new tab so user can long-press → Save Image
+      try { window.open(img.src, '_blank'); }
+      catch (_) { alert('Open the image and long-press to “Save Image”.'); }
     }
+  }
 
-    document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
-    document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
+  // Scan QR (uses camera + BarcodeDetector when available)
+  async function scanQR() {
+    const scanArea = document.getElementById('qrScanArea');
+    const video = document.getElementById('qrVideo');
+    const resultEl = document.getElementById('scanResult');
 
-    // --- QR SCAN: camera + BarcodeDetector fallback ---
-    async function scanQR() {
-      const scanArea = document.getElementById('qrScanArea');
-      const video = document.getElementById('qrVideo');
-      const resultEl = document.getElementById('scanResult');
+    scanArea.style.display = 'block';
+    resultEl.textContent = 'Starting camera…';
 
-      scanArea.style.display = 'block';
-      resultEl.textContent = 'Starting camera…';
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      video.srcObject = stream;
+      await video.play();
 
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
-        video.srcObject = stream;
-        await video.play();
+      if ('BarcodeDetector' in window) {
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        let scanning = true;
 
-        if ('BarcodeDetector' in window) {
-          const detector = new BarcodeDetector({ formats: ['qr_code'] });
-          let scanning = true;
-
-          async function tick() {
-            if (!scanning) return;
-            try {
-              const barcodes = await detector.detect(video);
-              const qr = barcodes.find(b => (b.format || '').toLowerCase() === 'qr_code');
-              if (qr && qr.rawValue) {
-                resultEl.textContent = 'QR detected: ' + qr.rawValue;
-                // Auto-open URLs
-                if (/^https?:\/\//i.test(qr.rawValue)) {
-                  setTimeout(() => window.location.href = qr.rawValue, 900);
-                }
-                stopScan();
-                return;
-              } else {
-                resultEl.textContent = 'Scanning… (point camera at the QR)';
-              }
-            } catch (e) { console.error('Detect error:', e); }
-            requestAnimationFrame(tick);
-          }
+        async function tick() {
+          if (!scanning) return;
+          try {
+            const barcodes = await detector.detect(video);
+            const qr = barcodes.find(b => (b.format || '').toLowerCase() === 'qr_code');
+            if (qr && qr.rawValue) {
+              resultEl.textContent = 'QR detected: ' + qr.rawValue;
+              if (/^https?:\/\//i.test(qr.rawValue)) setTimeout(() => (window.location.href = qr.rawValue), 900);
+              stopScan(); return;
+            } else {
+              resultEl.textContent = 'Scanning… (point camera at the QR)';
+            }
+          } catch (e) { console.error('Detect error:', e); }
           requestAnimationFrame(tick);
-
-          window.__qrScanStopper = () => { scanning = false; };
-        } else {
-          resultEl.textContent = 'QR scanning not supported on this browser. Please use Chrome/Edge on Android, or your device Camera app.';
         }
-      } catch (err) {
-        console.error('Camera error:', err);
-        resultEl.textContent = 'Unable to access camera. Please allow permission or use a different device.';
+        requestAnimationFrame(tick);
+        window.__qrScanStopper = () => { scanning = false; };
+      } else {
+        resultEl.textContent = 'QR scanning not supported on this browser. Use Chrome/Edge on Android or your device Camera app.';
       }
+    } catch (err) {
+      console.error('Camera error:', err);
+      resultEl.textContent = 'Unable to access camera. Please allow permission or use a different device.';
     }
+  }
 
-    function stopScan() {
-      const scanArea = document.getElementById('qrScanArea');
-      const video = document.getElementById('qrVideo');
-      const resultEl = document.getElementById('scanResult');
+  function stopScan() {
+    const scanArea = document.getElementById('qrScanArea');
+    const video = document.getElementById('qrVideo');
+    const stream = video.srcObject;
 
-      if (window.__qrScanStopper) { try { window.__qrScanStopper(); } catch {} window.__qrScanStopper = null; }
+    if (window.__qrScanStopper) { try { window.__qrScanStopper(); } catch {} window.__qrScanStopper = null; }
+    if (stream) { stream.getTracks().forEach(t => t.stop()); video.srcObject = null; }
+    document.getElementById('scanResult').textContent = 'Scan stopped.';
+    scanArea.style.display = 'none';
+  }
 
-      const stream = video.srcObject;
-      if (stream) {
-        stream.getTracks().forEach(t => t.stop());
-        video.srcObject = null;
-      }
+  // Wire buttons
+  document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
+  document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
+  document.getElementById('scanQRBtn')?.addEventListener('click', scanQR);
+  document.getElementById('stopScanBtn')?.addEventListener('click', stopScan);
+</script>
 
-      resultEl.textContent = 'Scan stopped.';
-      scanArea.style.display = 'none';
-    }
 
-    document.getElementById('scanQRBtn')?.addEventListener('click', scanQR);
-    document.getElementById('stopScanBtn')?.addEventListener('click', stopScan);
 
-         
-  </script>
 </body>
 </html>
