@@ -222,6 +222,53 @@
       </div> 
     </section>
 
+     <section id="panel-rooms" class="panel">
+      <h2>Meeting Rooms</h2>
+    <h2> MRS Floor Layout & Exit</h2>
+      
+        <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
+      
+      <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
+      <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
+    
+
+ 
+      <div class="card">
+        <h3>Room Route Finder</h3>
+        <label for="roomSel">Choose Meeting room:</label>
+        <div class="toolbar">
+          <button id="zoomIn" title="Zoom in">＋</button>
+          <button id="zoomOut" title="Zoom out">－</button>
+          <button id="reset" title="Reset view">Reset</button>
+          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
+          <button id="langToggle" title="Toggle language">EN / DE</button>
+        </div>
+        <select id="roomSel">
+          <option value="">— Select Meeting Room —</option>
+          <option>Success</option>
+          <option>Inspire</option>
+          <option>Joy</option>
+          <option>Debug</option>
+          <option>iDrive</option>
+          <option>M-Mode</option>
+          <option>Drift</option>
+          <option>xDrive</option>
+          <option>Torque</option>
+        </select>
+        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
+      </div>
+
+      <div id="audioPanel" class="card">
+        <h4>Audio Guidance (TTS)</h4>
+        <div class="toolbar">
+          <button id="playAudio">Play</button>
+          <button id="stopAudio">Stop</button>
+          <span id="audioStatus" class="muted"></span>
+        </div>
+        <p class="muted" style="margin-top:6px">Tap <strong>Play</strong> after selecting a room.</p>
+      </div>
+</section>
+    
 
     <!-- Layout & Exit -->
     <section id="panel-layout" class="panel">
@@ -478,52 +525,7 @@
     
 
 
-    <section id="panel-rooms" class="panel" style="display:none">
-  <h2>Meeting Rooms</h2>
-  
-      
-        <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
-      
-      <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
-      <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
-    
-
- 
-      <div class="card">
-        <h3>Room Route Finder</h3>
-        <label for="roomSel">Choose Meeting room:</label>
-        <div class="toolbar">
-          <button id="zoomIn" title="Zoom in">＋</button>
-          <button id="zoomOut" title="Zoom out">－</button>
-          <button id="reset" title="Reset view">Reset</button>
-          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
-          <button id="langToggle" title="Toggle language">EN / DE</button>
-        </div>
-        <select id="roomSel">
-          <option value="">— Select Meeting Room —</option>
-          <option>Success</option>
-          <option>Inspire</option>
-          <option>Joy</option>
-          <option>Debug</option>
-          <option>iDrive</option>
-          <option>M-Mode</option>
-          <option>Drift</option>
-          <option>xDrive</option>
-          <option>Torque</option>
-        </select>
-        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
-      </div>
-
-      <div id="audioPanel" class="card">
-        <h4>Audio Guidance (TTS)</h4>
-        <div class="toolbar">
-          <button id="playAudio">Play</button>
-          <button id="stopAudio">Stop</button>
-          <span id="audioStatus" class="muted"></span>
-        </div>
-        <p class="muted" style="margin-top:6px">Tap <strong>Play</strong> after selecting a room.</p>
-      </div>
-</section>
+   
 
     
 <!-- Travel Info & Converter -->
