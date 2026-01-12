@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMWTechWorks India BTI– PUNE</title>
+  <title>BMWTechWorks India – PUNE</title>
   <style>
     :root{--blue:#1c6ecf;--dark:#0b1f3d;--light:#f7f9fc;--border:#e3e8ef}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;background:var(--light);color:#14202a}
@@ -56,9 +56,7 @@
 
 /* Ensure QR container looks tidy */
 .qr img { border-radius: 8px; }
- /* Scan area */
-    #qrScanArea { margin-top:12px; display:none }
-    #qrVideo { width:320px; max-width:100%; border:1px solid #e3e8ef; border-radius:10px }
+
     
     /* Stage: pan/zoom container */
     #imgStageWrapper {
@@ -150,16 +148,20 @@
 
 <header>
   <!-- Header with BMW logo and language buttons (updated: no table) -->
- 
-<div class="top">
-    <div class="brand" style="color: #0066B1; font-weight: bold;">
-      https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg
-      BMWTechWorks India–Pune
+  <div class="top">
+    <div class="brand">
+      <img
+        src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg"
+        alt="BMW logo"
+        class="brand-logo"
+        decoding="async"
+        loading="lazy"
+     age selection">
+      BMWTechWorks India – Pune
       <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
       <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
     </div>
   </div>
-
 
   <!-- Navigation buttons -->
   <nav>
@@ -459,30 +461,18 @@
 
     
 <!-- Share / QR -->
- 
-<!-- Share / QR -->
 <section id="panel-share" class="panel active">
-  <h2>Download / Share / Scan QR</h2>
+ <h2>Download / Share QR</h2>
+<img src="q_code.png" style="max-width:200px"><br><br>
+<button class="btn" onclick="downloadQR()">Download QR</button>
+<button class="btn" onclick="shareQR()">Share QR</button>
 
-  <!-- Important: use RAW url or same-origin file and give an ID -->
-  <img id="siteQR"
-       src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/q_code.png"
-      addEventListener instead of inline onclick -->
-  <button class="btn" id="downloadQRBtn">⬇️ Download QR</button>
-  <button class="btn" id="shareQRBtn">📤 Share Link</button>
-  <button class="btn" id="scanQRBtn">📷 Scan QR</button>
-
-  <div id="qrScanArea" style="margin-top:12px; display:none">
-    <video id="qrVideo" playsinline style="width:320px; max-width:100%; border:1px solid #e3e8ef; border-radius:10px"></video>
-    <div id="scanResult" class="footer-note" style="margin-top:8px;"></div>
-    <button class="btn" id="stopScanBtn">⛔ Stop Scan</button>
-  </div>
-
-  <div class="footer-note" style="margin-top:8px;">
-    Tip: Scan this QR to open the Visitor Info page.
+  <div class="qr">
+    <div class="footer-note" style="margin-top:8px;">
+      Tip: Scan this QR to open the Visitor Info page.
+    </div>
   </div>
 </section>
-
 
     
 
@@ -1316,15 +1306,8 @@
 
     
 
-<script>
   // Set to the same URL encoded in q_code.png (your generic landing page)
-  try {  const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
-      await navigator.clipboard.writeText(LANDING_URL);
-      if (showToast) console.log('Link copied:', LANDING_URL);
-    } catch (e) {
-      window.prompt('Copy this link:', LANDING_URL);
-    }
-  }
+  const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
 
   async function shareQR() {
     try {
@@ -1346,7 +1329,10 @@
   // Robust download that works on iOS/desktop: fetch as Blob and download
   async function downloadQR() {
     const img = document.getElementById('siteQR');
-    if (!img) { alert('QR image not found to download.'); return; }
+    if (!img) {
+      alert('QR image not found to download.');
+      return;
+    }
     try {
       const response = await fetch(img.src, { mode: 'cors' });
       if (!response.ok) throw new Error('Network response was not ok');
@@ -1358,78 +1344,28 @@
       a.download = 'BTI-Visitor-QR.png';
       document.body.appendChild(a);
       a.click();
-      setTimeout(() => { URL.revokeObjectURL(blobUrl); a.remove(); }, 1000);
+
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+        a.remove();
+      }, 1000);
     } catch (e) {
       console.error('Download failed:', e);
       // iOS fallback: open in new tab so user can long-press → Save Image
-      try { window.open(img.src, '_blank'); }
-      catch (_) { alert('Open the image and long-press to “Save Image”.'); }
-    }
-  }
-
-  // Scan QR (uses camera + BarcodeDetector when available)
-  async function scanQR() {
-    const scanArea = document.getElementById('qrScanArea');
-    const video = document.getElementById('qrVideo');
-    const resultEl = document.getElementById('scanResult');
-
-    scanArea.style.display = 'block';
-    resultEl.textContent = 'Starting camera…';
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
-      video.srcObject = stream;
-      await video.play();
-
-      if ('BarcodeDetector' in window) {
-        const detector = new BarcodeDetector({ formats: ['qr_code'] });
-        let scanning = true;
-
-        async function tick() {
-          if (!scanning) return;
-          try {
-            const barcodes = await detector.detect(video);
-            const qr = barcodes.find(b => (b.format || '').toLowerCase() === 'qr_code');
-            if (qr && qr.rawValue) {
-              resultEl.textContent = 'QR detected: ' + qr.rawValue;
-              if (/^https?:\/\//i.test(qr.rawValue)) setTimeout(() => (window.location.href = qr.rawValue), 900);
-              stopScan(); return;
-            } else {
-              resultEl.textContent = 'Scanning… (point camera at the QR)';
-            }
-          } catch (e) { console.error('Detect error:', e); }
-          requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-        window.__qrScanStopper = () => { scanning = false; };
-      } else {
-        resultEl.textContent = 'QR scanning not supported on this browser. Use Chrome/Edge on Android or your device Camera app.';
+      try {
+        window.open(img.src, '_blank');
+      } catch (_) {
+        alert('Could not auto-download the QR. Please open the image and long-press to “Save Image”.');
       }
-    } catch (err) {
-      console.error('Camera error:', err);
-      resultEl.textContent = 'Unable to access camera. Please allow permission or use a different device.';
     }
   }
 
-  function stopScan() {
-    const scanArea = document.getElementById('qrScanArea');
-    const video = document.getElementById('qrVideo');
-    const stream = video.srcObject;
+ 
 
-    if (window.__qrScanStopper) { try { window.__qrScanStopper(); } catch {} window.__qrScanStopper = null; }
-    if (stream) { stream.getTracks().forEach(t => t.stop()); video.srcObject = null; }
-    document.getElementById('scanResult').textContent = 'Scan stopped.';
-    scanArea.style.display = 'none';
-  }
-
-  // Wire buttons
   document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
   document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
-  document.getElementById('scanQRBtn')?.addEventListener('click', scanQR);
-  document.getElementById('stopScanBtn')?.addEventListener('click', stopScan);
-</script>
 
-
-
+         
+  </script>
 </body>
 </html>
