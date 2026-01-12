@@ -568,8 +568,9 @@
 
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
 
-  <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team -2026DDD</div>
+  <p class="footer-note"> @Copyright  & Developed By</p>
+  <footer style="text-align:center; padding:10px; color:var(--muted)">
+     BMW-BTI-Digital CAR PUNE-SSP Team-2026</div>
 </footer>
   
 
@@ -1391,5 +1392,66 @@ alert("Link copied to clipboard");
 
          
   </script>
+
+<script>
+// --- Exit guidance (EN/DE) ---
+(function(){
+  const GUIDANCE = {
+    en: {
+      EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
+      EXIT2: "Head west and then south along the corridor to the South‑West Exit (near Joy).",
+      EXIT3: "Proceed towards the central corridor and continue north to the Central Exit (near Debug).",
+      EXIT4: "Go east along the main corridor; at the next junction turn north to reach the East Exit (near iDrive/M‑Mode).",
+      EXIT5: "Continue east to the far right wing and turn south to reach the Far‑East Exit (near Xdrive/Torque)."
+    },
+    de: {
+      EXIT1: "Gehen Sie nach Westen entlang des Hauptflurs; biegen Sie an der Kreuzung nach Norden ab zum Westausgang (bei Success – Boardroom).",
+      EXIT2: "Gehen Sie nach Westen und dann nach Süden entlang des Flurs zum Südwestausgang (bei Joy).",
+      EXIT3: "Gehen Sie zum zentralen Flur und weiter nach Norden zum Zentralausgang (bei Debug).",
+      EXIT4: "Gehen Sie nach Osten entlang des Hauptflurs; biegen Sie an der nächsten Kreuzung nach Norden ab zum Ostausgang (bei iDrive/M‑Mode).",
+      EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum ganz rechten Ostausgang (bei Xdrive/Torque)."
+    }
+  };
+  const exitSelect = document.getElementById('exitSelect');
+  const langSelect = document.getElementById('langSelect');
+  const routeText = document.getElementById('routeText');
+  const playBtn = document.getElementById('play');
+  const replayBtn = document.getElementById('replay');
+  const muteBtn = document.getElementById('mute');
+
+  function normalizeLang(v){ v = String(v||'en').trim().toLowerCase(); return v==='de'?'de':'en'; }
+  function normalizeExit(v){ return String(v||'None').trim().toUpperCase(); }
+  function defaultMessage(lang){ return lang==='de' ? 'Wählen Sie einen Ausgang aus, um die Anleitung zu sehen.' : 'Select an exit to see guidance.'; }
+  function guidanceText(exit, lang){ const L = GUIDANCE[lang]||GUIDANCE.en; return L[exit]||defaultMessage(lang); }
+
+  let currentExit = normalizeExit(exitSelect?.value||'None');
+  let currentLang = normalizeLang(langSelect?.value||'en');
+  let isMuted = false;
+
+  function updateUI(){
+    routeText.textContent = guidanceText(currentExit, currentLang);
+  }
+  function speak(){
+    if(currentExit==='NONE'){ updateUI(); return; }
+    if(typeof window.speechSynthesis==='undefined'){ return; }
+    try{ window.speechSynthesis.cancel(); }catch{}
+    const utt = new SpeechSynthesisUtterance(guidanceText(currentExit, currentLang));
+    utt.lang = currentLang==='de' ? 'de-DE' : 'en-US';
+    utt.rate = 1.0; utt.pitch = 1.0; utt.volume = isMuted ? 0 : 1;
+    window.speechSynthesis.speak(utt);
+  }
+  function replay(){ try{ window.speechSynthesis.cancel(); }catch{} speak(); }
+  function toggleMute(){ isMuted = !isMuted; muteBtn.textContent = isMuted ? (currentLang==='de'?'Ton ein':'Unmute') : (currentLang==='de'?'Stumm':'Mute'); replay(); }
+
+  exitSelect?.addEventListener('change', ()=>{ currentExit = normalizeExit(exitSelect.value); updateUI(); });
+  langSelect?.addEventListener('change', ()=>{ currentLang = normalizeLang(langSelect.value); updateUI(); });
+  playBtn?.addEventListener('click', speak);
+  replayBtn?.addEventListener('click', replay);
+  muteBtn?.addEventListener('click', toggleMute);
+
+  updateUI();
+})();
+</script>
+
 </body>
 </html>
