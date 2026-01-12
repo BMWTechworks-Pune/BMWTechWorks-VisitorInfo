@@ -1,10 +1,9 @@
-​
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMWTechWorks India – DPUNE</title>
+  <title>BMWTechWorks India – PUNE</title>
   <style>
     :root{--blue:#1c6ecf;--dark:#0b1f3d;--light:#f7f9fc;--border:#e3e8ef}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;background:var(--light);color:#14202a}
@@ -159,7 +158,7 @@
         decoding="async"
         loading="lazy"
      age selection">
-      BMWTechWorks India – PuneDDD
+      BMWTechWorks India – Pune
       <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
       <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
     </div>
@@ -223,30 +222,31 @@
       </div> 
     </section>
 
+     <section id="panel-rooms" class="panel">
+      <h3>Meeting Rooms</h3>
     
-<section id="panel-rooms" class="panel">
-  <h3>Meeting Rooms</h3>
-  <div id="imgStageWrapper">
-    <div id="imgStage">
-      r2.png
-    </div>
-  </div>
-  <div class="card">
-    <h4>Room Route Finder</h4>
-    <div class="controls-bar">
-      <div class="zoom-controls">
-        <button id="zoomIn">＋</button>
-        <button id="zoomOut">－</button>
-        <button id="reset">Reset</button>
-        <button id="clearRoute">Clear</button>
-      </div>
-      <div class="select-controls">
-        <label for="roomSel">Choose Meeting Room:</label>
+      
+        <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
+      
+      <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
+      <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
+    
+
+ 
+      <div class="card">
+        <h3>Room Route Finder</h3>
+        <label for="roomSel">Choose Meeting room:</label>
+        <div class="toolbar">
+          <button id="zoomIn" title="Zoom in">＋</button>
+          <button id="zoomOut" title="Zoom out">－</button>
+          <button id="reset" title="Reset view">Reset</button>
+          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
+          <button id="langToggle" title="Toggle language">EN / DE</button>
+        </div>
         <select id="roomSel">
-          <option value="">— Select —</option>
+          <option value="">— Select Meeting Room —</option>
           <option>Success</option>
           <option>Inspire</option>
-          <option>Visitor</option>
           <option>Joy</option>
           <option>Debug</option>
           <option>iDrive</option>
@@ -255,16 +255,19 @@
           <option>xDrive</option>
           <option>Torque</option>
         </select>
+        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
       </div>
-    </div>
-    <div class="steps-wrap">
-      <div class="steps-column">
-        <ol id="routeSteps" class="muted"></ol>
-      </div>
-    </div>
-  </div>
-</section>
 
+      <div id="audioPanel" class="card">
+        <h4>Audio Guidance (TTS)</h4>
+        <div class="toolbar">
+          <button id="playAudio">Play</button>
+          <button id="stopAudio">Stop</button>
+          <span id="audioStatus" class="muted"></span>
+        </div>
+        <p class="muted" style="margin-top:6px">Tap <strong>Play</strong> after selecting a room.</p>
+      </div>
+</section>
     
 
     <!-- Layout & Exit -->
@@ -569,7 +572,7 @@
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
 
   <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team -2026DDD</div>
+  @Copyright BTI-Digital CAR PUNE-SSP Team -2026VBVB</div>
 </footer>
   
 
@@ -595,59 +598,6 @@
       e.preventDefault();
     });
 
-     // Zoom & Pan
-const stage = document.getElementById('imgStage');
-const img = document.getElementById('floorImg');
-let scale = 1, tx = 0, ty = 0, isDown = false, lastX = 0, lastY = 0;
-
-function applyTransform() {
-  stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-}
-function zoom(delta) {
-  scale = Math.min(3.5, Math.max(1, scale + delta));
-  applyTransform();
-}
-document.getElementById('zoomIn').onclick = () => zoom(0.25);
-document.getElementById('zoomOut').onclick = () => zoom(-0.25);
-document.getElementById('reset').onclick = () => { scale = 1; tx = 0; ty = 0; applyTransform(); };
-
-stage.addEventListener('mousedown', e => { isDown = true; lastX = e.clientX; lastY = e.clientY; stage.classList.add('grabbing'); });
-window.addEventListener('mouseup', () => { isDown = false; stage.classList.remove('grabbing'); });
-window.addEventListener('mousemove', e => {
-  if (!isDown) return;
-  tx += e.clientX - lastX; ty += e.clientY - lastY;
-  lastX = e.clientX; lastY = e.clientY;
-  applyTransform();
-});
-stage.addEventListener('wheel', e => { e.preventDefault(); zoom(e.deltaY > 0 ? -0.2 : 0.2); });
-
-// Route steps
-const routeData = {
-  Success: ["Start at Reception.", "Walk north towards Visitor area.", "Pass Visitor Room.", "Turn right beyond Visitor.", "Success is first glass-walled room on left."],
-  Inspire: ["Start at Reception.", "Walk north towards Visitor area.", "Continue straight after Visitor.", "Inspire is next on left, adjacent to Success."],
-  Visitor: ["Start at Reception.", "Visitor Room is directly ahead-left from Reception."],
-  Joy: ["Start at Reception.", "Joy is immediately to the right of Reception."],
-  Debug: ["Start at Reception.", "Head east along main aisle.", "Continue straight into central block.", "Debug is in middle section."],
-  iDrive: ["Start at Reception.", "Head east along main aisle past central area.", "Enter right-middle cluster.", "iDrive is first meeting room."],
-  "M-Mode": ["Start at Reception.", "Head east along main aisle.", "Enter right-middle cluster.", "M-Mode is adjacent to iDrive."],
-  Drift: ["Start at Reception.", "Walk east towards far right wing.", "Drift is first meeting room in inner row."],
-  xDrive: ["Start at Reception.", "Continue to far right wing.", "xDrive is next after Drift."],
-  Torque: ["Start at Reception.", "Proceed to far right wing.", "Torque is last meeting room beyond xDrive."]
-};
-
-const roomSel = document.getElementById('roomSel');
-const stepsOl = document.getElementById('routeSteps');
-document.getElementById('clearRoute').onclick = () => { roomSel.value = ''; stepsOl.innerHTML = ''; };
-roomSel.onchange = () => {
-  stepsOl.innerHTML = '';
-  const steps = routeData[roomSel.value] || [];
-  steps.forEach(s => {
-    const li = document.createElement('li');
-    li.textContent = s;
-    stepsOl.appendChild(li);
-  });
-};
-    
     document.addEventListener('DOMContentLoaded', () => {
   /* =========================================
      BTI Pune • Exit Guidance (TTS only)
