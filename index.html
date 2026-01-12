@@ -138,22 +138,6 @@
       font-weight: 600;
     }
 
-    
-/* --- MEETING ROOM ZOOM --- */
-#roomWrapper{
-overflow:hidden;
-border:1px solid #ccc;
-height:60vh;
-}
-#roomImg{
-transform-origin:0 0;
-cursor:grab;
-}
-    
-.panel{display:none;padding:16px}
-.panel.active{display:block}
- .btn{padding:8px 12px;border:1px solid #ccc;border-radius:8px;cursor:pointer}
-  img{max-width:100%}
     @media (max-width: 480px) {
       .brand-title { font-size: 1rem; white-space: normal; }
       .brand-logo { width: 32px; height: 32px; }
@@ -483,46 +467,65 @@ cursor:grab;
 <!-- Share / QR -->
 <section id="panel-share" class="panel">
  <h2>Download / Share QR</h2>
-
-<!-- ✅ ID ADDED -->
-<img id="siteQR" src="q_code.png" style="max-width:200px"><br><br>
-
+<img src="q_code.png" style="max-width:200px"><br><br>
 <button class="btn" onclick="downloadQR()">Download QR</button>
 <button class="btn" onclick="shareQR()">Share QR</button>
+
+  <div class="qr">
+    <div class="footer-note" style="margin-top:8px;">
+      Tip: Scan this QR to open the Visitor Info page.
+    </div>
+  </div>
 </section>
 
     
 
 
     <section id="panel-rooms" class="panel">
- <h2>Meeting Rooms</h2>
+  <h2>Meeting Rooms</h2>
+  
+      
+        <img id="planImg" src="r2.png" alt="BTI Pune floor plan"/>
+      
+      <p class="muted">Key rooms: Success, Inspire, Joy, Debug, iDrive, M‑Mode, Drift, xDrive, Torque.</p>
+      <p class="muted" style="margin:8px 0 0 0">Drag to pan; use +/− to zoom.</p>
+    
 
-<div id="roomWrapper">
-<img id="roomImg" src="r2.png">
-</div>
+ 
+      <div class="card">
+        <h3>Room Route Finder</h3>
+        <label for="roomSel">Choose Meeting room:</label>
+        <div class="toolbar">
+          <button id="zoomIn" title="Zoom in">＋</button>
+          <button id="zoomOut" title="Zoom out">－</button>
+          <button id="reset" title="Reset view">Reset</button>
+          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
+          <button id="langToggle" title="Toggle language">EN / DE</button>
+        </div>
+        <select id="roomSel">
+          <option value="">— Select Meeting Room —</option>
+          <option>Success</option>
+          <option>Inspire</option>
+          <option>Joy</option>
+          <option>Debug</option>
+          <option>iDrive</option>
+          <option>M-Mode</option>
+          <option>Drift</option>
+          <option>xDrive</option>
+          <option>Torque</option>
+        </select>
+        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
+      </div>
 
-<br>
-<button class="btn" onclick="zoom(1.2)">➕ Zoom In</button>
-<button class="btn" onclick="zoom(0.8)">➖ Zoom Out</button>
-<button class="btn" onclick="resetZoom()">Reset</button>
-
-<hr>
-
-<label>Select Room:</label>
-<select id="roomSel" onchange="showRoute()">
-<option value="">-- Select --</option>
-<option>Success</option>
-<option>Inspire</option>
-<option>Joy</option>
-<option>Debug</option>
-<option>iDrive</option>
-<option>M-Mode</option>
-<option>Drift</option>
-<option>xDrive</option>
-<option>Torque</option>
-</select>
-
-<ol id="routeText"></ol>
+      <div id="audioPanel" class="card">
+        <h4>Audio Guidance (TTS)</h4>
+        <div class="toolbar">
+          <button id="playAudio">Play</button>
+          <button id="stopAudio">Stop</button>
+          <span id="audioStatus" class="muted"></span>
+        </div>
+        <p class="muted" style="margin-top:6px">Tap <strong>Play</strong> after selecting a room.</p>
+      </div>
 </section>
 
     
@@ -566,43 +569,13 @@ cursor:grab;
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
 
   <footer style="text-align:center; padding:12px; color:var(--muted)">
+  <div>***Developed By BTI-Digital CAR - SSP Team***</div>
+   <div style="font-weight:bold; color:green;">
   @Copyright BTI-Digital CAR PUNE-SSP Team - 2026</div>
 </footer>
   
 
   <script>
-   
-/* ---------- ZOOM ---------- */
-let scale=1;
-const img=document.getElementById("roomImg");
-function zoom(f){scale*=f;img.style.transform=`scale(${scale})`;}
-function resetZoom(){scale=1;img.style.transform="scale(1)";}
-
-/* ---------- ROUTES ---------- */
-const routes={
-Success:["From Reception go left","Board Room is Success"],
-Inspire:["From Reception go left","Training Room beside Success"],
-Joy:["From Reception go left","Joy near Visitor Room"],
-Debug:["From Reception straight","Middle section"],
-iDrive:["From Reception straight","Opposite Debug"],
-"M-Mode":["From Reception straight","Right corner"],
-Drift:["From Reception right wing","Near xDrive"],
-xDrive:["From Reception far right","Next to Torque"],
-Torque:["From Reception far right","Last room"]
-};
-
-function showRoute(){
-const r=document.getElementById("roomSel").value;
-const ol=document.getElementById("routeText");
-ol.innerHTML="";
-if(!r)return;
-routes[r].forEach(s=>{
-const li=document.createElement("li");
-li.innerText=s;
-ol.appendChild(li);
-});
-}
-    
     // Tab router: show one panel, hide others
     const buttons = document.querySelectorAll('button.nav');
     const panels = document.querySelectorAll('section.panel');
@@ -1337,63 +1310,65 @@ ol.appendChild(li);
 
     
 
-/* ---------- QR FIX ---------- */
-const LANDING_URL="https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/";
+  // Set to the same URL encoded in q_code.png (your generic landing page)
+  const LANDING_URL = 'https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/';
 
-async function downloadQR(){
-const img=document.getElementById("siteQR");
-const res=await fetch(img.src);
-const blob=await res.blob();
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-a.href=url;
-a.download="BMWTechWorks_QR.png";
-a.click();
-URL.revokeObjectURL(url);
-}
+  async function shareQR() {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'BTI Visitor Mini-site',
+          text: 'Open the BTI Visitor Mini-site without scanning.',
+          url: LANDING_URL
+        });
+      } else {
+        await copyLink(true);
+        alert('Sharing is not supported on this device. The link has been copied to your clipboard.');
+      }
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  }
 
-async function shareQR(){
-if(navigator.share){
-navigator.share({
-title:"BMWTechWorks Pune",
-url:LANDING_URL
-});
-}else{
-navigator.clipboard.writeText(LANDING_URL);
-alert("Link copied to clipboard");
-}
-}
+  // Robust download that works on iOS/desktop: fetch as Blob and download
+  async function downloadQR() {
+    const img = document.getElementById('siteQR');
+    if (!img) {
+      alert('QR image not found to download.');
+      return;
+    }
+    try {
+      const response = await fetch(img.src, { mode: 'cors' });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
 
-/* ---------- ZOOM ---------- */
-let scale=1;
-const img=document.getElementById("roomImg");
-function zoom(f){scale*=f;img.style.transform=`scale(${scale})`;}
-function resetZoom(){scale=1;img.style.transform="scale(1)";}
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = 'BTI-Visitor-QR.png';
+      document.body.appendChild(a);
+      a.click();
 
-/* ---------- ROUTES ---------- */
-const routes={
-Success:["From Reception go left","Board Room is Success"],
-Inspire:["From Reception go left","Training Room beside Success"],
-Joy:["From Reception go left","Joy near Visitor Room"],
-Debug:["From Reception straight","Middle section"],
-iDrive:["From Reception straight","Opposite Debug"],
-"M-Mode":["From Reception straight","Right corner"],
-Drift:["From Reception right wing","Near xDrive"],
-xDrive:["From Reception far right","Next to Torque"],
-Torque:["From Reception far right","Last room"]
-};
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+        a.remove();
+      }, 1000);
+    } catch (e) {
+      console.error('Download failed:', e);
+      // iOS fallback: open in new tab so user can long-press → Save Image
+      try {
+        window.open(img.src, '_blank');
+      } catch (_) {
+        alert('Could not auto-download the QR. Please open the image and long-press to “Save Image”.');
+      }
+    }
+  }
 
-function showRoute(){
-const r=document.getElementById("roomSel").value;
-const ol=document.getElementById("routeText");
-ol.innerHTML="";
-if(!r)return;
-routes[r].forEach(s=>{
-const li=document.createElement("li");
-li.innerText=s;
-ol.appendChild(li);
-});
-}
+ 
+
+  document.getElementById('shareQRBtn')?.addEventListener('click', shareQR);
+  document.getElementById('downloadQRBtn')?.addEventListener('click', downloadQR);
+
          
   </script>
 </body>
