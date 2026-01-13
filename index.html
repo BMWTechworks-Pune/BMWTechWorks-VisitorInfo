@@ -1,12 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BMWTechWorks India-Pune – Visitor & Office Help</title>
-
   <style>
     :root {
       --bmw-blue: #1c69d4; /* Classic BMW blue */
@@ -17,7 +14,6 @@
       --nav-hover-bg: #eef6ff;
       --border-color: #d8dee9;
     }
-
     html, body {
       margin: 0;
       padding: 0;
@@ -26,7 +22,6 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5;
     }
-
     header {
       padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--border-color);
@@ -37,124 +32,33 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+    header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+    .bmw-blue { color: var(--bmw-blue); font-weight: 700; }
+    .lang-toggle { display: inline-flex; gap: 0.4rem; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 999px; padding: 0.25rem 0.35rem; }
+    .lang-toggle span { font-size: 0.9rem; color: #6b7280; margin-right: 0.25rem; }
+    .lang-btn { border: 1px solid transparent; background: #fff; color: var(--text-color); padding: 0.25rem 0.6rem; border-radius: 999px; cursor: pointer; font-size: 0.9rem; }
+    .lang-btn:hover { background: var(--nav-hover-bg); }
+    .lang-btn.active { border-color: var(--bmw-blue); background: var(--nav-active-bg); color: #0f3f91; font-weight: 600; }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .bmw-blue {
-      color: var(--bmw-blue);
-      font-weight: 700;
-    }
-
-    .lang-toggle {
-      display: inline-flex;
-      gap: 0.4rem;
-      align-items: center;
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: 999px;
-      padding: 0.25rem 0.35rem;
-    }
-
-    .lang-toggle span {
-      font-size: 0.9rem;
-      color: #6b7280;
-      margin-right: 0.25rem;
-    }
-
-    .lang-btn {
-      border: 1px solid transparent;
-      background: #fff;
-      color: var(--text-color);
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .lang-btn:hover {
-      background: var(--nav-hover-bg);
-    }
-
-    .lang-btn.active {
-      border-color: var(--bmw-blue);
-      background: var(--nav-active-bg);
-      color: #0f3f91;
-      font-weight: 600;
-    }
-
-    /* Navigation (original preserved) */
-    nav {
-      display: grid;
-      gap: 0.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      padding: 1rem 1.25rem;
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    button.nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.65rem 0.8rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--text-color);
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-    }
-
-    button.nav:hover {
-      background: var(--nav-hover-bg);
-      border-color: #cfd6e6;
-    }
-
-    button.nav.active {
-      background: var(--nav-active-bg);
-      border-color: var(--bmw-blue);
-      color: #0f3f91;
-      font-weight: 600;
-    }
+    /* Navigation */
+    nav { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 1rem 1.25rem; background: var(--nav-bg); border-bottom: 1px solid var(--border-color); }
+    button.nav { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: #fff; color: var(--text-color); cursor: pointer; font-size: 0.95rem; transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
+    button.nav:hover { background: var(--nav-hover-bg); border-color: #cfd6e6; }
+    button.nav.active { background: var(--nav-active-bg); border-color: var(--bmw-blue); color: #0f3f91; font-weight: 600; }
 
     /* Panels */
-    main {
-      padding: 1rem 1.25rem 2rem;
-    }
+    main { padding: 1rem 1.25rem 2rem; }
+    section.panel { display: none; /* Hidden by default; shown when active */ padding: 1rem; border: 1px solid var(--border-color); border-radius: 10px; background: #fff; margin-bottom: 1rem; }
+    section.panel.active { display: block; }
 
-    section.panel {
-      display: none; /* Hidden by default; shown when active */
-      padding: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      background: #fff;
-      margin-bottom: 1rem;
-    }
-
-    section.panel.active {
-      display: block;
-    }
-
-    footer {
-      padding: 1rem 1.25rem;
-      border-top: 1px solid var(--border-color);
-      color: #6b7280;
-      font-size: 0.9rem;
-      background: #fff;
-    }
+    footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border-color); color: #6b7280; font-size: 0.9rem; background: #fff; text-align:center; }
+    .inset { max-width: 100%; height: auto; border-radius: 8px; margin: 6px 0; }
   </style>
 </head>
 <body>
-
-  <!-- Header (added non-destructively) -->
+  <!-- Header -->
   <header>
     <h1><span class="bmw-blue">BMWTechWorks India-Pune</span> – Visitor & Office Help</h1>
-
     <!-- Language toggle -->
     <div class="lang-toggle" aria-label="Language toggle">
       <span>Language:</span>
@@ -163,36 +67,35 @@
     </div>
   </header>
 
-  <!-- Navigation buttons (ORIGINAL ENGLISH CONTENT; preserved) -->
   <!-- Navigation buttons -->
   <nav>
-    <button class="nav active" data-panel="info">ℹ️ BMWTechWorks Info</button>
-    <button class="nav" data-panel="sos">🚨 SOS – Emergency</button>
-    <button class="nav" data-panel="assist">🆘 Need Assistance</button>
-    <button class="nav" data-panel="layout">🗺️ Floor Layout &amp; Exit</button>
-    <button class="nav" data-panel="ert">🛡️ ERT Members</button>
-    <button class="nav" data-panel="firstaid">🧑‍⚕️ First Aid &amp; Medical Support</button>
-    <button class="nav" data-panel="assembly">📍 Assembly Points</button>
-    <button class="nav" data-panel="rooms">🏢 Meeting Rooms</button>
-    <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
-    <button class="nav" data-panel="translate">🌍 German ↔ English</button>
-    <button class="nav" data-panel="parking">🅿️ Parking Info</button>
-    <button class="nav" data-panel="cab">🚕 Cab Facility</button>
-    <button class="nav" data-panel="food">🍔 Food Delivery Apps</button>
-    <button class="nav" data-panel="social">🔗 Social Media Connect</button>
-    <button class="nav" data-panel="travel">🧭 Travel Info, Converter &amp; Hotels</button>
-    <button class="nav" data-panel="hotels"> 🏨 Hotels</button>
-    <button class="nav" data-panel="share">📥 Download QR</button>
+    <button class="nav" data-panel="info" aria-controls="panel-info">ℹ️ BMWTechWorks Info</button>
+    <button class="nav" data-panel="sos" aria-controls="panel-sos">🚨 SOS – Emergency</button>
+    <button class="nav" data-panel="assist" aria-controls="panel-assist">🆘 Need Assistance</button>
+    <button class="nav" data-panel="layout" aria-controls="panel-layout">🗺️ Floor Layout & Exit</button>
+    <button class="nav" data-panel="ert" aria-controls="panel-ert">🛡️ ERT Members</button>
+    <button class="nav" data-panel="firstaid" aria-controls="panel-firstaid">🧑‍⚕️ First Aid & Medical Support</button>
+    <button class="nav" data-panel="assembly" aria-controls="panel-assembly">📍 Assembly Points</button>
+    <button class="nav" data-panel="rooms" aria-controls="panel-rooms">🏢 Meeting Rooms</button>
+    <button class="nav" data-panel="it" aria-controls="panel-it">🖥️ IT Helpdesk</button>
+    <button class="nav" data-panel="translate" aria-controls="panel-translate">🌍 German ↔ English</button>
+    <button class="nav" data-panel="parking" aria-controls="panel-parking">🅿️ Parking Info</button>
+    <button class="nav" data-panel="cab" aria-controls="panel-cab">🚕 Cab Facility</button>
+    <button class="nav" data-panel="food" aria-controls="panel-food">🍔 Food Delivery Apps</button>
+    <button class="nav" data-panel="social" aria-controls="panel-social">🔗 Social Media Connect</button>
+    <button class="nav" data-panel="travel" aria-controls="panel-travel">🧭 Travel Info, Converter & Hotels</button>
+    <button class="nav" data-panel="hotels" aria-controls="panel-hotels"> 🏨 Hotels</button>
+    <button class="nav active" data-panel="share" aria-controls="panel-share">📥 Download QR</button>
   </nav>
 
-  <!-- Panels (basic placeholders; do not affect original nav) -->
+  <!-- Panels -->
   <main>
     <!-- Info -->
-    <section id="panel-info" class="panel active">
+    <section id="panel-info" class="panel">
       <h2>BMWTechWorks India</h2>
       <div class="card">
-        <strong>Address</strong><br>
-        BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045<br>
+        <strong>Address</strong><br />
+        BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045<br />
         <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">View on Google Maps</a>
       </div>
       <p class="footer-note">Note: Photography is allowed at C & D areas only.</p>
@@ -202,40 +105,35 @@
     <section id="panel-sos" class="panel">
       <h2>SOS – Emergency</h2>
       <div class="grid">
-        <div class="card"><strong>Ambulance — Emergency Medical Service</strong><br>
+        <div class="card"><strong>Ambulance — Emergency Medical Service</strong><br />
           <a class="tel" href="tel:108">📞 108</a></div>
-        <div class="card"><strong>Facilities BTI Team — Dhananjay</strong><br>
+        <div class="card"><strong>Facilities BTI Team — Dhananjay</strong><br />
           <a class="tel" href="tel:+919657893928">📞 +91 9657893928</a></div>
-        <div class="card"><strong>Table Space Duty Cell (24×7) — Security</strong><br>
+        <div class="card"><strong>Table Space Duty Cell (24×7) — Security</strong><br />
           <a class="tel" href="tel:+918951322756">📞 8951322756</a></div>
-        <div class="card"><strong>ATP Ambulance (24×7) — Amar Tech Park Ambulance</strong><br>
+        <div class="card"><strong>ATP Ambulance (24×7) — Amar Tech Park Ambulance</strong><br />
           <a class="tel" href="tel:+918421737018">📞 +91 8421737018</a></div>
-        <div class="card"><strong>Integrated Emergency Number (24×7)</strong><br>
+        <div class="card"><strong>Integrated Emergency Number (24×7)</strong><br />
           Medical, Police, Fire — <a class="tel" href="tel:112">📞 112</a></div>
-        <div class="card"><strong>Nearest Hospital — Jupiter Hospital, Baner</strong><br>
+        <div class="card"><strong>Nearest Hospital — Jupiter Hospital, Baner</strong><br />
           <a class="tel" href="tel:+912027992299">📞 020 27992299</a></div>
-        <div class="card"><strong>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad</strong><br>
+        <div class="card"><strong>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad</strong><br />
           <a class="tel" href="tel:+912066434366">📞 020 66434366</a> · <a class="tel" href="tel:+917447477993">📞 7447477993</a></div>
-        <div class="card"><strong>Nearest Police Station — Aundh Police Station</strong><br>
+        <div class="card"><strong>Nearest Police Station — Aundh Police Station</strong><br />
           <a class="tel" href="tel:+912025881611">📞 020 25881611</a></div>
-        <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br>
+        <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br />
           <a class="tel" href="tel:+912027261120">📞 020 27261120</a></div>
-      </div> 
+      </div>
     </section>
 
-  <!-- Layout & Exit -->
+    <!-- Layout & Exit -->
     <section id="panel-layout" class="panel">
       <h3>Floor Layout & Exit</h3>
-      
-         <div class="content">
+      <div class="content">
         <!-- Map: zoom/pan wrapper -->
-        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
-        
-          <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
-               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
+        <div class="zoom-wrap" id="zoomWrap-layout" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
+          <img id="zoomImg-layout" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan" style="display:block; width:100%; transform-origin:0 0; user-select:none;" />
         </div>
-
-       
         <header style="margin-top:6px;">
           <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
           <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
@@ -248,136 +146,76 @@
               <option value="EXIT4">EXIT4</option>
               <option value="EXIT5">EXIT5</option>
             </select>
-
-          
-            <button class="btn" id="play">🔊 Play Audio Guidance</button>
-            <button class="btn" id="replay">Replay</button>
-            <button class="btn" id="mute">Mute</button>
-            <button class="btn" id="resetView">Reset</button>
+            <button class="btn" id="play-layout">🔊 Play Audio Guidance</button>
+            <button class="btn" id="replay-layout">Replay</button>
+            <button class="btn" id="mute-layout">Mute</button>
+            <button class="btn" id="resetView-layout">Reset</button>
           </div>
         </header>
-
         <!-- Guidance text display -->
-        <div id="routeText" class="routeText" aria-live="polite"
-             style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
+        <div id="routeText-layout" class="routeText" aria-live="polite" style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
           Select an exit to see guidance.
         </div>
-
         <!-- Hidden audio element driven by the controls -->
-        <audio id="routeAudio" preload="auto" style="display:none;"></audio>
-
-        <!-- Optional: Graceful message if JS is disabled -->
-        <noscript>
-          <div style="padding:12px;color:#e11d48;">
-            JavaScript is required for interactive routes and audio guidance.
-          </div>
-        </noscript>
+        <audio id="routeAudio-layout" preload="auto" style="display:none;"></audio>
+        <noscript><div style="padding:12px;color:#e11d48;">JavaScript is required for interactive routes and audio guidance.</div></noscript>
       </div>
-
     </section>
 
-     <!--- test--->
-      <!-- panel-rooms-->
+    <!-- Meeting Rooms -->
     <section id="panel-rooms" class="panel">
       <h3>Meeting Rooms</h3>
-      
-         <div class="content">
-        
-        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
-         
-          <img id="zoomImg" class="zoom-inner" src="r2.png" alt="BTI Meeting Rooms"
-               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
+      <div class="content">
+        <div class="zoom-wrap" id="zoomWrap-rooms" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
+          <img id="zoomImg-rooms" class="zoom-inner" src="r2.png" alt="BTI Meeting Rooms" style="display:block; width:100%; transform-origin:0 0; user-select:none;" />
         </div>
-
-      
         <header style="margin-top:6px;">
-          <div class="title" style="font-weight:600;">BTI Pune •Meeting Rooms</div>
+          <div class="title" style="font-weight:600;">BTI Pune • Meeting Rooms</div>
           <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
             <label for="meetingSelect">Select Meeting Rooms:</label>
             <select id="meetingSelect">
               <option value="None" selected>None</option>
-  
-            <option>Success</option>
-            <option>Inspire</option>
-            <option>Joy</option>
-            <option>Debug</option>
-            <option>iDrive</option>
-            <option>M-Mode</option>
-            <option>Drift</option>
-             <option>xDrive</option>
-             <option>Torque</option>
-            </select>  
-            <button class="btn" id="play">🔊 Play Audio Guidance</button>
-            <button class="btn" id="replay">Replay</button>
-            <button class="btn" id="mute">Mute</button>
-            <button class="btn" id="resetView">Reset</button>
+              <option>Success</option>
+              <option>Inspire</option>
+              <option>Joy</option>
+              <option>Debug</option>
+              <option>iDrive</option>
+              <option>M-Mode</option>
+              <option>Drift</option>
+              <option>xDrive</option>
+              <option>Torque</option>
+            </select>
+            <button class="btn" id="play-rooms">🔊 Play Audio Guidance</button>
+            <button class="btn" id="replay-rooms">Replay</button>
+            <button class="btn" id="mute-rooms">Mute</button>
+            <button class="btn" id="resetView-rooms">Reset</button>
           </div>
         </header>
-
         <!-- Guidance text display -->
-        <div id="routeText" class="routeText" aria-live="polite"
-             style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
-          Select an Meeting room  to see guidance.
+        <div id="routeText-rooms" class="routeText" aria-live="polite" style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
+          Select a meeting room to see guidance.
         </div>
-
         <!-- Hidden audio element driven by the controls -->
-        <audio id="routeAudio" preload="auto" style="display:none;"></audio>
-
-        <!-- Optional: Graceful message if JS is disabled -->
-        <noscript>
-          <div style="padding:12px;color:#e11d48;">
-            JavaScript is required for interactive routes and audio guidance.
-          </div>
-        </noscript>
+        <audio id="routeAudio-rooms" preload="auto" style="display:none;"></audio>
+        <noscript><div style="padding:12px;color:#e11d48;">JavaScript is required for interactive routes and audio guidance.</div></noscript>
       </div>
-
     </section>
 
-    
-   
-    
     <!-- ERT Members -->
     <section id="panel-ert" class="panel">
       <h2>Emergency Response Team (ERT)</h2>
       <table>
-        <thead>
-          <tr><th>Department</th><th>Nominated ERT Members</th></tr>
-        </thead>
+        <thead><tr><th>Department</th><th>Nominated ERT Members</th></tr></thead>
         <tbody>
-          <tr><td>🛠️ DPE</td><td>
-            👤 Yogesh Tambat — <a class="tel" href="tel:+919921599599">📞 9921599599</a>
-            👤 Zulqurnain Khan — <a class="tel" href="tel:+919284564945">📞 9284564945</a>
-          </td></tr>
-          <tr><td>💻 Digital Company</td><td>
-            👤 Rishabh Kundal — <a class="tel" href="tel:+918516062226">📞 8516062226</a>
-          </td></tr>
-          <tr><td>🏭 Software Factory</td><td>
-            👤 Sandesh Gharal — <a class="tel" href="tel:+919004102339">📞 9004102339</a>
-            👤 Shubham Jambekar — <a class="tel" href="tel:+919594607904">📞 9594607904</a>
-          </td></tr>
-          <tr><td>🚗 Driving ECU</td><td>
-            👤 Vivek Patil — <a class="tel" href="tel:+917499767366">📞 7499767366</a>
-            👤 Ganesh Garg — <a class="tel" href="tel:+917566050340">📞 7566050340</a>
-          </td></tr>
-          <tr><td>🔧 SSP</td><td>
-            👤 Aniket Patil — <a class="tel" href="tel:+919834805515">📞 9834805515</a>
-            👤 Chahul Turkar — <a class="tel" href="tel:+919850807794">📞 9850807794</a>
-          </td></tr>
-          <tr><td>🧠 AIML & Infotainment</td><td>
-            👤 Pravinkumar Kale — <a class="tel" href="tel:+918380073079">📞 8380073079</a>
-            👤 Vipin Yadav — <a class="tel" href="tel:+919205768368">📞 9205768368</a>
-          </td></tr>
-          <tr><td>📶 Connected Vehicle</td><td>
-            👤 Rajiv Rengasamy — <a class="tel" href="tel:+919944360128">📞 9944360128</a>
-            👤 Soham Dalwadi — <a class="tel" href="tel:+917984473137">📞 7984473137</a>
-          </td></tr>
-          <tr><td>🏢 Facilities</td><td>
-            👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
-          </td></tr>
-          <tr><td>🆘 ERT Support</td><td>
-            👤 Dilip Patil — <a class="tel" href="tel:+919922423897">📞 9922423897</a>;
-            👤 Onkar Shintre — <a class="tel" href="tel:+918618301593">📞 8618301593</a>
-          </td></tr>
+          <tr><td>🛠️ DPE</td><td>👤 Yogesh Tambat — <a class="tel" href="tel:+919921599599">📞 9921599599</a> 👤 Zulqurnain Khan — <a class="tel" href="tel:+919284564945">📞 9284564945</a></td></tr>
+          <tr><td>💻 Digital Company</td><td>👤 Rishabh Kundal — <a class="tel" href="tel:+918516062226">📞 8516062226</a></td></tr>
+          <tr><td>🏭 Software Factory</td><td>👤 Sandesh Gharal — <a class="tel" href="tel:+919004102339">📞 9004102339</a> 👤 Shubham Jambekar — <a class="tel" href="tel:+919594607904">📞 9594607904</a></td></tr>
+          <tr><td>🚗 Driving ECU</td><td>👤 Vivek Patil — <a class="tel" href="tel:+917499767366">📞 7499767366</a> 👤 Ganesh Garg — <a class="tel" href="tel:+917566050340">📞 7566050340</a></td></tr>
+          <tr><td>🔧 SSP</td><td>👤 Aniket Patil — <a class="tel" href="tel:+919834805515">📞 9834805515</a> 👤 Chahul Turkar — <a class="tel" href="tel:+919850807794">📞 9850807794</a></td></tr>
+          <tr><td>🧠 AIML & Infotainment</td><td>👤 Pravinkumar Kale — <a class="tel" href="tel:+918380073079">📞 8380073079</a> 👤 Vipin Yadav — <a class="tel" href="tel:+919205768368">📞 9205768368</a></td></tr>
+          <tr><td>📶 Connected Vehicle</td><td>👤 Rajiv Rengasamy — <a class="tel" href="tel:+919944360128">📞 9944360128</a> 👤 Soham Dalwadi — <a class="tel" href="tel:+917984473137">📞 7984473137</a></td></tr>
+          <tr><td>🏢 Facilities</td><td>👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a></td></tr>
+          <tr><td>🆘 ERT Support</td><td>👤 Dilip Patil — <a class="tel" href="tel:+919922423897">📞 9922423897</a> 👤 Onkar Shintre — <a class="tel" href="tel:+918618301593">📞 8618301593</a></td></tr>
         </tbody>
       </table>
     </section>
@@ -387,9 +225,8 @@
       <h2>First Aid & Medical Support</h2>
       <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair & Stretcher – Available:</p>
       <img class="inset" src="NurserRoom.jpg" alt="Nurse room" />
-      <img class="inset" src=FirstAidKit.jpg alt="First Aid Kit" />
-      <img class="inset" src=NurseRoomMedical.jpg alt="NurseRoomMedical" />
-     
+      <img class="inset" src="FirstAidKit.jpg" alt="First Aid Kit" />
+      <img class="inset" src="NurseRoomMedical.jpg" alt="Medical Equipment" />
     </section>
 
     <!-- Assembly Points -->
@@ -401,16 +238,23 @@
       </ul>
       <img class="inset" src="Assembly Point No.1 Near Gate No-4.jpg" alt="Assembly Point 1" />
       <img class="inset" src="Assembly Point No.2 Near Gate No-3.jpg" alt="Assembly Point 2" />
-      
-      <p>General Evacuation Procedure - Earthquake 
-      When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:  DROP:- Get down on your hands and knees to prevent being knocked over. Cover:- Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture. Hold :- Stay in position and hold onto your shelter until the shaking stops.  If You Get Trapped :- Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.</p>
-
-<p>General Evacuation Procedure - FIRE. 
-1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper. 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit. 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly. 4.Use stairs only. Do not use lifts & assemble at the designated safe assembly area. 5.Do not re-enter until the all-clear is given by the ERT
-</p>
+      <p>
+        <strong>General Evacuation Procedure – Earthquake</strong><br>
+        When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:<br>
+        <em>DROP</em>: Get down on your hands and knees to prevent being knocked over.<br>
+        <em>COVER</em>: Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture.<br>
+        <em>HOLD</em>: Stay in position and hold onto your shelter until the shaking stops.<br>
+        <em>If You Get Trapped</em>: Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.
+      </p>
+      <p>
+        <strong>General Evacuation Procedure – FIRE</strong><br>
+        1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper.<br>
+        2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit.<br>
+        3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly.<br>
+        4. Use stairs only. Do not use lifts & assemble at the designated safe assembly area.<br>
+        5. Do not re-enter until the all-clear is given by the ERT.
+      </p>
     </section>
-
-    
 
     <!-- IT Helpdesk -->
     <section id="panel-it" class="panel">
@@ -418,7 +262,7 @@
       <p>Email: <a href="mailto:ITHelpdesk.PNQ@bmwtechworks.in">ITHelpdesk.PNQ@bmwtechworks.in</a></p>
     </section>
 
- 
+    <!-- Basic German to English -->
     <section id="panel-translate" class="panel">
       <h2>Basic German to English Phrases</h2>
       <table>
@@ -447,243 +291,161 @@
         <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
       </ul>
     </section>
-  
 
+    <!-- Cab -->
+    <section id="panel-cab" class="panel">
+      <h2>Cab Facility</h2>
+      <ul>
+        <li><a href="https://www.olacabs.com/" target="_blank" rel="noopener">Ola</a></li>
+        <li><a href="https://www.uber.com/in/en/" target="_blank" rel="noopener">Uber</a></li>
+      </ul>
+    </section>
 
-<!-- CAB -->
-<section id="panel-cab" class="panel">
- 
- <h2>Cab Facility</h2>
-<ul>
-<li><a href="https://www.olacabs.com/" target="_blank">Ola</a></li>
-<li><a href="https://www.uber.com/in/en/" target="_blank">Uber</a></li>
-</ul>
-</section>
+    <!-- Need Assistance -->
+    <section id="panel-assist" class="panel">
+      <h2>Need Assistance</h2>
+      <div class="grid">
+        <!-- First Level -->
+        <div class="card">
+          <strong>Dhananjay Maske (First Level)</strong><br />
+          Facilities Specialities, Amar Tech Park Facility, Pune<br />
+          👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
+        </div>
+        <!-- Second Level -->
+        <div class="card">
+          <strong>Minal Pinto (Second Level)</strong><br />
+          Head of Facilities & Workplace, Corporate Office, Pune<br />
+          👤 Minal Pinto — <a class="tel" href="tel:+919769317569">📞 9769317569</a>
+        </div>
+        <!-- Third Level -->
+        <div class="card">
+          <strong>Vishwas Muthyala (Third Level)</strong><br />
+          CHRO, Corporate Office, Pune<br />
+          👤 <a class="mail" href="mailto:Vishwas.muthyala@bmwtechworks.in">📧 Email</a>
+        </div>
+      </div>
+    </section>
 
+    <!-- Food -->
+    <section id="panel-food" class="panel">
+      <h2>Food Delivery</h2>
+      <ul>
+        <li><a href="https://www.zomato.com/" target="_blank" rel="noopener">Zomato</a></li>
+        <li><a href="https://www.swiggy.com/" target="_blank" rel="noopener">Swiggy</a></li>
+      </ul>
+    </section>
 
-<!-- Need Assistance -->
-<section id="panel-assist" class="panel">
-  <h2>Need Assistance</h2>
-  <div class="grid">
-    <!-- First Level -->
-    <div class="card">
-      <strong>Dhananjay Maske (First Level)</strong><br>
-      Facilities Specialities, Amar Tech Park Facility, Pune<br>
-       👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
-    </div>
+    <!-- Social -->
+    <section id="panel-social" class="panel">
+      <h2>Social Media & Contact</h2>
+      <ul>
+        <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://bmwtechworks.in/" target="_blank" rel="noopener">bmwtechworks.in</a></li>
+      </ul>
+    </section>
 
-    <!-- Second Level -->
-    <div class="card">
-      <strong>Minal Pinto (Second Level)</strong><br>
-      Head of Facilities &amp; Workplace, Corporate Office, Pune<br>
-      👤 Minal Pinto — <a class="tel" href="tel:+919769317569">📞 9769317569</a>
-    </div>
+    <!-- Share / QR -->
+    <section id="panel-share" class="panel active">
+      <h2>Download</h2>
+      <img id="siteQR" src="q_code.png" style="max-width:200px" alt="QR Code" /><br /><br />
+      <button class="btn" onclick="downloadQR()">Download QR</button>
+      <div class="qr"><div class="footer-note" style="margin-top:8px;">Tip: Scan this QR to open the Visitor Info page.</div></div>
+    </section>
 
-    <!-- Third Level -->
-    <div class="card">
-      <strong>Vishwas Muthyala (Third Level)</strong><br>
-      CHRO, Corporate Office, Pune<br>
-      mailto:Vishwas.muthyala@bmwtechworks.in 📧 Email</a>
-    </div>
-  </div>
-</section>
+    <!-- Travel Info & Converter -->
+    <section id="panel-travel" class="panel">
+      <h2>Travel Info and Currency Converter</h2>
+      <ul>
+        <li><a href="https://www.xe.com/currencyconverter/" target="_blank" rel="noopener">INR → EUR Converter (XE)</a></li>
+        <li><a href="https://www.tripadvisor.in/Attractions-g297654-Activities.html" target="_blank" rel="noopener">Local Sightseeing in Pune (Tripadvisor)</a></li>
+      </ul>
+    </section>
 
-    
-<!-- FOOD -->
-<section id="panel-food" class="panel">
-  <h2>Food Delivery</h2>
-<ul>
-<li><a href="https://www.zomato.com/" target="_blank">Zomato</a></li>
-<li><a href="https://www.swiggy.com/" target="_blank">Swiggy</a></li>
-</ul>
-</section>
-
-    
-    
-    
-
-<!-- SOCIAL -->
-<section id="panel-social" class="panel">
-<h2>Social Media & Contact</h2>
-<li><a href="https://www.linkedin.com/" target="_blank">LinkedIn</a></li>
-<li><a href="https://bmwtechworks.in/" target="_blank">bmwtechworks.in</a></li>
-</section>
-
-
-    
-<!-- Share / QR -->
-<section id="panel-share" class="panel active">
- <h2>Download </h2>
-
-<!-- ✅ ID ADDED -->
-<img id="siteQR" src="q_code.png" style="max-width:200px"><br><br>
-
-<button class="btn" onclick="downloadQR()">Download QR</button>
-
-  <div class="qr">
-    <div class="footer-note" style="margin-top:8px;">
-      Tip: Scan this QR to open the Visitor Info page.
-    </div>
-  </div>
-</section>
-
-    
-
-
-   
-
-    
-<!-- Travel Info & Converter -->
-<section id="panel-travel" class="panel">
-  <h2>Travel Info and Currency Converter</h2>
-  <ul>
-  
-      <li><a href="https://www.xe.com/currencyconverter/" target="_blank">INR → EUR Converter (XE)</a></li>
-     <li><a href="https://www.tripadvisor.in/Attractions-g297654-Activitiesarashtra.html/" target="_blank">Local Sightseeing in Pune (Tripadvisor)</a></li>
-    
-</section>
-
-
-<!-- SOCIAL -->
-
-<section id="panel-hotels" class="panel">
-  <h2>Near By Hotels</h2>
-
-  <ul>
-    <li>
-      <strong>The Urban Foundry, Baner</strong> —
-    <a href = "s8.devourin.com" </a>
-   <a href="https://www.google.com/maps?client=ubuntu-sn&hs=buO&sca_esv=b243d552b696475b&channel=fs&uact=5&gs_lp=Egxnd3Mtd2l6LXNlcnAiGXVyYmFuIGZvdW5kYXJ5IGJhbmUgcnB1bmUyBhAAGA0YHjIFEAAY7wUyCBAAGIAEGKIEMgUQABjvBTIIEAAYgAQYogRIyDlQtgVY2zdwAngBkAEAmAHcAaAB1B-qAQYwLjIyLjO4AQPIAQD4AQGYAhugAosiqAIKwgIKEAAYsAMY1gQYR8ICFxAAGIAEGJECGLQCGOcGGIoFGOoC2AEBwgIQEAAYAxi0AhjqAhiPAdgBAcICERAuGIAEGJECGMcBGIoFGK8BwgILEAAYgAQYsQMYgwHCAhEQLhiABBixAxjRAxiDARjHAcICCxAuGIAEGNEDGMcBwgIgEC4YgAQYkQIYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgoQABiABBhDGIoFwgIQEC4YgAQYQxjHARiKBRivAcICFhAuGIAEGEMYxwEYmAUYmQUYigUYrwHCAhAQABiABBixAxhDGIMBGIoFwgIOEC4YgAQYsQMY0QMYxwHCAhMQLhiABBixAxjRAxhDGMcBGIoFwgITEC4YgAQYsQMYQxjHARiKBRivAcICHxAuGIAEGEMYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgUQABiABMICCBAAGIAEGLEDwgILEC4YgAQYsQMYgwHCAggQLhiABBjlBMICCxAuGIAEGMcBGK8BwgILEAAYgAQYkQIYigXCAhoQLhiABBjHARivARiXBRjcBBjeBBjgBNgBAsICDxAuGIAEGMcBGAoYCxivAcICCRAAGIAEGAoYC8ICBhAAGBYYHsICCBAAGKIEGIkFwgIHECEYoAEYCsICDRAuGIAEGMcBGA0YrwHCAgcQABiABBgNwgIIEAAYBRgNGB7CAhwQLhiABBjHARgNGK8BGJcFGNwEGN4EGOAE2AECmAML4gMFEgExIEDxBXnv-38bTGX-iAYBkAYIugYECAEYB7oGBggCEAEYFJIHBjIuMjEuNKAHoK0CsgcGMC4yMS40uAfzIcIHBjItOS4xOMgH4AGACAA&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KTHi69k0ucI7MULBGYvXclGy&daddr=1,+Balewadi+High+St,+next+to+Cummins+India+Office,+Laxman+Nagar,+Balewadi,+Pune,+Maharashtra+411045" target="_blank" rel="noopener">View on Google Maps</a>
-     <a class="tel" href="tel:+918983001155">📞 +91 8983001155</a>
-    </li>
-
-    <li>
-      <strong>Incognito Restaurant Bar &amp; Cafe</strong> —
-     <a href = "incognito.co.in" </a>
-      <a href="https://www.google.com/maps/dir//Panchshil+Business+Park,+Baner+-+Balewadi+Rd,+Baner,+Pune,+Maharashtra+411045/@21.871743,72.911353,8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bc2b934e0b3c567:0x1bead0e7c36e5dd7!2m2!1d73.7739887!2d18.5703494?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" target="_blank" rel="noopener">View on Google Maps</a>
-     <a class="tel" href="tel:+91 8975530505">📞 +91 8975530505</a>
-    </li>
-  </ul>
-</section>
-
+    <!-- Hotels -->
+    <section id="panel-hotels" class="panel">
+      <h2>Nearby Hotels & Restaurants</h2>
+      <ul>
+        <li>
+          <strong>The Urban Foundry, Baner</strong> —
+          <a href="https://s8.devourin.com/" target="_blank" rel="noopener">Website</a>
+          <a href="https://www.google.com/maps?client=ubuntu-sn&daddr=1,+Balewadi+High+St,+next+to+Cummins+India+Office,+Laxman+Nagar,+Balewadi,+Pune,+Maharashtra+411045" target="_blank" rel="noopener">View on Google Maps</a>
+          <a class="tel" href="tel:+918983001155">📞 +91 8983001155</a>
+        </li>
+        <li>
+          <strong>Incognito Restaurant Bar & Cafe</strong> —
+          <a href="https://incognito.co.in/" target="_blank" rel="noopener">Website</a>
+          <a href="https://www.google.com/maps/place/Panchshil+Business+Park,+Baner+-+Balewadi+Rd,+Baner,+Pune,+Maharashtra+411045" target="_blank" rel="noopener">View on Google Maps</a>
+          <a class="tel" href="tel:+918975530505">📞 +91 8975530505</a>
+        </li>
+      </ul>
+    </section>
   </main>
 
-   <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
-
-  <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 DREAM26</div>
-</footer>
-  
+  <p class="footer-note" style="padding:0 1.25rem;">🔒 No personal data collected • No cookies • Works offline after first load</p>
+  <footer>© Copyright BTI-Digital CAR PUNE-SSP Team 2026 DREAM26</footer>
 
   <!-- JS: Panel switching + Language toggle -->
   <script>
-    (function () {
-      const navButtons = Array.from(document.querySelectorAll('button.nav'));
-      const panels = new Map(
-        Array.from(document.querySelectorAll('section.panel')).map(s => [s.id, s])
-      );
+  (function () {
+    const navButtons = Array.from(document.querySelectorAll('button.nav'));
+    const panels = new Map(Array.from(document.querySelectorAll('section.panel')).map(s => [s.id, s]));
 
-      /* ---------- Panel switching ---------- */
-      function setActivePanel(panelKey) {
-        // Toggle button active state
-        navButtons.forEach(btn => {
-          const isActive = btn.getAttribute('data-panel') === panelKey;
-          btn.classList.toggle('active', isActive);
-        });
-
-        // Toggle panel visibility
-        panels.forEach((el, key) => {
-          el.classList.toggle('active', key === panelKey);
-        });
-      }
-
+    /* ---------- Panel switching ---------- */
+    function setActivePanel(panelKey) {
+      const panelId = `panel-${panelKey}`; // translate key to section id
+      // Toggle button active state
       navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const panelKey = btn.getAttribute('data-panel');
-          if (panelKey) setActivePanel(panelKey);
-        });
+        const isActive = btn.getAttribute('data-panel') === panelKey;
+        btn.classList.toggle('active', isActive);
       });
+      // Toggle panel visibility
+      panels.forEach((el, key) => {
+        el.classList.toggle('active', key === panelId);
+      });
+    }
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panelKey = btn.getAttribute('data-panel');
+        if (panelKey) setActivePanel(panelKey);
+      });
+    });
 
-      /* ---------- Language toggle ---------- */
-      const enBtn = document.getElementById('btn-lang-en');
-      const deBtn = document.getElementById('btn-lang-de');
+    /* ---------- Language toggle ---------- */
+    const enBtn = document.getElementById('btn-lang-en');
+    const deBtn = document.getElementById('btn-lang-de');
+    const stringsEN = {
+      info: 'ℹ️ BMWTechWorks Info', sos: '🚨 SOS – Emergency', assist: '🆘 Need Assistance', layout: '🗺️ Floor Layout & Exit', ert: '🛡️ ERT Members', firstaid: '🧑‍⚕️ First Aid & Medical Support', assembly: '📍 Assembly Points', rooms: '🏢 Meeting Rooms', it: '🖥️ IT Helpdesk', translate: '🌍 German ↔ English', parking: '🅿️ Parking Info', cab: '🚕 Cab Facility', food: '🍔 Food Delivery Apps', social: '🔗 Social Media Connect', travel: '🧭 Travel Info, Converter & Hotels', hotels: ' 🏨 Hotels', share: '📥 Download QR'
+    };
+    const stringsDE = {
+      info: 'ℹ️ <span class="bmw-blue">BMWTechWorks India-Pune</span> Info', sos: '🚨 SOS – Notfall', assist: '🆘 Hilfe benötigt', layout: '🗺️ Grundriss & Ausgang', ert: '🛡️ ERT-Mitglieder', firstaid: '🧑‍⚕️ Erste Hilfe & Medizinische Unterstützung', assembly: '📍 Sammelpunkte', rooms: '🏢 Besprechungsräume', it: '🖥️ IT-Helpdesk', translate: '🌍 Deutsch ↔ Englisch', parking: '🅿️ Parkinformationen', cab: '🚕 Taxi-Service', food: '🍔 Essensliefer-Apps', social: '🔗 Social-Media-Verbindung', travel: '🧭 Reiseinfo, Währungsrechner & Hotels', hotels: ' 🏨 Hotels', share: '📥 QR-Code herunterladen'
+    };
+    function applyLanguage(lang) {
+      const map = lang === 'de' ? stringsDE : stringsEN;
+      document.documentElement.setAttribute('lang', lang === 'de' ? 'de' : 'en');
+      navButtons.forEach(btn => {
+        const key = btn.getAttribute('data-panel');
+        if (!key || !(key in map)) return;
+        const value = map[key];
+        if (/<\/?span/.test(value)) { btn.innerHTML = value; } else { btn.textContent = value; }
+      });
+      if (lang === 'de') { enBtn.classList.remove('active'); enBtn.setAttribute('aria-pressed','false'); deBtn.classList.add('active'); deBtn.setAttribute('aria-pressed','true'); }
+      else { deBtn.classList.remove('active'); deBtn.setAttribute('aria-pressed','false'); enBtn.classList.add('active'); enBtn.setAttribute('aria-pressed','true'); }
+    }
+    enBtn.addEventListener('click', () => applyLanguage('en'));
+    deBtn.addEventListener('click', () => applyLanguage('de'));
+  })();
 
-      // Original English strings (exactly as in nav)
-      const stringsEN = {
-        info: 'ℹ️ BMWTechWorks Info',
-        sos: '🚨 SOS – Emergency',
-        assist: '🆘 Need Assistance',
-        layout: '🗺️ Floor Layout & Exit',
-        ert: '🛡️ ERT Members',
-        firstaid: '🧑‍⚕️ First Aid & Medical Support',
-        assembly: '📍 Assembly Points',
-        rooms: '🏢 Meeting Rooms',
-        it: '🖥️ IT Helpdesk',
-        translate: '🌍 German ↔ English',
-        parking: '🅿️ Parking Info',
-        cab: '🚕 Cab Facility',
-        food: '🍔 Food Delivery Apps',
-        social: '🔗 Social Media Connect',
-        travel: '🧭 Travel Info, Converter & Hotels',
-        hotels: ' 🏨 Hotels', /* note leading space preserved */
-        share: '📥 Download QR'
-      };
-
-      // German strings (applied only when DE pressed)
-      const stringsDE = {
-        info: 'ℹ️ <span class="bmw-blue">BMWTechWorks India-Pune</span> Info',
-        sos: '🚨 SOS – Notfall',
-        assist: '🆘 Hilfe benötigt',
-        layout: '🗺️ Grundriss &amp; Ausgang',
-        ert: '🛡️ ERT-Mitglieder',
-        firstaid: '🧑‍⚕️ Erste Hilfe &amp; Medizinische Unterstützung',
-        assembly: '📍 Sammelpunkte',
-        rooms: '🏢 Besprechungsräume',
-        it: '🖥️ IT-Helpdesk',
-        translate: '🌍 Deutsch ↔ Englisch',
-        parking: '🅿️ Parkinformationen',
-        cab: '🚕 Taxi-Service',
-        food: '🍔 Essensliefer-Apps',
-        social: '🔗 Social-Media-Verbindung',
-        travel: '🧭 Reiseinfo, Währungsrechner &amp; Hotels',
-        hotels: ' 🏨 Hotels',
-        share: '📥 QR-Code herunterladen'
-      };
-
-      function applyLanguage(lang) {
-        const map = lang === 'de' ? stringsDE : stringsEN;
-
-        // Update header title language hint only (phrase stays blue and in English header)
-        document.documentElement.setAttribute('lang', lang === 'de' ? 'de' : 'en');
-
-        // Update nav labels
-        navButtons.forEach(btn => {
-          const key = btn.getAttribute('data-panel');
-          if (!key || !(key in map)) return;
-          const value = map[key];
-
-          // Use innerHTML only when the value contains markup
-          if (/<\/?span|&amp;/.test(value)) {
-            btn.innerHTML = value;
-          } else {
-            btn.textContent = value;
-          }
-        });
-
-        // Toggle button states
-        if (lang === 'de') {
-          enBtn.classList.remove('active'); enBtn.setAttribute('aria-pressed', 'false');
-          deBtn.classList.add('active'); deBtn.setAttribute('aria-pressed', 'true');
-        } else {
-          deBtn.classList.remove('active'); deBtn.setAttribute('aria-pressed', 'false');
-          enBtn.classList.add('active'); enBtn.setAttribute('aria-pressed', 'true');
-        }
-      }
-
-      enBtn.addEventListener('click', () => applyLanguage('en'));
-      deBtn.addEventListener('click', () => applyLanguage('de'));
-    })();
+  // Download QR helper
+  function downloadQR() {
+    const img = document.getElementById('siteQR');
+    if (!img) return;
+    const link = document.createElement('a');
+    link.href = img.src;
+    link.download = 'visitor_qr.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   </script>
 </body>
 </html>
-
