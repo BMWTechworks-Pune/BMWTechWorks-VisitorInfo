@@ -1,11 +1,10 @@
-​
-​
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMWTechWorks India – PUNE</title>
+  <title>BMWTechWorks India – PUNEVB</title>
   <style>
     :root{--blue:#1c6ecf;--dark:#0b1f3d;--light:#f7f9fc;--border:#e3e8ef}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;background:var(--light);color:#14202a}
@@ -29,7 +28,6 @@
     img.inset{max-width:100%;border:1px solid #d7dde8;border-radius:10px;margin:8px 0}
     footer{padding:24px 16px 40px;text-align:center;color:#5a6b7a}
     a.tel{white-space:nowrap}
-
     /* Basic look & feel */
     .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
     .muted { color: #555; }
@@ -40,26 +38,21 @@
     .select-controls select { padding: 4px; }
     .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
     .steps-column ol { min-height: 80px; }
-
-    
-/* Buttons inside share panel */
-.btn {
-  display: inline-block;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  color: #0b2540;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
-.btn:hover { background: #eaf3ff; border-color: var(--blue); }
-
-/* Ensure QR container looks tidy */
-.qr img { border-radius: 8px; }
-
-    
+    /* Buttons inside share panel */
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: #0b2540;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: #eaf3ff; border-color: var(--blue); }
+    /* Ensure QR container looks tidy */
+    .qr img { border-radius: 8px; }
     /* Stage: pan/zoom container */
     #imgStageWrapper {
       width: 100%;
@@ -89,7 +82,6 @@
       position: absolute;
       left: 0; top: 0; pointer-events: none;
     }
-
     /* Room markers */
     .room-marker {
       position: absolute;
@@ -107,13 +99,12 @@
     .room-marker:hover { background: #fff; }
     .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
     .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
-
     /* --- Added: BMW-style header brand + light-grey language buttons --- */
     .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
     .brand-logo { width: 40px; height: 40px; object-fit: contain; }
     .brand-title {
       font-family: "BMW Type Next", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI",
-                   "Noto Sans", "Liberation Sans", sans-serif;
+      "Noto Sans", "Liberation Sans", sans-serif;
       font-weight: 700;
       font-size: 1.1rem;
       letter-spacing: 0.2px;
@@ -139,7 +130,6 @@
       border-color: #bdbdbd;
       font-weight: 600;
     }
-
     @media (max-width: 480px) {
       .brand-title { font-size: 1rem; white-space: normal; }
       .brand-logo { width: 32px; height: 32px; }
@@ -147,8 +137,6 @@
   </style>
 </head>
 <body>
-
-
 <header>
   <!-- Header with BMW logo and language buttons (updated: no table) -->
   <div class="top">
@@ -159,24 +147,21 @@
         class="brand-logo"
         decoding="async"
         loading="lazy"
-     age selection">
-      BMWTechWorks India – Pune
-      <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
+     >
+           BMWTechWorks India – Pune
       <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
     </div>
   </div>
-
   <!-- Navigation buttons -->
   <nav>
     <button class="nav active" data-panel="info">ℹ️ BMWTechWorks Info</button>
     <button class="nav" data-panel="sos">🚨 SOS – Emergency</button>
     <button class="nav" data-panel="assist">🆘 Need Assistance</button>
-    <button class="nav" data-panel="layout">🗺️ Floor Layout &amp; Exit</button>
+    <button class="nav" data-panel="layout">🗺️ Floor Layout & Exit</button>
     <button class="nav" data-panel="ert">🛡️ ERT Members</button>
-    <button class="nav" data-panel="firstaid">🧑‍⚕️ First Aid &amp; Medical Support</button>
+    <button class="nav" data-panel="firstaid">🧑‍⚕️ First Aid & Medical Support</button>
     <button class="nav" data-panel="assembly">📍 Assembly Points</button>
     <button class="nav" data-panel="rooms">🏢 Meeting Rooms</button>
-
     <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
     <button class="nav" data-panel="translate">🌍 German ↔ English</button>
     <button class="nav" data-panel="parking">🅿️ Parking Info</button>
@@ -188,1150 +173,524 @@
     <button class="nav" data-panel="share">📥 Download QR</button>
   </nav>
 </header>
-  <main>
-    <!-- Info -->
-    <section id="panel-info" class="panel active">
-      <h2>BMWTechWorks India</h2>
+
+<main>
+  <!-- Info -->
+  <section id="panel-info" class="panel active">
+    <h2>BMWTechWorks India</h2>
+    <div class="card">
+      <strong>Address</strong><br>
+      BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045<br>
+      https://maps.app.goo.gl/AmarTechParkLinkView on Google Maps</a>
+    </div>
+    <p class="footer-note">Note: Photography is allowed at C & D areas only.</p>
+  </section>
+
+  <!-- SOS -->
+  <section id="panel-sos" class="panel">
+    <h2>SOS – Emergency</h2>
+    <div class="grid">
+      <div class="card"><strong>Ambulance — Emergency Medical Service</strong><br>
+        tel:108📞 108</a></div>
+      <div class="card"><strong>Facilities BTI Team — Dhananjay</strong><br>
+        tel:+919657893928📞 +91 9657893928</a></div>
+      <div class="card"><strong>Table Space Duty Cell (24×7) — Security</strong><br>
+        tel:+918951322756📞 8951322756</a></div>
+      <div class="card"><strong>ATP Ambulance (24×7) — Amar Tech Park Ambulance</strong><br>
+        tel:+918421737018📞 +91 8421737018</a></div>
+      <div class="card"><strong>Integrated Emergency Number (24×7)</strong><br>
+        Medical, Police, Fire — tel:112📞 112</a></div>
+      <div class="card"><strong>Nearest Hospital — Jupiter Hospital, Baner</strong><br>
+        <a class="tel" href="tel:+912299</a></div>
+      <div class="card"><strong>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad</strong><br>
+        tel:+912066434366📞 020 66434366</a> · tel:+917447477993📞 7447477993</a></div>
+      <div class="card"><strong>Nearest Police Station — Aundh Police Station</strong><br>
+        tel:+912025881611📞 020 25881611</a></div>
+      <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br>
+        tel:+912027261120📞 020 27261120</a></div>
+    </div>
+  </section>
+
+  <!-- Meeting Rooms -->
+  <section id="panel-rooms" class="panel">
+    <h3>Meeting Rooms</h3>
+
+    <div id="roomWrapper">
+      r2.png
+    </div>
+    <br>
+    <button class="btn" onclick="resetRoomRoute()">Reset</button>
+    <hr>
+    <label for="roomSel">Select Room:</label>
+    <select id="roomSel" onchange="showRoomRoute()">
+      <option value="">-- Select --</option>
+      <option>Success</option>
+      <option>Inspire</option>
+      <option>Joy</option>
+      <option>Debug</option>
+      <option>iDrive</option>
+      <option>M-Mode</option>
+      <option>Drift</option>
+      <option>xDrive</option>
+      <option>Torque</option>
+    </select>
+    <!-- NOTE: scoped by panel id to avoid conflict with layout panel's routeText -->
+    <ol id="routeText"></ol>
+  </section>
+
+  <!-- Layout & Exit -->
+  <section id="panel-layout" class="panel">
+    <h3>Floor Layout & Exit</h3>
+    <div class="content">
+      <!-- Map: zoom/pan wrapper -->
+      <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
+        <!-- Optional overlay holder (SVG will be injected here if you add routes later) -->
+        <!-- <svg id="routeOverlay" style="position:absolute; inset:0; pointer-events:none;"></svg> -->
+        <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
+            hrome/Edge. Use headphones in open areas.</p>
+
+      <header style="margin-top:6px;">
+        <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
+        <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+          <label for="exitSelect">Exit:</label>
+          <select id="exitSelect">
+            <option value="None" selected>None</option>
+            <option value="EXIT1">EXIT1</option>
+            <option value="EXIT2">EXIT2</option>
+            <option value="EXIT3">EXIT3</option>
+            <option value="EXIT4">EXIT4</option>
+            <option value="EXIT5">EXIT5</option>
+          </select>
+
+          <label for="langSelect">Lang:</label>
+          <select id="langSelect">
+            <option value="en">EN</option>
+            <option value="de">DE</option>
+          </select>
+
+          <!-- Audio & extra zoom controls retained in markup from your original,
+               but underlying audio is disabled in script for simplicity -->
+          <button class="btn" id="play">🔊 Play Audio Guidance</button>
+          <button class="btn" id="replay">Replay</button>
+          <button class="btn" id="mute">Mute</button>
+          <button class="btn" id="zoomOut">➖ Zoom Out</button>
+          <button class="btn" id="zoomIn">➕ Zoom In</button>
+          <button class="btn" id="resetView">Reset</button>
+        </div>
+      </header>
+
+      <!-- Guidance text display -->
+      <div id="routeText" class="routeText" aria-live="polite"
+           style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
+        Select an exit to see guidance.
+      </div>
+
+      <!-- Hidden audio element driven by the controls -->
+      <audio id="routeAudio" preload="auto" style="display:none;"></audio>
+
+      <!-- Optional: Graceful message if JS is disabled -->
+      <noscript>
+        <div style="padding:12px;color:#e11d48;">
+          JavaScript is required for interactive routes and audio guidance.
+        </div>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- ERT Members -->
+  <section id="panel-ert" class="panel">
+    <h2>Emergency Response Team (ERT)</h2>
+    <table>
+      <thead>
+      <tr><th>Department</th><th>Nominated ERT Members</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>🛠️ DPE</td><td>
+        👤 Yogesh Tambat — tel:+919921599599📞 9921599599</a>
+        👤 Zulqurnain Khan — tel:+919284564945📞 9284564945</a>
+      </td></tr>
+      <tr><td>💻 Digital Company</td><td>
+        👤 Rishabh Kundal — tel:+918516062226📞 8516062226</a>
+      </td></tr>
+      <tr><td>🏭 Software Factory</td><td>
+        👤 Sandesh Gharal — tel:+919004102339📞 9004102339</a>
+        👤 Shubham Jambekar — tel:+919594607904📞 9594607904</a>
+      </td></tr>
+      <tr><td>🚗 Driving ECU</td><td>
+        👤 Vivek Patil — tel:+917499767366📞 7499767366</a>
+        👤 Ganesh Garg — tel:+917566050340📞 7566050340</a>
+      </td></tr>
+      <tr><td>🔧 SSP</td><td>
+        👤 Aniket Patil — tel:+919834805515📞 9834805515</a>
+        👤 Chahul Turkar — tel:+919850807794📞 9850807794</a>
+      </td></tr>
+      <tr><td>🧠 AIML & Infotainment</td><td>
+        👤 Pravinkumar Kale — tel:+918380073079📞 8380073079</a>
+        👤 Vipin Yadav — tel:+919205768368📞 9205768368</a>
+      </td></tr>
+      <tr><td>📶 Connected Vehicle</td><td>
+        👤 Rajiv Rengasamy — tel:+919944360128📞 9944360128</a>
+        👤 Soham Dalwadi — tel:+917984473137📞 7984473137</a>
+      </td></tr>
+      <tr><td>🏢 Facilities</td><td>
+        👤 Dhananjay Maske — tel:+919657893928📞 9657893928</a>
+      </td></tr>
+      <tr><td>🆘 ERT Support</td><td>
+        👤 Dilip Patil — tel:+919922423897📞 9922423897</a>;
+        👤 Onkar Shintre — tel:+918618301593📞 8618301593</a>
+      </td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- First Aid & Medical Support -->
+  <section id="panel-firstaid" class="panel">
+    <h2>First Aid & Medical Support</h2>
+    <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair & Stretcher – Available:</p>
+    NurserRoom.jpg
+    FirstAidKit.jpg
+    NurseRoomMedical.jpg
+  </section>
+
+  <!-- Assembly Points -->
+  <section id="panel-assembly" class="panel">
+    <h2>Assembly Points</h2>
+    <ul>
+      <li>Assembly Point No.1 Near Gate No-4</li>
+      <li>Assembly Point No.2 Near Gate No-3</li>
+    </ul>
+    <img class="inset.1 Near Gate No-4.jpg
+    <img class="inset" src="Assembly Point No.2 Near Gate No-3.jpg" altocedure - Earthquake
+      When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold: DROP:- Get down on your hands and knees to prevent being knocked over. Cover:- Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture. Hold :- Stay in position and hold onto your shelter until the shaking stops. If You Get Trapped :- Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.</p>
+    <p>General Evacuation Procedure - FIRE.
+      1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper. 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit. 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly. 4.Use stairs only. Do not use lifts & assemble at the designated safe assembly area. 5.Do not re-enter until the all-clear is given by the ERT
+    </p>
+  </section>
+
+  <!-- IT Helpdesk -->
+  <section id="panel-it" class="panel">
+    <h2>IT Helpdesk</h2>
+    <p>Email: mailto:ITHelpdesk.PNQ@bmwtechworks.inITHelpdesk.PNQ@bmwtechworks.in</a></p>
+  </section>
+
+  <section id="panel-translate" class="panel">
+    <h2>Basic German to English Phrases</h2>
+    <table>
+      <thead><tr><th>German</th><th>English</th></tr></thead>
+      <tbody>
+      <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
+      <tr><td>Ich möchte zu diesem Ort gehen</td><td>I want to go to this place</td></tr>
+      <tr><td>Wie viel kostet das?</td><td>How much money?</td></tr>
+      <tr><td>Danke</td><td>Thanks</td></tr>
+      <tr><td>Ich möchte das</td><td>I want this</td></tr>
+      <tr><td>Guten Morgen</td><td>Good Morning</td></tr>
+      <tr><td>Gute Nacht</td><td>Good Night</td></tr>
+      <tr><td>Wo ist die Toilette?</td><td>Where is the restroom?</td></tr>
+      <tr><td>Können Sie mir helfen?</td><td>Can you help me?</td></tr>
+      <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Parking Info -->
+  <section id="panel-parking" class="panel">
+    <h2>Parking Guidelines</h2>
+    <ul>
+      <li>Parking is strictly first-come, first-served.</li>
+      <li>60 slots allocated for employees at P3 and P1 levels.</li>
+      <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
+    </ul>
+  </section>
+
+  <!-- CAB -->
+  <section id="panel-cab" class="panel">
+    <h2>Cab Facility</h2>
+    <ul>
+      <li>https://www.olacabs.com/Ola</a></li>
+      <li><a href="https://www.uber.com/in/a></li>
+    </ul>
+  </section>
+
+  <!-- Need Assistance -->
+  <section id="panel-assist" class="panel">
+    <h2>Need Assistance</h2>
+    <div class="grid">
+      <!-- First Level -->
       <div class="card">
-        <strong>Address</strong><br>
-        BMWTechWorks India, 14 Offices, 1st Floor, Amar Tech Park, Balewadi, Pune, Maharashtra 411045<br>
-        <a href="https://maps.app.goo.gl/AmarTechParkLink" target="_blank" rel="noopener">View on Google Maps</a>
+        <strong>Dhananjay Maske (First Level)</strong><br>
+        Facilities Specialities, Amar Tech Park Facility, Pune<br>
+        👤 Dhananjay Maske — tel:+919657893928📞 9657893928</a>
       </div>
-      <p class="footer-note">Note: Photography is allowed at C & D areas only.</p>
-    </section>
-
-    <!-- SOS -->
-    <section id="panel-sos" class="panel">
-      <h2>SOS – Emergency</h2>
-      <div class="grid">
-        <div class="card"><strong>Ambulance — Emergency Medical Service</strong><br>
-          <a class="tel" href="tel:108">📞 108</a></div>
-        <div class="card"><strong>Facilities BTI Team — Dhananjay</strong><br>
-          <a class="tel" href="tel:+919657893928">📞 +91 9657893928</a></div>
-        <div class="card"><strong>Table Space Duty Cell (24×7) — Security</strong><br>
-          <a class="tel" href="tel:+918951322756">📞 8951322756</a></div>
-        <div class="card"><strong>ATP Ambulance (24×7) — Amar Tech Park Ambulance</strong><br>
-          <a class="tel" href="tel:+918421737018">📞 +91 8421737018</a></div>
-        <div class="card"><strong>Integrated Emergency Number (24×7)</strong><br>
-          Medical, Police, Fire — <a class="tel" href="tel:112">📞 112</a></div>
-        <div class="card"><strong>Nearest Hospital — Jupiter Hospital, Baner</strong><br>
-          <a class="tel" href="tel:+912027992299">📞 020 27992299</a></div>
-        <div class="card"><strong>Nearest Hospital — Life Point Multi Speciality Hospital, Wakad</strong><br>
-          <a class="tel" href="tel:+912066434366">📞 020 66434366</a> · <a class="tel" href="tel:+917447477993">📞 7447477993</a></div>
-        <div class="card"><strong>Nearest Police Station — Aundh Police Station</strong><br>
-          <a class="tel" href="tel:+912025881611">📞 020 25881611</a></div>
-        <div class="card"><strong>Nearest Police Station — Wakad Police Station</strong><br>
-          <a class="tel" href="tel:+912027261120">📞 020 27261120</a></div>
-      </div> 
-    </section>
-
-     <section id="panel-rooms" class="panel">
-      <h3>Meeting Rooms</h3>
-    
-      
-       
-
- 
-     <div id="roomWrapper">
-<img id="roomImg" src="r2.png">
-</div>
-
-<br>
-
-<button class="btn" onclick="resetZoom()">Reset</button>
-
-<hr>
-
-<label>Select Room:</label>
-<select id="roomSel" onchange="showRoute()">
-<option value="">-- Select --</option>
-<option>Success</option>
-<option>Inspire</option>
-<option>Joy</option>
-<option>Debug</option>
-<option>iDrive</option>
-<option>M-Mode</option>
-<option>Drift</option>
-<option>xDrive</option>
-<option>Torque</option>
-</select>
-
-<ol id="routeText"></ol>
-</section>
-    
-
-    <!-- Layout & Exit -->
-    <section id="panel-layout" class="panel">
-      <h3>Floor Layout & Exit</h3>
-      
-         <div class="content">
-        <!-- Map: zoom/pan wrapper -->
-        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
-          <!-- Optional overlay holder (SVG will be injected here if you add routes later) -->
-          <!-- <svg id="routeOverlay" style="position:absolute; inset:0; pointer-events:none;"></svg> -->
-          <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
-               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
-        </div>
-
-        <p class="muted" style="margin-top:8px">Best experienced on Chrome/Edge. Use headphones in open areas.</p>
-        <header style="margin-top:6px;">
-          <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
-          <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
-            <label for="exitSelect">Exit:</label>
-            <select id="exitSelect">
-              <option value="None" selected>None</option>
-              <option value="EXIT1">EXIT1</option>
-              <option value="EXIT2">EXIT2</option>
-              <option value="EXIT3">EXIT3</option>
-              <option value="EXIT4">EXIT4</option>
-              <option value="EXIT5">EXIT5</option>
-            </select>
-
-            <label for="langSelect">Lang:</label>
-            <select id="langSelect">
-              <option value="en">EN</option>
-              <option value="de">DE</option>
-            </select>
-
-            <button class="btn" id="play">🔊 Play Audio Guidance</button>
-            <button class="btn" id="replay">Replay</button>
-            <button class="btn" id="mute">Mute</button>
-
-            <!-- Optional: second set of zoom buttons (header block) -->
-            <button class="btn" id="zoomOut">➖ Zoom Out</button>
-            <button class="btn" id="zoomIn">➕ Zoom In</button>
-            <button class="btn" id="resetView">Reset</button>
-          </div>
-        </header>
-
-        <!-- Guidance text display -->
-        <div id="routeText" class="routeText" aria-live="polite"
-             style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
-          Select an exit to see guidance.
-        </div>
-
-        <!-- Hidden audio element driven by the controls -->
-        <audio id="routeAudio" preload="auto" style="display:none;"></audio>
-
-        <!-- Optional: Graceful message if JS is disabled -->
-        <noscript>
-          <div style="padding:12px;color:#e11d48;">
-            JavaScript is required for interactive routes and audio guidance.
-          </div>
-        </noscript>
+      <!-- Second Level -->
+      <div class="card">
+        <strong>Minal Pinto (Second Level)</strong><br>
+        Head of Facilities & Workplace, Corporate Office, Pune<br>
+        👤 Minal Pinto — tel:+919769317569📞 9769317569</a>
       </div>
-
-    </section>
-
-    <!-- ERT Members -->
-    <section id="panel-ert" class="panel">
-      <h2>Emergency Response Team (ERT)</h2>
-      <table>
-        <thead>
-          <tr><th>Department</th><th>Nominated ERT Members</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>🛠️ DPE</td><td>
-            👤 Yogesh Tambat — <a class="tel" href="tel:+919921599599">📞 9921599599</a>
-            👤 Zulqurnain Khan — <a class="tel" href="tel:+919284564945">📞 9284564945</a>
-          </td></tr>
-          <tr><td>💻 Digital Company</td><td>
-            👤 Rishabh Kundal — <a class="tel" href="tel:+918516062226">📞 8516062226</a>
-          </td></tr>
-          <tr><td>🏭 Software Factory</td><td>
-            👤 Sandesh Gharal — <a class="tel" href="tel:+919004102339">📞 9004102339</a>
-            👤 Shubham Jambekar — <a class="tel" href="tel:+919594607904">📞 9594607904</a>
-          </td></tr>
-          <tr><td>🚗 Driving ECU</td><td>
-            👤 Vivek Patil — <a class="tel" href="tel:+917499767366">📞 7499767366</a>
-            👤 Ganesh Garg — <a class="tel" href="tel:+917566050340">📞 7566050340</a>
-          </td></tr>
-          <tr><td>🔧 SSP</td><td>
-            👤 Aniket Patil — <a class="tel" href="tel:+919834805515">📞 9834805515</a>
-            👤 Chahul Turkar — <a class="tel" href="tel:+919850807794">📞 9850807794</a>
-          </td></tr>
-          <tr><td>🧠 AIML & Infotainment</td><td>
-            👤 Pravinkumar Kale — <a class="tel" href="tel:+918380073079">📞 8380073079</a>
-            👤 Vipin Yadav — <a class="tel" href="tel:+919205768368">📞 9205768368</a>
-          </td></tr>
-          <tr><td>📶 Connected Vehicle</td><td>
-            👤 Rajiv Rengasamy — <a class="tel" href="tel:+919944360128">📞 9944360128</a>
-            👤 Soham Dalwadi — <a class="tel" href="tel:+917984473137">📞 7984473137</a>
-          </td></tr>
-          <tr><td>🏢 Facilities</td><td>
-            👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
-          </td></tr>
-          <tr><td>🆘 ERT Support</td><td>
-            👤 Dilip Patil — <a class="tel" href="tel:+919922423897">📞 9922423897</a>;
-            👤 Onkar Shintre — <a class="tel" href="tel:+918618301593">📞 8618301593</a>
-          </td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- First Aid & Medical Support -->
-    <section id="panel-firstaid" class="panel">
-      <h2>First Aid & Medical Support</h2>
-      <p>Nurse Room – Floor 6 : Medical room timings are displayed on site. Wheelchair & Stretcher – Available:</p>
-      <img class="inset" src="NurserRoom.jpg" alt="Nurse room" />
-      <img class="inset" src=FirstAidKit.jpg alt="First Aid Kit" />
-      <img class="inset" src=NurseRoomMedical.jpg alt="NurseRoomMedical" />
-     
-    </section>
-
-    <!-- Assembly Points -->
-    <section id="panel-assembly" class="panel">
-      <h2>Assembly Points</h2>
-      <ul>
-        <li>Assembly Point No.1 Near Gate No-4</li>
-        <li>Assembly Point No.2 Near Gate No-3</li>
-      </ul>
-      <img class="inset" src="Assembly Point No.1 Near Gate No-4.jpg" alt="Assembly Point 1" />
-      <img class="inset" src="Assembly Point No.2 Near Gate No-3.jpg" alt="Assembly Point 2" />
-      
-      <p>General Evacuation Procedure - Earthquake 
-      When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:  DROP:- Get down on your hands and knees to prevent being knocked over. Cover:- Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture. Hold :- Stay in position and hold onto your shelter until the shaking stops.  If You Get Trapped :- Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures.</p>
-
-<p>General Evacuation Procedure - FIRE. 
-1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper. 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit. 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly. 4.Use stairs only. Do not use lifts & assemble at the designated safe assembly area. 5.Do not re-enter until the all-clear is given by the ERT
-</p>
-    </section>
-
-    
-
-    <!-- IT Helpdesk -->
-    <section id="panel-it" class="panel">
-      <h2>IT Helpdesk</h2>
-      <p>Email: <a href="mailto:ITHelpdesk.PNQ@bmwtechworks.in">ITHelpdesk.PNQ@bmwtechworks.in</a></p>
-    </section>
-
- 
-    <section id="panel-translate" class="panel">
-      <h2>Basic German to English Phrases</h2>
-      <table>
-        <thead><tr><th>German</th><th>English</th></tr></thead>
-        <tbody>
-          <tr><td>Hallo</td><td>Hello / Namaste</td></tr>
-          <tr><td>Ich möchte zu diesem Ort gehen</td><td>I want to go to this place</td></tr>
-          <tr><td>Wie viel kostet das?</td><td>How much money?</td></tr>
-          <tr><td>Danke</td><td>Thanks</td></tr>
-          <tr><td>Ich möchte das</td><td>I want this</td></tr>
-          <tr><td>Guten Morgen</td><td>Good Morning</td></tr>
-          <tr><td>Gute Nacht</td><td>Good Night</td></tr>
-          <tr><td>Wo ist die Toilette?</td><td>Where is the restroom?</td></tr>
-          <tr><td>Können Sie mir helfen?</td><td>Can you help me?</td></tr>
-          <tr><td>Ich brauche Wasser</td><td>I need water</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- Parking Info -->
-    <section id="panel-parking" class="panel">
-      <h2>Parking Guidelines</h2>
-      <ul>
-        <li>Parking is strictly first-come, first-served.</li>
-        <li>60 slots allocated for employees at P3 and P1 levels.</li>
-        <li>No common parking for external visitors/vendors. They must arrange parking outside ATP premises.</li>
-      </ul>
-    </section>
-  
-
-
-<!-- CAB -->
-<section id="panel-cab" class="panel">
- 
- <h2>Cab Facility</h2>
-<ul>
-<li><a href="https://www.olacabs.com/" target="_blank">Ola</a></li>
-<li><a href="https://www.uber.com/in/en/" target="_blank">Uber</a></li>
-</ul>
-</section>
-
-
-<!-- Need Assistance -->
-<section id="panel-assist" class="panel">
-  <h2>Need Assistance</h2>
-  <div class="grid">
-    <!-- First Level -->
-    <div class="card">
-      <strong>Dhananjay Maske (First Level)</strong><br>
-      Facilities Specialities, Amar Tech Park Facility, Pune<br>
-       👤 Dhananjay Maske — <a class="tel" href="tel:+919657893928">📞 9657893928</a>
+      <!-- Third Level -->
+      <div class="card">
+        <strong>Vishwas Muthyala (Third Level)</strong><br>
+        CHRO, Corporate Office, Pune<br>
+        mailto:Vishwas.muthyala@bmwtechworks.in 📧 Email</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Second Level -->
-    <div class="card">
-      <strong>Minal Pinto (Second Level)</strong><br>
-      Head of Facilities &amp; Workplace, Corporate Office, Pune<br>
-      👤 Minal Pinto — <a class="tel" href="tel:+919769317569">📞 9769317569</a>
+  <!-- FOOD -->
+  <section id="panel-food" class="panel">
+    <h2>Food Delivery</h2>
+    <ul>
+      <li>https://www.zomato.com/Zomato</a></li>
+      <li>https://www.swiggy.com/Swiggy</a></li>
+    </ul>
+  </section>
+
+  <!-- SOCIAL -->
+  <section id="panel-social" class="panel">
+    <h2>Social Media & Contact</h2>
+    <li>https://www.linkedin.com/LinkedIn</a></li>
+    <li>https://bmwtechworks.in/bmwtechworks.in</a></li>
+  </section>
+
+  <!-- Share / QR -->
+  <section id="panel-share" class="panel active">
+    <h2>Download </h2>
+    <!-- ✅ ID ADDED -->
+    q_code.png<br><br>
+    <button class="btn" onclick="downloadQR()">Download QR</button>
+    <div class="qr">
+      <div class="footer-note" style="margin-top:8px;">
+        Tip: Scan this QR to open the Visitor Info page.
+      </div>
     </div>
+  </section>
 
-    <!-- Third Level -->
-    <div class="card">
-      <strong>Vishwas Muthyala (Third Level)</strong><br>
-      CHRO, Corporate Office, Pune<br>
-      mailto:Vishwas.muthyala@bmwtechworks.in 📧 Email</a>
-    </div>
-  </div>
-</section>
+  <!-- Travel Info & Converter -->
+  <section id="panel-travel" class="panel">
+    <h2>Travel Info and Currency Converter</h2>
+    <ul>
+      <li>https://www.xe.com/currencyconverter/INR → EUR Converter (XE)</a></li>
+      <li>https://www.tripadvisor.in/Attractions-g297654-Activitiesarashtra.html/Local Sightseeing in Pune (Tripadvisor)</a></li>
+  </section>
 
-    
-<!-- FOOD -->
-<section id="panel-food" class="panel">
-  <h2>Food Delivery</h2>
-<ul>
-<li><a href="https://www.zomato.com/" target="_blank">Zomato</a></li>
-<li><a href="https://www.swiggy.com/" target="_blank">Swiggy</a></li>
-</ul>
-</section>
+  <!-- SOCIAL -->
+  <section id="panel-hotels" class="panel">
+    <h2>Near By Hotels</h2>
+    <ul>
+      <li>
+        <strong>The Urban Foundry, Baner</strong> —
+        s8.devourin.com</a>
+        <a href="https://www.google.com/maps?client=ubuntu-sn&hs=buO&sca_esv=b243d552b696475b&channel=fs&uact=5&gs_lp=Egxnd3Mtd2l6LXNlcnAiGXVyYmFuIGZvdW5kYXJ5IGJhbmUgcnB1bmUyBhAAGA0YHjIFEAAY7wUyCBAAGIAEGKIEMgUQABjvBTIIEAAYgAQYogRIyDlQtgVY2zdwAngBkAEAmAHcAaAB1B-qAQYwLjIyLjO4AQPIAQD4AQGYAhugAosiqAIKwgIKEAAYsAMY1gQYR8ICFxAAGIAEGJECGLQCGOcGGIoFGOoC2AEBwgIQEAAYAxi0AhjqAhiPAdgBAcICERAuGIAEGJECGMcBGIoFGK8BwgILEAAYgAQYsQMYgwHCAhEQLhiABBixAxjRAxiDARjHAcICCxAuGIAEGNEDGMcBwgIgEC4YgAQYkQIYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgoQABiABBhDGIoFwgIQEC4YgAQYQxjHARiKBRivAcICFhAuGIAEGEMYxwEYmAUYmQUYigUYrwHCAhAQABiABBixAxhDGIMBGIoFwgIOEC4YgAQYsQMY0QMYxwHCAhMQLhiABBixAxjRAxhDGMcBGIoFwgITEC4YgAQYsQMYQxjHARiKBRivAcICHxAuGIAEGEMYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgUQABiABMICCBAAGIAEGLEDwgILEC4YgAQYsQMYgwHCAggQLhiABBjlBMICCxAuGIAEGMcBGK8BwgILEAAYgAQYkQIYigXCAhoQLhiABBjHARivARiXBRjcBBjeBBjgBNgBAsICDxAuGIAEGMcBGAoYCxivAcICCRAAGIAEGAoYC8ICBhAAGBYYHsICCBAAGKIEGIkFwgIHECEYoAEYCsICDRAuGIAEGMcBGA0YrwHCAgcQABiABBgNwgIIEAAYBRgNGB7CAhwQLhiABBjHARgNGK8BGJcFGNwEGN4EGOAE2AECmAML4gMFEgExIEDxBXnv-38bTGX-iAYBkAYIugYECAEYB7oGBggCEAEYFJIHBjIuMjEuNKAHoKyMS40uAfzIcIHBjItOS4xOMgH4AGACAA&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KTHi69k0ucI7MULBGYvXclGy&daddr=1,+Balewadi+High+St,+next+to+Cummins+India+Office,+Laxman+Nagar,+Balewadi,+Pune,+Maharashtra+411045View on Google Maps</a>
+        tel:+918983001155📞 +91 8983001155</a>
+      </li>
+      <li>
+        <strong>Incognito Restaurant Bar & Cafe</strong> —
+        incognito.co.in</a>
+        <a href="https://www.google.com/maps/dir//Panchshil+Business+Park,+Baner+-+Balewadi+Rd,+Baner,+Pune,+Maharashtra+411045/@21.871743,72./data=!4m8!4m7!1m0!1m5!1m1!1s0x3bc2b934e0b3c567:0x1bead0e7c36e5dd7!2m2!1d73.7739887!2d18.5703494?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3DView on Google Maps</a>
+        tel:+91 8975530505📞 +91 8975530505</a>
+      </li>
+    </ul>
+  </section>
+</main>
 
-    
-    
-    
-
-<!-- SOCIAL -->
-<section id="panel-social" class="panel">
-<h2>Social Media & Contact</h2>
-<li><a href="https://www.linkedin.com/" target="_blank">LinkedIn</a></li>
-<li><a href="https://bmwtechworks.in/" target="_blank">bmwtechworks.in</a></li>
-</section>
-
-
-    
-<!-- Share / QR -->
-<section id="panel-share" class="panel active">
- <h2>Download </h2>
-
-<!-- ✅ ID ADDED -->
-<img id="siteQR" src="q_code.png" style="max-width:200px"><br><br>
-
-<button class="btn" onclick="downloadQR()">Download QR</button>
-
-  <div class="qr">
-    <div class="footer-note" style="margin-top:8px;">
-      Tip: Scan this QR to open the Visitor Info page.
-    </div>
-  </div>
-</section>
-
-    
-
-
-   
-
-    
-<!-- Travel Info & Converter -->
-<section id="panel-travel" class="panel">
-  <h2>Travel Info and Currency Converter</h2>
-  <ul>
-  
-      <li><a href="https://www.xe.com/currencyconverter/" target="_blank">INR → EUR Converter (XE)</a></li>
-     <li><a href="https://www.tripadvisor.in/Attractions-g297654-Activitiesarashtra.html/" target="_blank">Local Sightseeing in Pune (Tripadvisor)</a></li>
-    
-</section>
-
-
-<!-- SOCIAL -->
-
-<section id="panel-hotels" class="panel">
-  <h2>Near By Hotels</h2>
-
-  <ul>
-    <li>
-      <strong>The Urban Foundry, Baner</strong> —
-    <a href = "s8.devourin.com" </a>
-   <a href="https://www.google.com/maps?client=ubuntu-sn&hs=buO&sca_esv=b243d552b696475b&channel=fs&uact=5&gs_lp=Egxnd3Mtd2l6LXNlcnAiGXVyYmFuIGZvdW5kYXJ5IGJhbmUgcnB1bmUyBhAAGA0YHjIFEAAY7wUyCBAAGIAEGKIEMgUQABjvBTIIEAAYgAQYogRIyDlQtgVY2zdwAngBkAEAmAHcAaAB1B-qAQYwLjIyLjO4AQPIAQD4AQGYAhugAosiqAIKwgIKEAAYsAMY1gQYR8ICFxAAGIAEGJECGLQCGOcGGIoFGOoC2AEBwgIQEAAYAxi0AhjqAhiPAdgBAcICERAuGIAEGJECGMcBGIoFGK8BwgILEAAYgAQYsQMYgwHCAhEQLhiABBixAxjRAxiDARjHAcICCxAuGIAEGNEDGMcBwgIgEC4YgAQYkQIYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgoQABiABBhDGIoFwgIQEC4YgAQYQxjHARiKBRivAcICFhAuGIAEGEMYxwEYmAUYmQUYigUYrwHCAhAQABiABBixAxhDGIMBGIoFwgIOEC4YgAQYsQMY0QMYxwHCAhMQLhiABBixAxjRAxhDGMcBGIoFwgITEC4YgAQYsQMYQxjHARiKBRivAcICHxAuGIAEGEMYxwEYigUYrwEYlwUY3AQY3gQY4ATYAQLCAgUQABiABMICCBAAGIAEGLEDwgILEC4YgAQYsQMYgwHCAggQLhiABBjlBMICCxAuGIAEGMcBGK8BwgILEAAYgAQYkQIYigXCAhoQLhiABBjHARivARiXBRjcBBjeBBjgBNgBAsICDxAuGIAEGMcBGAoYCxivAcICCRAAGIAEGAoYC8ICBhAAGBYYHsICCBAAGKIEGIkFwgIHECEYoAEYCsICDRAuGIAEGMcBGA0YrwHCAgcQABiABBgNwgIIEAAYBRgNGB7CAhwQLhiABBjHARgNGK8BGJcFGNwEGN4EGOAE2AECmAML4gMFEgExIEDxBXnv-38bTGX-iAYBkAYIugYECAEYB7oGBggCEAEYFJIHBjIuMjEuNKAHoK0CsgcGMC4yMS40uAfzIcIHBjItOS4xOMgH4AGACAA&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KTHi69k0ucI7MULBGYvXclGy&daddr=1,+Balewadi+High+St,+next+to+Cummins+India+Office,+Laxman+Nagar,+Balewadi,+Pune,+Maharashtra+411045" target="_blank" rel="noopener">View on Google Maps</a>
-     <a class="tel" href="tel:+918983001155">📞 +91 8983001155</a>
-    </li>
-
-    <li>
-      <strong>Incognito Restaurant Bar &amp; Cafe</strong> —
-     <a href = "incognito.co.in" </a>
-      <a href="https://www.google.com/maps/dir//Panchshil+Business+Park,+Baner+-+Balewadi+Rd,+Baner,+Pune,+Maharashtra+411045/@21.871743,72.911353,8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bc2b934e0b3c567:0x1bead0e7c36e5dd7!2m2!1d73.7739887!2d18.5703494?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" target="_blank" rel="noopener">View on Google Maps</a>
-     <a class="tel" href="tel:+91 8975530505">📞 +91 8975530505</a>
-    </li>
-  </ul>
-</section>
-
-
-
-    
-
-  </main>
-
-   <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
-
-  <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 SHREE</div>
+<p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
+<footer style="text-align:center; padding:12px; color:var(--muted)">
+  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 VB-SHREE</div>
 </footer>
-  
 
-  <script>
-    // Tab router: show one panel, hide others
-    const buttons = document.querySelectorAll('button.nav');
-    const panels = document.querySelectorAll('section.panel');
-
-    function showPanel(key){
-      buttons.forEach(b=>b.classList.toggle('active', b.dataset.panel===key));
-      panels.forEach(p=>p.classList.toggle('active', p.id==='panel-'+key));
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    buttons.forEach(b=>{
-      b.addEventListener('click', e=>{
-        e.preventDefault();
-        showPanel(b.dataset.panel);
-      });
-    });
-
-    document.getElementById('download-qr')?.addEventListener('click', e=>{
+<script>
+  // Tab router: show one panel, hide others
+  const buttons = document.querySelectorAll('button.nav');
+  const panels = document.querySelectorAll('section.panel');
+  function showPanel(key){
+    buttons.forEach(b=>b.classList.toggle('active', b.dataset.panel===key));
+    panels.forEach(p=>p.classList.toggle('active', p.id==='panel-'+key));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  buttons.forEach(b=>{
+    b.addEventListener('click', e=>{
       e.preventDefault();
+      showPanel(b.dataset.panel);
     });
-
-    document.addEventListener('DOMContentLoaded', () => {
-  /* =========================================
-     BTI Pune • Exit Guidance (TTS only)
-     - Force default EXIT1 via JS
-     - Text visible immediately on load/change
-     - Play/Replay enabled for EXIT1..EXIT5
-     - Reset sets Exit=None + default message
-     ========================================= */
-
-  /* -------- Guidance (EN/DE) -------- */
-  const GUIDANCE = {
-    en: {
-      EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
-      EXIT2: "Head west and then south along the corridor to the South‑West Exit (near Joy).",
-      EXIT3: "Proceed towards the central corridor and continue north to the Central Exit (near Debug).",
-      EXIT4: "Go east along the main corridor; at the next junction turn north to reach the East Exit (near iDrive/M‑Mode).",
-      EXIT5: "Continue east to the far right wing and turn south to reach the Far‑East Exit (near Xdrive/Torque)."
-    },
-    de: {
-      EXIT1: "Gehen Sie nach Westen entlang des Hauptflurs; biegen Sie an der Kreuzung nach Norden ab zum Westausgang (bei Success – Board room).",
-      EXIT2: "Gehen Sie nach Westen und dann nach Süden entlang des Flurs zum Südwestausgang (bei Joy).",
-      EXIT3: "Gehen Sie zum zentralen Flur und weiter nach Norden zum Zentralausgang (bei Debug).",
-      EXIT4: "Gehen Sie nach Osten entlang des Hauptflurs; biegen Sie an der nächsten Kreuzung nach Norden ab zum Ostausgang (bei iDrive/M‑Mode).",
-      EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum ganz rechten Ostausgang (bei Xdrive/Torque)."
-    }
-  };
-
-  /* -------- DOM refs -------- */
-  const zoomWrap      = document.getElementById('zoomWrap');
-  const zoomImg       = document.getElementById('zoomImg');
-
-  const btnSpeak      = document.getElementById('btnSpeak');
-  const btnStop       = document.getElementById('btnStop');
-  const btnReset      = document.getElementById('btnReset');
-  const btnZoomIn     = document.getElementById('btnZoomIn');
-  const btnZoomOut    = document.getElementById('btnZoomOut');
-  const btnFullscreen = document.getElementById('btnFullscreen');
-
-  const exitSelect    = document.getElementById('exitSelect');
-  const langSelect    = document.getElementById('langSelect');
-
-  const playHeader    = document.getElementById('play');
-  const replayHeader  = document.getElementById('replay');
-  const muteHeader    = document.getElementById('mute');
-
-  const zoomOutHeader = document.getElementById('zoomOut');
-  const zoomInHeader  = document.getElementById('zoomIn');
-  const resetHeader   = document.getElementById('resetView');
-
-  const routeText     = document.getElementById('routeText');
-  const routeAudio    = document.getElementById('routeAudio'); // unused in TTS mode
-
-  /* -------- Normalizers -------- */
-  function normalizeExit(v){ return String(v || '').trim().toUpperCase(); }
-  function normalizeLang(v){ v = String(v || '').trim().toLowerCase(); return v === 'de' ? 'de' : 'en'; }
-
-  /* -------- Helpers -------- */
-  function isValidExit(val){ val = normalizeExit(val); return ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(val); }
-  function isNone(val){ return normalizeExit(val) === 'NONE'; }
-  function defaultMessage(lang){ return lang==='de' ? 'Wählen Sie einen Ausgang aus, um die Anleitung zu sehen.' : 'Select an exit to see guidance.'; }
-  function setButtonsEnabled(enabled){
-    if (btnSpeak)     btnSpeak.disabled     = !enabled;
-    if (playHeader)   playHeader.disabled   = !enabled;
-    if (replayHeader) replayHeader.disabled = !enabled;
-    if (btnStop)      btnStop.disabled      = false;
-    if (btnReset)     btnReset.disabled     = false;
-    if (muteHeader)   muteHeader.disabled   = false;
-  }
-
-  /* -------- Force default EXIT1 (no HTML edits needed) -------- */
-  if (exitSelect) {
-    exitSelect.value = 'EXIT1'; // set default
-    // If your markup has "None" first, it will be overridden by this.
-  }
-
-  /* -------- State (after forcing EXIT1) -------- */
-  let currentExit = normalizeExit(exitSelect?.value || 'EXIT1');
-  let currentLang = normalizeLang(langSelect?.value || 'en');
-  let isMuted = false;
-  let voices = [];
-  let activeUtterance = null;
-
-  /* -------- Guidance text render -------- */
-  function guidanceText(){
-    if (!isValidExit(currentExit)) return defaultMessage(currentLang);
-    const phrases = GUIDANCE[currentLang] || GUIDANCE.en;
-    return phrases[currentExit] || defaultMessage(currentLang);
-  }
-  function updateGuidanceUI(){
-    const header = isValidExit(currentExit) ? `${currentExit} • ${currentLang.toUpperCase()}` : `${currentLang.toUpperCase()}`;
-    routeText.textContent = `${header} • ${guidanceText()}`;
-    setButtonsEnabled(isValidExit(currentExit));
-  }
-
-  /* -------- Speech synthesis -------- */
-  function loadVoices(){ try { voices = window.speechSynthesis.getVoices() || []; } catch { voices = []; } }
-  loadVoices();
-  if (typeof window.speechSynthesis !== 'undefined'){ window.speechSynthesis.onvoiceschanged = loadVoices; }
-  function pickVoice(lang){
-    const prefer = lang==='de' ? ['de-DE','de-AT','de'] : ['en-US','en-GB','en'];
-    for (const code of prefer){ const v = voices.find(voice => (voice.lang||'').toLowerCase() === code.toLowerCase()); if (v) return v; }
-    const v2 = voices.find(voice => (voice.lang||'').toLowerCase().startsWith(lang==='de' ? 'de' : 'en'));
-    return v2 || voices[0] || null;
-  }
-  function speakGuidance(){
-    if (!isValidExit(currentExit)){
-      updateGuidanceUI();
-      return;
-    }
-    if (typeof window.speechSynthesis === 'undefined'){
-      routeText.textContent = 'Speech not supported on this browser. Please use Chrome/Edge.';
-      return;
-    }
-    try { window.speechSynthesis.cancel(); } catch {}
-    activeUtterance = new SpeechSynthesisUtterance(guidanceText());
-    activeUtterance.lang = (currentLang==='de') ? 'de-DE' : 'en-US';
-    const voice = pickVoice(currentLang);
-    if (voice) activeUtterance.voice = voice;
-    activeUtterance.rate = 1.0; activeUtterance.pitch = 1.0; activeUtterance.volume = isMuted ? 0 : 1;
-
-    activeUtterance.onstart = () => { if (btnSpeak) btnSpeak.textContent = '🔊 Playing'; if (playHeader) playHeader.textContent = 'Playing'; };
-    activeUtterance.onend   = () => { if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance'; if (playHeader) playHeader.textContent = 'Play'; };
-    activeUtterance.onerror = (e) => { console.error('Speech synthesis error:', e); routeText.textContent = 'Unable to play synthesized audio. Try again.'; setButtonsEnabled(true); };
-
-    window.speechSynthesis.speak(activeUtterance);
-  }
-  function stopSpeech(){
-    try { window.speechSynthesis.cancel(); } catch {}
-    activeUtterance = null;
-    if (btnSpeak) btnSpeak.textContent = '🔊 Play Audio Guidance';
-    if (playHeader) playHeader.textContent = 'Play';
-  }
-  function replaySpeech(){ stopSpeech(); speakGuidance(); }
-  function toggleMute(){
-    isMuted = !isMuted;
-    if (muteHeader) muteHeader.textContent = isMuted ? 'Unmute' : 'Mute';
-    if (activeUtterance) replaySpeech(); // apply new volume
-  }
-
-  /* -------- Init (render text immediately) -------- */
-  function init(){
-    if (routeAudio) routeAudio.style.display = 'none'; // unused in TTS mode
-    updateGuidanceUI(); // TEXT VISIBLE ON LOAD for EXIT1
-  }
-  init();
-
-  /* -------- Dropdown handlers (text updates instantly) -------- */
-  exitSelect?.addEventListener('change', () => {
-    currentExit = normalizeExit(exitSelect.value);
-    updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON EXIT CHANGE
   });
-  langSelect?.addEventListener('change', () => {
-    currentLang = normalizeLang(langSelect.value);
-    updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON LANG CHANGE
-    loadVoices();
+  document.getElementById('download-qr')?.addEventListener('click', e=>{
+    e.preventDefault();
   });
 
-  /* -------- Buttons (both blocks) -------- */
-  btnSpeak?.addEventListener('click', speakGuidance);
-  btnStop?.addEventListener('click', stopSpeech);
-  btnReset?.addEventListener('click', resetAll);
-  btnZoomIn?.addEventListener('click', () => zoomBy(0.25));
-  btnZoomOut?.addEventListener('click', () => zoomBy(-0.25));
-  btnFullscreen?.addEventListener('click', toggleFullscreen);
-
-  playHeader?.addEventListener('click', speakGuidance);
-  replayHeader?.addEventListener('click', replaySpeech);
-  muteHeader?.addEventListener('click', toggleMute);
-  zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
-  zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
-  resetHeader?.addEventListener('click', resetAll);
-
-  /* -------- Reset (speech + view + state + text) -------- */
-  function resetAll(){
-    stopSpeech();   // stop TTS
-    resetView();    // reset pan/zoom
-    if (exitSelect) exitSelect.value = 'None'; // programmatically set None
-    currentExit = 'None';
-    updateGuidanceUI(); // show default message + disable Play/Replay
-  }
-
-  /* -------- Map: zoom / pan / fullscreen -------- */
-  let scale = 1, tx = 0, ty = 0;
-  function applyTransform(){ if (!zoomImg) return; const t = `translate(${tx}px, ${ty}px) scale(${scale})`; zoomImg.style.transformOrigin = '0 0'; zoomImg.style.transform = t; }
-  function zoomBy(delta){ scale = Math.max(0.5, Math.min(4, scale + delta)); applyTransform(); }
-  function resetView(){ scale = 1; tx = 0; ty = 0; applyTransform(); }
-  function toggleFullscreen(){ if (!document.fullscreenElement){ zoomWrap?.requestFullscreen?.().catch(()=>{}); } else { document.exitFullscreen?.(); } }
-
-  // Panning
-  let dragging = false, sx = 0, sy = 0;
-  zoomWrap?.addEventListener('pointerdown', (e) => { dragging = true; zoomWrap.setPointerCapture(e.pointerId); sx = e.clientX - tx; sy = e.clientY - ty; });
-  zoomWrap?.addEventListener('pointermove', (e) => { if (!dragging) return; tx = e.clientX - sx; ty = e.clientY - sy; applyTransform(); });
-  zoomWrap?.addEventListener('pointerup',   (e) => { dragging = false; zoomWrap.releasePointerCapture(e.pointerId); });
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '+') zoomBy(0.25);
-    if (e.key === '-') zoomBy(-0.25);
-    if (e.key.toLowerCase() === 'r') resetAll();
-    if (e.key.toLowerCase() === 'f') toggleFullscreen();
-  });
-});
-
-
-    // Data
-    const routePaths = {
-      Success:[[0.120,0.550],[0.100,0.480],[0.080,0.360],[0.060,0.300]],
-      Inspire:[[0.120,0.550],[0.100,0.480],[0.085,0.400]],
-      Joy:[[0.120,0.550],[0.140,0.560]],
-      Debug:[[0.120,0.550],[0.300,0.550],[0.410,0.520]],
-      iDrive:[[0.120,0.550],[0.300,0.550],[0.530,0.540]],
-      'M-Mode':[[0.120,0.550],[0.300,0.550],[0.640,0.560]],
-      Drift:[[0.120,0.550],[0.300,0.550],[0.740,0.560],[0.800,0.560]],
-      xDrive:[[0.120,0.550],[0.300,0.550],[0.820,0.550],[0.880,0.540]],
-      Torque:[[0.120,0.550],[0.300,0.550],[0.860,0.540],[0.940,0.540]]
-    };
-
-    const routeText = {
+  document.addEventListener('DOMContentLoaded', () => {
+    /* =========================================
+       BTI Pune • Exit Guidance (TTS only)
+       Original logic retained visually; audio disabled below for simplicity
+    ========================================= */
+    /* ----- Guidance (EN/DE) ----- */
+    const GUIDANCE = {
       en: {
-        Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
-        Inspire: ['Reception → left corridor', 'Training room next to Success'],
-        Joy: ['Reception → left corridor', 'Joy is near Visitor area'],
-        Debug: ['Reception → main corridor', 'Continue to middle section', 'Debug lab is at center'],
-        iDrive: ['Reception → main corridor', 'Pass Debug', 'iDrive opposite Debug'],
-        'M-Mode': ['Reception → main corridor', 'Turn right', 'M‑Mode corner room'],
-        Drift: ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
-        xDrive: ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
-        Torque: ['Reception → far right end', 'Opposite xDrive', 'Torque room']
+        EXIT1: "From your current location, move west along the main corridor; at the junction turn north to reach the West Exit (near Success – Board room).",
+        EXIT2: "Head west and then south along the corridor to the South‑West Exit (near Joy).",
+        EXIT3: "Proceed towards the central corridor and continue north to the Central Exit (near Debug).",
+        EXIT4: "Go east along the main corridor; at the next junction turn north to reach the East Exit (near iDrive/M‑Mode).",
+        EXIT5: "Continue east to the far right wing and turn south to reach the Far‑East Exit (near Xdrive/Torque)."
       },
       de: {
-        Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
-        Inspire:['Empfang → linker Flur','Schulungsraum neben Success'],
-        Joy:['Empfang → linker Flur','Joy nahe Besucherbereich'],
-        Debug:['Empfang → Hauptflur','Weiter zum Mittelteil','Debug‑Labor im Zentrum'],
-        iDrive:['Empfang → Hauptflur','An Debug vorbei','iDrive gegenüber Debug'],
-        'M-Mode':['Empfang → Hauptflur','Nach rechts abbiegen','M‑Mode Eckraum'],
-        Drift:['Empfang → Hauptflur','Rechts in Seitenflur → T‑Kreuzung','Drift neben xDrive'],
-        xDrive:['Empfang → Hauptflur','Rechts in Seitenflur','xDrive nahe Torque'],
-        Torque:['Empfang → ganz rechts','Gegenüber xDrive','Torque‑Raum']
+        EXIT1: "Gehen Sie nach Westen entlang des Hauptflurs; biegen Sie an der Kreuzung nach Norden ab zum Westausgang (bei Success – Board room).",
+        EXIT2: "Gehen Sie nach Westen und dann nach Süden entlang des Flurs zum Südwestausgang (bei Joy).",
+        EXIT3: "Gehen Sie zum zentralen Flur und weiter nach Norden zum Zentralausgang (bei Debug).",
+        EXIT4: "Gehen Sie nach Osten entlang des Hauptflurs; biegen Sie an der nächsten Kreuzung nach Norden ab zum Ostausgang (bei iDrive/M‑Mode).",
+        EXIT5: "Gehen Sie weiter nach Osten bis zum rechten Flügel und biegen Sie nach Süden ab zum ganz rechten Ostausgang (bei Xdrive/Torque)."
       }
     };
 
-    // Pan/zoom
-    const layer = document.getElementById('planLayer');
-    const svg = document.getElementById('routeSvg'); // present but unused for drawing
-    let scale = 1, tx = 0, ty = 0; let dragging = false, px = 0, py = 0;
-    function apply(){ layer.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
-    apply();
-    document.getElementById('zoomIn').onclick = ()=>{ scale = Math.min(4, scale + 0.15); apply(); };
-    document.getElementById('zoomOut').onclick = ()=>{ scale = Math.max(0.5, scale - 0.15); apply(); };
+    /* ----- DOM refs ----- */
+    const zoomWrap = document.getElementById('zoomWrap');
+    const zoomImg = document.getElementById('zoomImg');
+    const exitSelect = document.getElementById('exitSelect');
+    const langSelect = document.getElementById('langSelect');
+    const playHeader   = document.getElementById('play');
+    const replayHeader = document.getElementById('replay');
+    const muteHeader   = document.getElementById('mute');
+    const zoomOutHeader = document.getElementById('zoomOut');
+    const zoomInHeader  = document.getElementById('zoomIn');
+    const resetHeader   = document.getElementById('resetView');
+    const routeTextDiv  = document.querySelector('#panel-layout #routeText'); // scoped
 
-    // Reset: clear text + audio and reset view (+ empty dropdown)
-    const sel = document.getElementById('roomSel');
-    const steps = document.getElementById('routeSteps');
+    function normalizeExit(v){ return String(v||'').trim().toUpperCase(); }
+    function normalizeLang(v){ v = String(v||'').trim().toLowerCase(); return v === 'de' ? 'de' : 'en'; }
+    function isValidExit(val){ val = normalizeExit(val); return ['EXIT1','EXIT2','EXIT3','EXIT4','EXIT5'].includes(val); }
+    function defaultMessage(lang){ return lang==='de' ? 'Wählen Sie einen Ausgang aus, um die Anleitung zu sehen.' : 'Select an exit to see guidance.'; }
 
-    document.getElementById('reset').onclick = ()=>{
-      scale = 1; tx = 0; ty = 0; apply();
-      clearSvg(); steps.innerHTML=''; stopTTS(); sel.value='';
-    };
+    // Force default EXIT1
+    if (exitSelect) { exitSelect.value = 'EXIT1'; }
+    let currentExit = normalizeExit(exitSelect?.value || 'EXIT1');
+    let currentLang = normalizeLang(langSelect?.value || 'en');
+    let isMuted = false;
 
-    layer.addEventListener('pointerdown', (e)=>{ dragging = true; px = e.clientX; py = e.clientY; layer.setPointerCapture(e.pointerId); });
-    layer.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx = e.clientX - px; const dy = e.clientY - py; tx += dx; ty += dy; px = e.clientX; py = e.clientY; apply(); });
-    layer.addEventListener('pointerup', ()=> dragging=false);
-
-    // No route drawing
-    function clearSvg(){ if(svg) svg.innerHTML=''; }
-    function drawRoute(room){ clearSvg(); return; }
-
-    // Selection + language (text + TTS only)
-    let currentLang = (new URLSearchParams(location.search)).get('lang') || 'en';
-
-    function selectRoom(room){
-      if(!room){ steps.innerHTML=''; clearSvg(); stopTTS(); return; }
-      sel.value = room;
-      steps.innerHTML='';
-      (routeText[currentLang][room]||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
-      // drawRoute(room); // intentionally not drawing any route
-      updateVoiceStatus();
+    function guidanceText(){
+      if (!isValidExit(currentExit)) return defaultMessage(currentLang);
+      const phrases = GUIDANCE[currentLang] || GUIDANCE.en;
+      return phrases[currentExit] || defaultMessage(currentLang);
+    }
+    function updateGuidanceUI(){
+      const header = isValidExit(currentExit) ? `${currentExit} • ${currentLang.toUpperCase()}` : `${currentLang.toUpperCase()}`;
+      routeTextDiv.textContent = `${header} • ${guidanceText()}`;
     }
 
-    sel.addEventListener('change', ()=> selectRoom(sel.value));
-    document.getElementById('langToggle').onclick = ()=>{ currentLang = (currentLang==='en')?'de':'en'; selectRoom(sel.value); };
-
-    // Audio via Web Speech API (TTS)
-    const audioStatus = document.getElementById('audioStatus');
-    let voices = []; function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
-    loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
-
-    function pickVoice(langCode){
-      const exact = voices.find(v=>v.lang.toLowerCase()===langCode.toLowerCase());
-      if(exact) return exact;
-      const prefix = langCode.split('-')[0];
-      const starts = voices.find(v=>v.lang.toLowerCase().startsWith(prefix.toLowerCase()));
-      if(starts) return starts;
-      return voices[0] || null;
+    // Init (render text immediately)
+    function init(){
+      updateGuidanceUI(); // TEXT VISIBLE ON LOAD for EXIT1
     }
+    init();
 
-    function buildSpeechText(room, lang){ const lines = routeText[lang][room] || []; return lines.join('. '); }
+    // Dropdown handlers (text updates instantly)
+    exitSelect?.addEventListener('change', () => {
+      currentExit = normalizeExit(exitSelect.value);
+      updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON EXIT CHANGE
+    });
+    langSelect?.addEventListener('change', () => {
+      currentLang = normalizeLang(langSelect.value);
+      updateGuidanceUI(); // TEXT VISIBLE IMMEDIATELY ON LANG CHANGE
+    });
 
-    let currentUtterance = null;
-    function stopTTS(){ if(currentUtterance){ window.speechSynthesis.cancel(); currentUtterance = null; } else { window.speechSynthesis.cancel(); } audioStatus.textContent = ''; }
+    // Disable audio actions and keep buttons intact visually
+    playHeader?.addEventListener('click', () => { /* audio removed */ });
+    replayHeader?.addEventListener('click', () => { /* audio removed */ });
+    muteHeader?.addEventListener('click', () => { /* audio removed */ });
 
-    function speakSteps(room, lang){
-      stopTTS();
-      if(!room){ audioStatus.textContent='Select a room first.'; return; }
-      const text = buildSpeechText(room, lang);
-      if(!text){ audioStatus.textContent = 'No audio text available.'; return; }
-      const voice = pickVoice(lang==='de' ? 'de-DE' : 'en-US');
-      const utter = new SpeechSynthesisUtterance(text);
-      if(voice) utter.voice = voice;
-      utter.rate = 1.0; utter.pitch = 1.0;
-      utter.onstart = ()=>{ audioStatus.textContent = `Speaking (${(voice && voice.lang) || (lang==='de'?'de-DE':'en-US')})…`; };
-      utter.onend   = ()=>{ audioStatus.textContent = 'Done.'; setTimeout(()=> audioStatus.textContent='', 800); };
-      utter.onerror = ()=>{ audioStatus.textContent = 'Speech error. Try again.'; };
-      currentUtterance = utter;
-      window.speechSynthesis.speak(utter);
+    // Basic zoom for the exit image (retained, but you asked to remove audio/zoom for rooms only)
+    let scale = 1, tx = 0, ty = 0;
+    function applyTransform(){ if (!zoomImg) return; const t = `translate(${tx}px, ${ty}px) scale(${scale})`; zoomImg.style.transformOrigin = '0 0'; zoomImg.style.transform = t; }
+    function zoomBy(delta){ scale = Math.max(0.5, Math.min(4, scale + delta)); applyTransform(); }
+    function resetView(){ scale = 1; tx = 0; ty = 0; applyTransform(); }
+    let dragging = false, sx = 0, sy = 0;
+    zoomWrap?.addEventListener('pointerdown', (e) => { dragging = true; zoomWrap.setPointerCapture(e.pointerId); sx = e.clientX - tx; sy = e.clientY - ty; });
+    zoomWrap?.addEventListener('pointermove', (e) => { if (!dragging) return; tx = e.clientX - sx; ty = e.clientY - sy; applyTransform(); });
+    zoomWrap?.addEventListener('pointerup', (e) => { dragging = false; zoomWrap.releasePointerCapture(e.pointerId); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '+') zoomBy(0.25);
+      if (e.key === '-') zoomBy(-0.25);
+      if (e.key.toLowerCase() === 'r') resetView();
+    });
+    zoomInHeader?.addEventListener('click', () => zoomBy(0.25));
+    zoomOutHeader?.addEventListener('click', () => zoomBy(-0.25));
+    resetHeader?.addEventListener('click', () => { resetView(); });
+
+  });
+
+  // ---------- Meeting Rooms: English-only text (no audio/zoom) ----------
+  // Existing routeText data (English/German) already present in your original file.
+  // We'll use English only.
+  const roomRouteText = {
+    en: {
+      Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
+      Inspire: ['Reception → left corridor', 'Training room next to Success'],
+      Joy:     ['Reception → left corridor', 'Joy is near Visitor area'],
+      Debug:   ['Reception → main corridor', 'Continue to middle section', 'Debug lab is at center'],
+      iDrive:  ['Reception → main corridor', 'Pass Debug', 'iDrive opposite Debug'],
+      'M-Mode':['Reception → main corridor', 'Turn right', 'M‑Mode corner room'],
+      Drift:   ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
+      Xdrive:  ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
+      Torque:  ['Reception → far right end', 'Opposite xDrive', 'Torque room']
     }
-
-    document.getElementById('playAudio').onclick = ()=> speakSteps(sel.value, currentLang);
-    document.getElementById('stopAudio').onclick = ()=> stopTTS();
-
-    // Clear: text + audio (keeps zoom/pan)
-    document.getElementById('clearRoute').onclick = ()=>{ clearSvg(); steps.innerHTML=''; stopTTS(); sel.value=''; };
-
-    // Deep link (shows text + TTS only)
-    const qs = new URLSearchParams(location.search);
-    const initialRoom = qs.get('room');
-    if(initialRoom && routeText.en[initialRoom]){ sel.value = initialRoom; selectRoom(initialRoom); }
-
-    
-    (function(){
-  // --- Rooms seen on the plan (approximate % positions relative to image natural size) ---
-  // r2.png natural size is ~890 x 404 (W x H). We'll define coordinates as percentages.
-  const rooms = [
-    {name:'Success', label:'Success – Board room', xPct: 10.0, yPct: 15.0},  // left-top cluster
-    {name:'Inspire', label:'Inspire – Training room', xPct: 11.5, yPct: 35.0},
-    {name:'Visitor', label:'Visitor Room', xPct: 10.5, yPct: 50.0},
-    {name:'Joy',     label:'Joy', xPct: 20.5, yPct: 60.0},
-
-    {name:'Debug',   label:'Debug', xPct: 44.0, yPct: 50.0},                  // middle
-    {name:'iDrive',  label:'iDrive', xPct: 58.5, yPct: 52.0},
-    {name:'M-Mode',  label:'M-Mode', xPct: 67.5, yPct: 52.0},
-    {name:'Drift',   label:'Drift', xPct: 77.5, yPct: 52.0},
-    {name:'Xdrive',  label:'Xdrive', xPct: 85.5, yPct: 52.0},
-    {name:'Torque',  label:'Torque', xPct: 92.5, yPct: 52.0}
-  ];
-
-  // --- Corridor graph (approx) ---
-  // Horizontal main corridor ~60–65% down the image across width.
-  // Junctions across the main corridor (x from left to right). yPct ~64.
-  const corridorJunctions = [
-    {id:'J1', xPct: 14.5, yPct: 64.0},
-    {id:'J2', xPct: 44.0, yPct: 64.0}, // near Debug vertical
-    {id:'J3', xPct: 58.5, yPct: 64.0},
-    {id:'J4', xPct: 67.5, yPct: 64.0},
-    {id:'J5', xPct: 77.5, yPct: 64.0},
-    {id:'J6', xPct: 85.5, yPct: 64.0},
-    {id:'J7', xPct: 92.5, yPct: 64.0}
-  ];
-  // Vertical left spine connecting upper left cluster to main corridor
-  const leftSpineTop = {id:'LTop', xPct: 14.5, yPct: 18.0};
-  const leftSpineMid = {id:'LMid', xPct: 14.5, yPct: 35.0};
-  const leftSpineLow = {id:'LLow', xPct: 14.5, yPct: 50.0};
-
-  // Edges among corridor nodes (undirected)
-  const edges = [
-    ['J1','J2'], ['J2','J3'], ['J3','J4'], ['J4','J5'], ['J5','J6'], ['J6','J7'],
-    ['LTop','LMid'], ['LMid','LLow'], ['LLow','J1'] // left vertical spine down to main corridor
-  ];
-
-  // Room connectors to nearest junctions/spines
-  const connectors = {
-    'Success': 'LTop',
-    'Inspire': 'LMid',
-    'Visitor': 'LLow',
-    'Joy':     'J1',
-    'Debug':   'J2',
-    'iDrive':  'J3',
-    'M-Mode':  'J4',
-    'Drift':   'J5',
-    'Xdrive':  'J6',
-    'Torque':  'J7'
   };
 
-  // Build node map (corridor + spine nodes + room nodes)
-  const nodes = {};
-  [...corridorJunctions, leftSpineTop, leftSpineMid, leftSpineLow].forEach(n => nodes[n.id] = n);
-  // Add synthetic "room nodes" (for path start/end) connected to their connector
-  rooms.forEach(r => {
-    const id = `R:${r.name}`;
-    nodes[id] = {id, xPct:r.xPct, yPct:r.yPct};
-    edges.push([id, connectors[r.name]]);
-  });
+  function showRoomRoute() {
+    const sel = document.getElementById('roomSel');
+    const stepsEl = document.querySelector('#panel-rooms #routeText'); // scoped to avoid conflicts
+    stepsEl.innerHTML = '';
 
-  // Helper: shortest path on the graph (Dijkstra with unit weights)
-  function shortestPath(startId, endId) {
-    const adj = {};
-    Object.keys(nodes).forEach(k => adj[k] = []);
-    edges.forEach(([a,b]) => { adj[a].push(b); adj[b].push(a); });
+    const roomRaw = (sel?.value || '').trim();
+    if (!roomRaw) return;
 
-    const dist = {}, prev = {}, Q = new Set(Object.keys(nodes));
-    Object.keys(nodes).forEach(k => dist[k] = Infinity);
-    dist[startId] = 0;
+    // Normalize key (Xdrive vs xDrive)
+    const key = roomRaw === 'xDrive' ? 'Xdrive' : roomRaw;
 
-    while (Q.size) {
-      // find min-distance node in Q
-      let u = null, best = Infinity;
-      for (const k of Q) { if (dist[k] < best) { best = dist[k]; u = k; } }
-      if (u === null) break;
-      Q.delete(u);
-      if (u === endId) break;
-      for (const v of adj[u]) {
-        const alt = dist[u] + 1;
-        if (alt < dist[v]) { dist[v] = alt; prev[v] = u; }
-      }
-    }
-    // reconstruct path
-    const path = [];
-    let u = endId;
-    if (!(u in prev) && u !== startId) {
-      // unreachable (shouldn't happen with our simple graph)
-      return [startId, endId];
-    }
-    while (u !== undefined) {
-      path.unshift(u);
-      if (u === startId) break;
-      u = prev[u];
-    }
-    return path;
-  }
+    const steps = (roomRouteText.en && roomRouteText.en[key]) ? roomRouteText.en[key] : [];
 
-  // Directions generator (English + German) based on path geometry
-  function directionsForPath(path) {
-    // Convert node ids into coordinates
-    const pts = path.map(id => nodes[id]);
-    const stepsEN = [];
-    const stepsDE = [];
-
-    function step(en,de){ stepsEN.push(en); stepsDE.push(de); }
-
-    const startRoom = path[0].startsWith('R:') ? path[0].slice(2) : 'Start';
-    const endRoom   = path[path.length-1].startsWith('R:') ? path[path.length-1].slice(2) : 'End';
-
-    step(`Start at ${startRoom}.`, `Beginne bei ${startRoom}.`);
-
-    for (let i=1;i<pts.length;i++){
-      const a = pts[i-1], b = pts[i];
-      const dx = b.xPct - a.xPct;
-      const dy = b.yPct - a.yPct;
-      const horiz = Math.abs(dx) > Math.abs(dy);
-
-      if (horiz) {
-        if (dx > 0) {
-          step(`Proceed east along the main corridor.`, `Gehe nach Osten entlang des Hauptkorridors.`);
-        } else {
-          step(`Proceed west along the main corridor.`, `Gehe nach Westen entlang des Hauptkorridors.`);
-        }
-      } else {
-        if (dy > 0) {
-          step(`Head south to the lower junction.`, `Gehe nach Süden zur unteren Kreuzung.`);
-        } else {
-          step(`Head north to the upper junction.`, `Gehe nach Norden zur oberen Kreuzung.`);
-        }
-      }
-    }
-    step(`Turn towards ${endRoom} and enter.`, `Biege zu ${endRoom} ab und betrete den Raum.`);
-
-    return {en:stepsEN, de:stepsDE};
-  }
-
-  // --- DOM wiring ---
-  const panel = document.getElementById('panel-rooms');
-  const stage = document.getElementById('imgStage');
-  const img   = document.getElementById('floorImg');
-  const canvas= document.getElementById('routeCanvas');
-  const ctx   = canvas.getContext('2d');
-
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn= document.getElementById('zoomOut');
-  const zoomResetBtn = document.getElementById('zoomReset');
-
-  const fromSel = document.getElementById('fromRoom');
-  const toSel   = document.getElementById('toRoom');
-  const showBtn = document.getElementById('showRoute');
-
-  const stepsEN = document.getElementById('routeStepsEN');
-  const stepsDE = document.getElementById('routeStepsDE');
-
-  const playEN = document.getElementById('playEN');
-  const playDE = document.getElementById('playDE');
-
-  // Populate selects
-  function populateSelects(){
-    const options = ['','Success','Inspire','Visitor','Joy','Debug','iDrive','M-Mode','Drift','Xdrive','Torque'];
-    function fill(sel){
-      sel.innerHTML = '';
-      options.forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v;
-        opt.textContent = v ? v : '— Select —';
-        sel.appendChild(opt);
-      });
-    }
-    fill(fromSel); fill(toSel);
-  }
-  populateSelects();
-
-  // Create clickable room markers using positions (% of image)
-  function createMarkers(){
-    // Remove any existing
-    [...stage.querySelectorAll('.room-marker')].forEach(el => el.remove());
-    const rect = img.getBoundingClientRect();
-    const natW = img.naturalWidth, natH = img.naturalHeight;
-
-    rooms.forEach(r => {
-      const marker = document.createElement('div');
-      marker.className = 'room-marker';
-      marker.dataset.room = r.name;
-      marker.textContent = r.name;
-      stage.appendChild(marker);
-      // position in pixels (relative to natural size; will be transformed with stage)
-      const x = natW * (r.xPct/100), y = natH * (r.yPct/100);
-      marker.style.left = `${x}px`;
-      marker.style.top  = `${y}px`;
-
-      marker.addEventListener('click', () => {
-        const mode = document.querySelector('input[name="selectMode"]:checked').value;
-        if (mode === 'from') {
-          fromSel.value = r.name;
-        } else {
-          toSel.value = r.name;
-        }
-        highlightSelections();
-      });
-    });
-    highlightSelections();
-  }
-
-  function highlightSelections(){
-    const from = fromSel.value, to = toSel.value;
-    [...stage.querySelectorAll('.room-marker')].forEach(m => {
-      m.classList.remove('selected-from','selected-to');
-      if (m.dataset.room === from) m.classList.add('selected-from');
-      if (m.dataset.room === to)   m.classList.add('selected-to');
-    });
-  }
-
-  // Pan/Zoom handling
-  let scale = 1, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0;
-  function applyTransform(){
-    stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  }
-  zoomInBtn.addEventListener('click', () => { scale = Math.min(3.0, scale*1.2); applyTransform(); });
-  zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.5, scale/1.2); applyTransform(); });
-  zoomResetBtn.addEventListener('click', () => { scale=1; tx=0; ty=0; applyTransform(); });
-
-  stage.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; stage.classList.add('grabbing'); });
-  window.addEventListener('mouseup', () => { dragging = false; stage.classList.remove('grabbing'); });
-  window.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    const dx = e.clientX - lastX, dy = e.clientY - lastY;
-    tx += dx; ty += dy;
-    lastX = e.clientX; lastY = e.clientY;
-    applyTransform();
-  });
-
-  // Resize canvas to image natural size so coordinates align
-  function resizeCanvasToImage(){
-    canvas.width  = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-  }
-
-  // Draw route as green dotted polyline
-  function drawRoute(path){
-    resizeCanvasToImage();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    // Convert to pixel points
-    const points = path.map(id => {
-      const p = nodes[id];
-      return { x: canvas.width*(p.xPct/100), y: canvas.height*(p.yPct/100) };
-    });
-
-    // Draw dotted line (green dots)
-    ctx.fillStyle = '#16a34a'; // green
-    ctx.strokeStyle = '#16a34a';
-    ctx.lineWidth = 2;
-
-    // draw small circles along each segment
-    const dotEveryPx = 16;
-    for (let i=1;i<points.length;i++){
-      const a = points[i-1], b = points[i];
-      const dx = b.x - a.x, dy = b.y - a.y;
-      const len = Math.hypot(dx,dy);
-      const steps = Math.max(1, Math.floor(len / dotEveryPx));
-      for (let s=0;s<=steps;s++){
-        const t = s/steps;
-        const x = a.x + dx*t;
-        const y = a.y + dy*t;
-        ctx.beginPath();
-        ctx.arc(x, y, 3.2, 0, Math.PI*2);
-        ctx.fill();
-      }
-    }
-
-    // Start/end markers
-    if (points.length) {
-      ctx.fillStyle = '#0078d4'; // Start: blue
-      ctx.beginPath(); ctx.arc(points[0].x, points[0].y, 5, 0, Math.PI*2); ctx.fill();
-
-      ctx.fillStyle = '#e81123'; // End: red
-      const last = points[points.length-1];
-      ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI*2); ctx.fill();
-    }
-  }
-
-  // Show route handler
-  function showRouteHandler(){
-    const from = fromSel.value, to = toSel.value;
-    stepsEN.innerHTML = ''; stepsDE.innerHTML = '';
-    if (!from || !to) {
-      stepsEN.innerHTML = `<li>Please select both source and destination.</li>`;
-      stepsDE.innerHTML = `<li>Bitte wähle sowohl Start als auch Ziel aus.</li>`;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      return;
-    }
-    if (from === to) {
-      stepsEN.innerHTML = `<li>Source and destination are the same. You are already at ${from}.</li>`;
-      stepsDE.innerHTML = `<li>Start und Ziel sind identisch. Du bist bereits bei ${from}.</li>`;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (!steps.length) {
+      const li = document.createElement('li');
+      li.textContent = 'No steps available for this room.';
+      stepsEl.appendChild(li);
       return;
     }
 
-    const startId = `R:${from}`;
-    const endId   = `R:${to}`;
-    const path = shortestPath(startId, endId);
-
-    drawRoute(path);
-
-    const dirs = directionsForPath(path);
-    dirs.en.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsEN.appendChild(li); });
-    dirs.de.forEach(s => { const li = document.createElement('li'); li.textContent = s; stepsDE.appendChild(li); });
-    highlightSelections();
-  }
-
-  showBtn.addEventListener('click', showRouteHandler);
-
-  // Speech synthesis
-  function speakText(text, lang){
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = lang;
-    // Try to pick a matching voice (if available)
-    const voices = window.speechSynthesis.getVoices();
-    const match = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase()));
-    if (match) utter.voice = match;
-    window.speechSynthesis.cancel(); // stop any previous
-    window.speechSynthesis.speak(utter);
-  }
-
-  playEN.addEventListener('click', () => {
-    const text = [...stepsEN.querySelectorAll('li')].map(li => li.textContent).join('. ');
-    if (!text) return;
-    speakText(text, 'en-US');
-  });
-  playDE.addEventListener('click', () => {
-    const text = [...stepsDE.querySelectorAll('li')].map(li => li.textContent).join('. ');
-    if (!text) return;
-    speakText(text, 'de-DE');
-  });
-
-  // Hook up nav button to show this panel
-  const navButtons = document.querySelectorAll('.nav[data-panel]');
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-panel'); // "rooms"
-      document.querySelectorAll('.panel').forEach(p => {
-        p.style.display = (p.id === `panel-${target}`) ? 'block' : 'none';
-      });
-      // When shown, ensure everything is sized/ready
-      if (target === 'rooms') {
-        // Wait for image to load first time
-        if (img.complete) {
-          resizeCanvasToImage();
-          createMarkers();
-          applyTransform();
-          // Deep link support e.g., ?from=Joy&to=Debug
-          const params = new URLSearchParams(window.location.search);
-          const fromP = params.get('from'), toP = params.get('to');
-          if (fromP && rooms.find(r=>r.name===fromP)) fromSel.value = fromP;
-          if (toP   && rooms.find(r=>r.name===toP))   toSel.value   = toP;
-          highlightSelections();
-          if (fromSel.value && toSel.value) showRouteHandler();
-        } else {
-          img.addEventListener('load', () => {
-            resizeCanvasToImage();
-            createMarkers();
-            applyTransform();
-          }, {once:true});
-        }
-      }
+    steps.forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      stepsEl.appendChild(li);
     });
-  });
-
-  // If panel already visible on load, initialize once image is ready
-  if (panel.style.display !== 'none') {
-    if (img.complete) { resizeCanvasToImage(); createMarkers(); applyTransform(); }
-    else { img.addEventListener('load', () => { resizeCanvasToImage(); createMarkers(); applyTransform(); }, {once:true}); }
   }
 
-})();
-
-    
+  function resetRoomRoute() {
+    const stepsEl = document.querySelector('#panel-rooms #routeText');
+    const sel = document.getElementById('roomSel');
+    if (stepsEl) stepsEl.innerHTML = '';
+    if (sel) sel.value = '';
+  }
 
   /* ---------- QR FIX ---------- */
-const LANDING_URL="https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/";
-
-async function downloadQR(){
-const img=document.getElementById("siteQR");
-const res=await fetch(img.src);
-const blob=await res.blob();
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-a.href=url;
-a.download="BMWTechWorks_QR.png";
-a.click();
-URL.revokeObjectURL(url);
-}
-
-async function shareQR(){
-if(navigator.share){
-navigator.share({
-title:"BMWTechWorks Pune",
-url:LANDING_URL
-});
-}else{
-navigator.clipboard.writeText(LANDING_URL);
-alert("Link copied to clipboard");
-}
-}
-
-  
-    
-
-         
-  </script>
+  const LANDING_URL="https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/";
+  async function downloadQR(){
+    const img=document.getElementById("siteQR");
+    const res=await fetch(img.src);
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="BMWTechWorks_QR.png";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  async function shareQR(){
+    if(navigator.share){
+      navigator.share({
+        title:"BMWTechWorks Pune",
+        url:LANDING_URL
+      });
+    }else{
+      navigator.clipboard.writeText(LANDING_URL);
+      alert("Link copied to clipboard");
+    }
+  }
+</script>
 </body>
 </html>
+
