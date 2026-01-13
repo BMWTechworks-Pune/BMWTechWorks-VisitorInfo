@@ -1,110 +1,6 @@
 
 
-    
-
-    /* Container */
-    .container{ padding:0 12px 24px; }
-    .grid{ display:grid; grid-template-columns: 2fr 1fr; gap:14px; }
-    @media (max-width:1000px){ .grid{ grid-template-columns: 1fr; } }
-    .card{ background:var(--card); border:1px solid #e6e6e6; border-radius:12px; padding:14px; margin:14px 0; }
-    .content{ margin-top:8px; }
-    .muted{ color:var(--muted); }
-
-    /* Zoom wrap */
-    .zoom-wrap{ position:relative; overflow:hidden; border-radius:12px; background:#fff; }
-    .zoom-inner{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
-    .zoom-hint{ position:absolute; left:12px; bottom:12px; background:rgba(255,255,255,0.85); color:#111; padding:6px 10px; border-radius:8px; font-size:12px; }
-
-    /* Tools */
-    .tools{ display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
-    .btn{ font-size:16px; font-weight:600; padding:8px 14px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
-    .btn.primary{ border-color:var(--accent); color:#fff; background:var(--accent); }
-
-    /* Controls bar as compact card */
-    .title{ font-size:16px; font-weight:700; }
-    .controls{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; }
-    .controls label{ font-size:14px; }
-    .controls select, .controls input[type="range"]{ height:32px; }
-
-    /* Canvas and overlay */
-    #canvasWrap{ position:relative; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; background:#fff; }
-    #floor{ display:block; width:100%; height:auto; margin:0; background:transparent; }
-    #overlay{ position:absolute; inset:0; width:100%; height:100%; }
-
-    /* Legend */
-    .legend{ margin-top:10px; }
-    .row{ display:flex; gap:8px; align-items:center; }
-    .swatch{ width:18px; height:4px; background:#ff3b30; border-radius:2px; }
-
-    /* Fix extra whitespace/gaps under images and banners */
-    img{ vertical-align:middle; }
-    .banner{ background:#eef4ff; border:1px solid #dbe6ff; border-radius:8px; padding:8px 10px; margin:10px 0; }
-    .audio-bar{ background:#fafafa; border:1px solid #eee; border-radius:8px; padding:8px 10px; margin:10px 0; }
-
-    /* Aside visuals */
-    .img-list{ display:grid; grid-template-columns: 1fr; gap:10px; }
-    .img-item img{ display:block; width:100%; height:auto; border-radius:8px; background:transparent; }
-     
-      /* Plan area */
-    #planWrap{ position:relative; background:#fff; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; }
-    #planLayer{ position:relative; transform-origin: 0 0; touch-action: none; }
-    #planImg{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
-    /* Optional overlay kept for future use, no drawing now */
-    #routeSvg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-
-    /* Prevent stray backgrounds */
-    .no-bg{ background: none !important; }
-
-    /* Toolbar buttons: readable */
-    .toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
-    .toolbar button{ font-size:16px; font-weight:600; padding:8px 14px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
-    .toolbar button.primary{ border-color: var(--accent); color:#fff; background:var(--accent); }
-
-    .card h3{ font-size:16px; font-weight:700; margin:0 0 8px 0; }
-    .card h4{ font-size:14px; font-weight:700; margin:0 0 6px 0; }
-
-    #routeSteps{ margin-top:8px; }
-    #routeSteps li{ margin:4px 0; }
-
-    /* Image strip for room photos: remove extra white space */
-    .imgStrip{ margin:8px 0 8px 0; padding:0; background:none; border:none; }
-    .imgRow{ display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; }
-    .imgWrap{ flex:1 1 320px; background:none; border:none; margin:0; padding:0; line-height:0; }
-    .imgWrap img{ display:block; width:100%; height:auto; margin:0; border-radius:8px; background:transparent; }
-    img{ vertical-align:middle; }
-    .tight p{ margin:4px 0; }
-
-    /* Tables */
-    table{ width:100%; border-collapse:collapse; }
-    th, td{ border:1px solid #ddd; padding:8px; text-align:left; }
-    th{ background-color: #003366; color: white; }
-
-    a{ color:#0a84ff; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-     
-.links {
-  display: flex;
-  flex-wrap: wrap;        /* Allows wrapping to second line if needed */
-  justify-content: center; /* Centers the links horizontally */
-  gap: 3px;              /* Adds uniform spacing between buttons */
-}
-
-.links a {
-  display: inline-block;
-  padding: 3px 5px;
-  background-color: #0066cc;
-  color: white;
-  text-decoration: none;
-  border-radius: 3px;
-  font-size: 12px;
-  white-space: nowrap;    /* Prevents text from breaking */
-}
-
-     
-    footer{ margin-top:10px; color:#444; }
-
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -248,6 +144,111 @@
       .brand-title { font-size: 1rem; white-space: normal; }
       .brand-logo { width: 32px; height: 32px; }
     }
+    
+
+    /* Container */
+    .container{ padding:0 12px 24px; }
+    .grid{ display:grid; grid-template-columns: 2fr 1fr; gap:14px; }
+    @media (max-width:1000px){ .grid{ grid-template-columns: 1fr; } }
+    .card{ background:var(--card); border:1px solid #e6e6e6; border-radius:12px; padding:14px; margin:14px 0; }
+    .content{ margin-top:8px; }
+    .muted{ color:var(--muted); }
+
+    /* Zoom wrap */
+    .zoom-wrap{ position:relative; overflow:hidden; border-radius:12px; background:#fff; }
+    .zoom-inner{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
+    .zoom-hint{ position:absolute; left:12px; bottom:12px; background:rgba(255,255,255,0.85); color:#111; padding:6px 10px; border-radius:8px; font-size:12px; }
+
+    /* Tools */
+    .tools{ display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
+    .btn{ font-size:16px; font-weight:600; padding:8px 14px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
+    .btn.primary{ border-color:var(--accent); color:#fff; background:var(--accent); }
+
+    /* Controls bar as compact card */
+    .title{ font-size:16px; font-weight:700; }
+    .controls{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; }
+    .controls label{ font-size:14px; }
+    .controls select, .controls input[type="range"]{ height:32px; }
+
+    /* Canvas and overlay */
+    #canvasWrap{ position:relative; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; background:#fff; }
+    #floor{ display:block; width:100%; height:auto; margin:0; background:transparent; }
+    #overlay{ position:absolute; inset:0; width:100%; height:100%; }
+
+    /* Legend */
+    .legend{ margin-top:10px; }
+    .row{ display:flex; gap:8px; align-items:center; }
+    .swatch{ width:18px; height:4px; background:#ff3b30; border-radius:2px; }
+
+    /* Fix extra whitespace/gaps under images and banners */
+    img{ vertical-align:middle; }
+    .banner{ background:#eef4ff; border:1px solid #dbe6ff; border-radius:8px; padding:8px 10px; margin:10px 0; }
+    .audio-bar{ background:#fafafa; border:1px solid #eee; border-radius:8px; padding:8px 10px; margin:10px 0; }
+
+    /* Aside visuals */
+    .img-list{ display:grid; grid-template-columns: 1fr; gap:10px; }
+    .img-item img{ display:block; width:100%; height:auto; border-radius:8px; background:transparent; }
+     
+      /* Plan area */
+    #planWrap{ position:relative; background:#fff; border:1px solid #e6e6e6; border-radius:12px; overflow:hidden; }
+    #planLayer{ position:relative; transform-origin: 0 0; touch-action: none; }
+    #planImg{ display:block; width:100%; height:auto; user-select:none; pointer-events:none; }
+    /* Optional overlay kept for future use, no drawing now */
+    #routeSvg{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+    /* Prevent stray backgrounds */
+    .no-bg{ background: none !important; }
+
+    /* Toolbar buttons: readable */
+    .toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+    .toolbar button{ font-size:16px; font-weight:600; padding:8px 14px; border:1px solid #d0d0d0; border-radius:8px; background:#fff; cursor:pointer; }
+    .toolbar button.primary{ border-color: var(--accent); color:#fff; background:var(--accent); }
+
+    .card h3{ font-size:16px; font-weight:700; margin:0 0 8px 0; }
+    .card h4{ font-size:14px; font-weight:700; margin:0 0 6px 0; }
+
+    #routeSteps{ margin-top:8px; }
+    #routeSteps li{ margin:4px 0; }
+
+    /* Image strip for room photos: remove extra white space */
+    .imgStrip{ margin:8px 0 8px 0; padding:0; background:none; border:none; }
+    .imgRow{ display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; }
+    .imgWrap{ flex:1 1 320px; background:none; border:none; margin:0; padding:0; line-height:0; }
+    .imgWrap img{ display:block; width:100%; height:auto; margin:0; border-radius:8px; background:transparent; }
+    img{ vertical-align:middle; }
+    .tight p{ margin:4px 0; }
+
+    /* Tables */
+    table{ width:100%; border-collapse:collapse; }
+    th, td{ border:1px solid #ddd; padding:8px; text-align:left; }
+    th{ background-color: #003366; color: white; }
+
+    a{ color:#0a84ff; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+     
+.links {
+  display: flex;
+  flex-wrap: wrap;        /* Allows wrapping to second line if needed */
+  justify-content: center; /* Centers the links horizontally */
+  gap: 3px;              /* Adds uniform spacing between buttons */
+}
+
+.links a {
+  display: inline-block;
+  padding: 3px 5px;
+  background-color: #0066cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;    /* Prevents text from breaking */
+}
+
+     
+    footer{ margin-top:10px; color:#444; }
+
+
     
   </style>
 
