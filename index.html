@@ -175,7 +175,7 @@
     <button class="nav" data-panel="ert">🛡️ ERT Members</button>
     <button class="nav" data-panel="firstaid">🧑‍⚕️ First Aid &amp; Medical Support</button>
     <button class="nav" data-panel="assembly">📍 Assembly Points</button>
-    <button class="nav" data-panel="rooms">🏢 Meeting Rooms</button>
+   <button onclick="show('rooms')">🏢 Meeting Rooms</button>
     <button class="nav" data-panel="it">🖥️ IT Helpdesk</button>
     <button class="nav" data-panel="translate">🌍 German ↔ English</button>
     <button class="nav" data-panel="parking">🅿️ Parking Info</button>
@@ -235,31 +235,32 @@
     
 
  
-      <div class="card">
-        <h3>Room Route Finder</h3>
-        <label for="roomSel">Choose Meeting room:</label>
-        <div class="toolbar">
-          <button id="zoomIn" title="Zoom in">＋</button>
-          <button id="zoomOut" title="Zoom out">－</button>
-          <button id="reset" title="Reset view">Reset</button>
-          <button id="clearRoute" class="primary" title="Clear text & audio">Clear</button>
-          <button id="langToggle" title="Toggle language">EN / DE</button>
-        </div>
-        <select id="roomSel">
-          <option value="">— Select Meeting Room —</option>
-          <option>Success</option>
-          <option>Inspire</option>
-          <option>Joy</option>
-          <option>Debug</option>
-          <option>iDrive</option>
-          <option>M-Mode</option>
-          <option>Drift</option>
-          <option>xDrive</option>
-          <option>Torque</option>
-        </select>
-        <ol id="routeSteps" class="muted" style="margin-top:8px"></ol>
-      </div>
+     <div id="roomWrapper">
+<img id="roomImg" src="r2.png">
+</div>
 
+<br>
+<button class="btn" onclick="zoom(1.2)">➕ Zoom In</button>
+<button class="btn" onclick="zoom(0.8)">➖ Zoom Out</button>
+<button class="btn" onclick="resetZoom()">Reset</button>
+
+<hr>
+
+<label>Select Room:</label>
+<select id="roomSel" onchange="showRoute()">
+<option value="">-- Select --</option>
+<option>Success</option>
+<option>Inspire</option>
+<option>Joy</option>
+<option>Debug</option>
+<option>iDrive</option>
+<option>M-Mode</option>
+<option>Drift</option>
+<option>xDrive</option>
+<option>Torque</option>
+</select>
+
+<ol id="routeText"></ol>
 </section>
     
 
@@ -565,7 +566,7 @@
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
 
   <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 PE</div>
+  @Copyright BTI-Digital CAR PUNE-SSP Team 2026:13Jan</div>
 </footer>
   
 
@@ -1331,7 +1332,41 @@ alert("Link copied to clipboard");
 }
 }
 
+    function show(p){
+document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+document.getElementById('panel-'+p).classList.add('active');
+}
+    
+/* ---------- ZOOM ---------- */
+let scale=1;
+const img=document.getElementById("roomImg");
+function zoom(f){scale*=f;img.style.transform=`scale(${scale})`;}
+function resetZoom(){scale=1;img.style.transform="scale(1)";}
 
+/* ---------- ROUTES ---------- */
+const routes={
+Success:["From Reception go left","Board Room is Success"],
+Inspire:["From Reception go left","Training Room beside Success"],
+Joy:["From Reception go left","Joy near Visitor Room"],
+Debug:["From Reception straight","Middle section"],
+iDrive:["From Reception straight","Opposite Debug"],
+"M-Mode":["From Reception straight","Right corner"],
+Drift:["From Reception right wing","Near xDrive"],
+xDrive:["From Reception far right","Next to Torque"],
+Torque:["From Reception far right","Last room"]
+};
+
+function showRoute(){
+const r=document.getElementById("roomSel").value;
+const ol=document.getElementById("routeText");
+ol.innerHTML="";
+if(!r)return;
+routes[r].forEach(s=>{
+const li=document.createElement("li");
+li.innerText=s;
+ol.appendChild(li);
+});
+}
          
   </script>
 </body>
