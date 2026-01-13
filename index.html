@@ -225,41 +225,6 @@
       </div> 
     </section>
 
-     <section id="panel-rooms" class="panel">
-      <h3>Meeting Rooms</h3>
-    
-      
-       
-
- 
-     <div id="roomWrapper">
-<img id="roomImg" src="r2.png">
-</div>
-
-<br>
-
-<button class="btn" onclick="resetZoom()">Reset</button>
-
-<hr>
-
-<label>Select Room:</label>
-<select id="roomSel" onchange="showRoute()">
-<option value="">-- Select --</option>
-<option>Success</option>
-<option>Inspire</option>
-<option>Joy</option>
-<option>Debug</option>
-<option>iDrive</option>
-<option>M-Mode</option>
-<option>Drift</option>
-<option>xDrive</option>
-<option>Torque</option>
-</select>
-
-<ol id="routeText"></ol>
-</section>
-    
-
     <!-- Layout & Exit -->
     <section id="panel-layout" class="panel">
       <h3>Floor Layout & Exit</h3>
@@ -267,13 +232,12 @@
          <div class="content">
         <!-- Map: zoom/pan wrapper -->
         <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
-          <!-- Optional overlay holder (SVG will be injected here if you add routes later) -->
-          <!-- <svg id="routeOverlay" style="position:absolute; inset:0; pointer-events:none;"></svg> -->
+        
           <img id="zoomImg" class="zoom-inner" src="r1.png" alt="BTI Pune Exit Plan"
                style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
         </div>
 
-        <p class="muted" style="margin-top:8px">Best experienced on Chrome/Edge. Use headphones in open areas.</p>
+       
         <header style="margin-top:6px;">
           <div class="title" style="font-weight:600;">BTI Pune • Exit Guidance</div>
           <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
@@ -287,19 +251,10 @@
               <option value="EXIT5">EXIT5</option>
             </select>
 
-            <label for="langSelect">Lang:</label>
-            <select id="langSelect">
-              <option value="en">EN</option>
-              <option value="de">DE</option>
-            </select>
-
+          
             <button class="btn" id="play">🔊 Play Audio Guidance</button>
             <button class="btn" id="replay">Replay</button>
             <button class="btn" id="mute">Mute</button>
-
-            <!-- Optional: second set of zoom buttons (header block) -->
-            <button class="btn" id="zoomOut">➖ Zoom Out</button>
-            <button class="btn" id="zoomIn">➕ Zoom In</button>
             <button class="btn" id="resetView">Reset</button>
           </div>
         </header>
@@ -323,6 +278,66 @@
 
     </section>
 
+     <!--- test--->
+      <!-- panel-rooms-->
+    <section id="panel-rooms" class="panel">
+      <h3>Meeting Rooms</h3>
+      
+         <div class="content">
+        
+        <div class="zoom-wrap" id="zoomWrap" style="position:relative; overflow:hidden; border:1px solid #d8def0; border-radius:6px;">
+         
+          <img id="zoomImg" class="zoom-inner" src="r2.png" alt="BTI Meeting Rooms"
+               style="display:block; width:100%; transform-origin:0 0; user-select:nonepx;">
+        </div>
+
+      
+        <header style="margin-top:6px;">
+          <div class="title" style="font-weight:600;">BTI Pune •Meeting Rooms</div>
+          <div class="controls" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+            <label for="meetingSelect">Select Meeting Rooms:</label>
+            <select id="meetingSelect">
+              <option value="None" selected>None</option>
+  
+            <option>Success</option>
+            <option>Inspire</option>
+            <option>Joy</option>
+            <option>Debug</option>
+            <option>iDrive</option>
+            <option>M-Mode</option>
+            <option>Drift</option>
+             <option>xDrive</option>
+             <option>Torque</option>
+              
+            <button class="btn" id="play">🔊 Play Audio Guidance</button>
+            <button class="btn" id="replay">Replay</button>
+            <button class="btn" id="mute">Mute</button>
+            <button class="btn" id="resetView">Reset</button>
+          </div>
+        </header>
+
+        <!-- Guidance text display -->
+        <div id="routeText" class="routeText" aria-live="polite"
+             style="margin:8px 0; padding:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px;">
+          Select an Meeting room  to see guidance.
+        </div>
+
+        <!-- Hidden audio element driven by the controls -->
+        <audio id="routeAudio" preload="auto" style="display:none;"></audio>
+
+        <!-- Optional: Graceful message if JS is disabled -->
+        <noscript>
+          <div style="padding:12px;color:#e11d48;">
+            JavaScript is required for interactive routes and audio guidance.
+          </div>
+        </noscript>
+      </div>
+
+    </section>
+
+    
+   
+    
     <!-- ERT Members -->
     <section id="panel-ert" class="panel">
       <h2>Emergency Response Team (ERT)</h2>
@@ -553,10 +568,6 @@
   </ul>
 </section>
 
-
-
-    
-
   </main>
 
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
@@ -588,8 +599,7 @@
       e.preventDefault();
     });
 
-    
-    
+  
 
   /* ---------- QR FIX ---------- */
 const LANDING_URL="https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/";
@@ -618,57 +628,7 @@ alert("Link copied to clipboard");
 }
 }
 
-   // ---------- Meeting Rooms: English-only text (no audio/zoom) ----------
-  // Existing routeText data (English/German) already present in your original file.
-  // We'll use English only.
-  const roomRouteText = {
-    en: {
-      Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
-      Inspire: ['Reception → left corridor', 'Training room next to Success'],
-      Joy:     ['Reception → left corridor', 'Joy is near Visitor area'],
-      Debug:   ['Reception → main corridor', 'Continue to middle section', 'Debug lab is at center'],
-      iDrive:  ['Reception → main corridor', 'Pass Debug', 'iDrive opposite Debug'],
-      'M-Mode':['Reception → main corridor', 'Turn right', 'M‑Mode corner room'],
-      Drift:   ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
-      Xdrive:  ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
-      Torque:  ['Reception → far right end', 'Opposite xDrive', 'Torque room']
-    }
-  };
-
-  function showRoomRoute() {
-    const sel = document.getElementById('roomSel');
-    const stepsEl = document.querySelector('#panel-rooms #routeText'); // scoped to avoid conflicts
-    stepsEl.innerHTML = '';
-
-    const roomRaw = (sel?.value || '').trim();
-    if (!roomRaw) return;
-
-    // Normalize key (Xdrive vs xDrive)
-    const key = roomRaw === 'xDrive' ? 'Xdrive' : roomRaw;
-
-    const steps = (roomRouteText.en && roomRouteText.en[key]) ? roomRouteText.en[key] : [];
-
-    if (!steps.length) {
-      const li = document.createElement('li');
-      li.textContent = 'No steps available for this room.';
-      stepsEl.appendChild(li);
-      return;
-    }
-
-    steps.forEach(s => {
-      const li = document.createElement('li');
-      li.textContent = s;
-      stepsEl.appendChild(li);
-    });
-  }
-
-  function resetRoomRoute() {
-    const stepsEl = document.querySelector('#panel-rooms #routeText');
-    const sel = document.getElementById('roomSel');
-    if (stepsEl) stepsEl.innerHTML = '';
-    if (sel) sel.value = '';
-  }
-    
+  
 
          
   </script>
