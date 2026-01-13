@@ -676,6 +676,133 @@
   @Copyright BTI-Digital CAR PUNE-SSP Team 2026</div>
 </footer>
 
+     <script>
+    // Data
+    const routePaths = {
+      Success:[[0.120,0.550],[0.100,0.480],[0.080,0.360],[0.060,0.300]],
+      Inspire:[[0.120,0.550],[0.100,0.480],[0.085,0.400]],
+      Joy:[[0.120,0.550],[0.140,0.560]],
+      Debug:[[0.120,0.550],[0.300,0.550],[0.410,0.520]],
+      iDrive:[[0.120,0.550],[0.300,0.550],[0.530,0.540]],
+      'M-Mode':[[0.120,0.550],[0.300,0.550],[0.640,0.560]],
+      Drift:[[0.120,0.550],[0.300,0.550],[0.740,0.560],[0.800,0.560]],
+      xDrive:[[0.120,0.550],[0.300,0.550],[0.820,0.550],[0.880,0.540]],
+      Torque:[[0.120,0.550],[0.300,0.550],[0.860,0.540],[0.940,0.540]]
+    };
+
+    const routeText = {
+      en: {
+        Success: ['Reception → left corridor', 'Proceed up to board room', 'Success (Board)'],
+        Inspire: ['Reception → left corridor', 'Training room next to Success'],
+        Joy: ['Reception → left corridor', 'Joy is near Visitor area'],
+        Debug: ['Reception → main corridor', 'Continue to middle section', 'Debug lab is at center'],
+        iDrive: ['Reception → main corridor', 'Pass Debug', 'iDrive opposite Debug'],
+        'M-Mode': ['Reception → main corridor', 'Turn right', 'M‑Mode corner room'],
+        Drift: ['Reception → main corridor', 'Turn right into side corridor → T‑junction', 'Drift next to xDrive'],
+        xDrive: ['Reception → main corridor', 'Turn right into side corridor', 'xDrive near Torque'],
+        Torque: ['Reception → far right end', 'Opposite xDrive', 'Torque room']
+      },
+      de: {
+        Success:['Empfang → linker Flur','Bis zum Boardroom','Success (Board)'],
+        Inspire:['Empfang → linker Flur','Schulungsraum neben Success'],
+        Joy:['Empfang → linker Flur','Joy nahe Besucherbereich'],
+        Debug:['Empfang → Hauptflur','Weiter zum Mittelteil','Debug‑Labor im Zentrum'],
+        iDrive:['Empfang → Hauptflur','An Debug vorbei','iDrive gegenüber Debug'],
+        'M-Mode':['Empfang → Hauptflur','Nach rechts abbiegen','M‑Mode Eckraum'],
+        Drift:['Empfang → Hauptflur','Rechts in Seitenflur → T‑Kreuzung','Drift neben xDrive'],
+        xDrive:['Empfang → Hauptflur','Rechts in Seitenflur','xDrive nahe Torque'],
+        Torque:['Empfang → ganz rechts','Gegenüber xDrive','Torque‑Raum']
+      }
+    };
+
+    // Pan/zoom
+    const layer = document.getElementById('planLayer');
+    const svg = document.getElementById('routeSvg'); // present but unused for drawing
+    let scale = 1, tx = 0, ty = 0; let dragging = false, px = 0, py = 0;
+    function apply(){ layer.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+    apply();
+    document.getElementById('zoomIn').onclick = ()=>{ scale = Math.min(4, scale + 0.15); apply(); };
+    document.getElementById('zoomOut').onclick = ()=>{ scale = Math.max(0.5, scale - 0.15); apply(); };
+
+    // Reset: clear text + audio and reset view (+ empty dropdown)
+    const sel = document.getElementById('roomSel');
+    const steps = document.getElementById('routeSteps');
+
+    document.getElementById('reset').onclick = ()=>{
+      scale = 1; tx = 0; ty = 0; apply();
+      clearSvg(); steps.innerHTML=''; stopTTS(); sel.value='';
+    };
+
+    layer.addEventListener('pointerdown', (e)=>{ dragging = true; px = e.clientX; py = e.clientY; layer.setPointerCapture(e.pointerId); });
+    layer.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx = e.clientX - px; const dy = e.clientY - py; tx += dx; ty += dy; px = e.clientX; py = e.clientY; apply(); });
+    layer.addEventListener('pointerup', ()=> dragging=false);
+
+    // No route drawing
+    function clearSvg(){ if(svg) svg.innerHTML=''; }
+    function drawRoute(room){ clearSvg(); return; }
+
+    // Selection + language (text + TTS only)
+    let currentLang = (new URLSearchParams(location.search)).get('lang') || 'en';
+
+    function selectRoom(room){
+      if(!room){ steps.innerHTML=''; clearSvg(); stopTTS(); return; }
+      sel.value = room;
+      steps.innerHTML='';
+      (routeText[currentLang][room]||[]).forEach(s=>{ const li=document.createElement('li'); li.textContent=s; steps.appendChild(li); });
+      // drawRoute(room); // intentionally not drawing any route
+      updateVoiceStatus();
+    }
+
+    sel.addEventListener('change', ()=> selectRoom(sel.value));
+    document.getElementById('langToggle').onclick = ()=>{ currentLang = (currentLang==='en')?'de':'en'; selectRoom(sel.value); };
+
+    // Audio via Web Speech API (TTS)
+    const audioStatus = document.getElementById('audioStatus');
+    let voices = []; function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
+    loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    function pickVoice(langCode){
+      const exact = voices.find(v=>v.lang.toLowerCase()===langCode.toLowerCase());
+      if(exact) return exact;
+      const prefix = langCode.split('-')[0];
+      const starts = voices.find(v=>v.lang.toLowerCase().startsWith(prefix.toLowerCase()));
+      if(starts) return starts;
+      return voices[0] || null;
+    }
+
+    function buildSpeechText(room, lang){ const lines = routeText[lang][room] || []; return lines.join('. '); }
+
+    let currentUtterance = null;
+    function stopTTS(){ if(currentUtterance){ window.speechSynthesis.cancel(); currentUtterance = null; } else { window.speechSynthesis.cancel(); } audioStatus.textContent = ''; }
+
+    function speakSteps(room, lang){
+      stopTTS();
+      if(!room){ audioStatus.textContent='Select a room first.'; return; }
+      const text = buildSpeechText(room, lang);
+      if(!text){ audioStatus.textContent = 'No audio text available.'; return; }
+      const voice = pickVoice(lang==='de' ? 'de-DE' : 'en-US');
+      const utter = new SpeechSynthesisUtterance(text);
+      if(voice) utter.voice = voice;
+      utter.rate = 1.0; utter.pitch = 1.0;
+      utter.onstart = ()=>{ audioStatus.textContent = `Speaking (${(voice && voice.lang) || (lang==='de'?'de-DE':'en-US')})…`; };
+      utter.onend   = ()=>{ audioStatus.textContent = 'Done.'; setTimeout(()=> audioStatus.textContent='', 800); };
+      utter.onerror = ()=>{ audioStatus.textContent = 'Speech error. Try again.'; };
+      currentUtterance = utter;
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.getElementById('playAudio').onclick = ()=> speakSteps(sel.value, currentLang);
+    document.getElementById('stopAudio').onclick = ()=> stopTTS();
+
+    // Clear: text + audio (keeps zoom/pan)
+    document.getElementById('clearRoute').onclick = ()=>{ clearSvg(); steps.innerHTML=''; stopTTS(); sel.value=''; };
+
+    // Deep link (shows text + TTS only)
+    const qs = new URLSearchParams(location.search);
+    const initialRoom = qs.get('room');
+    if(initialRoom && routeText.en[initialRoom]){ sel.value = initialRoom; selectRoom(initialRoom); }
+  </script>
+    
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   /* =========================================
@@ -880,6 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
 
 </body>
 </html>
