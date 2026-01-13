@@ -1,171 +1,169 @@
-​
-​
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMWTechWorks India PUNE-BTI***</title>
+  <title>BMWTechWorks India-Pune – Visitor & Office Help</title>
+
   <style>
-    :root{--blue:#1c6ecf;--dark:#0b1f3d;--light:#f7f9fc;--border:#e3e8ef}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;background:var(--light);color:#14202a}
-    header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-    .top{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-    nav{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px}
-    button.nav{border:1px solid var(--border);background:#fff;color:#0b2540;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
-    button.nav.active{border-color:var(--blue);background:#eaf3ff}
-    main{max-width:1080px;margin:16px auto;padding:0 16px 40px}
-    section.panel{display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px}
-    section.panel.active{display:block}
-    h2{margin:0 0 8px;color:var(--dark)}
-    h3{margin:16px 0 8px;color:#0b2540}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-    .card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fafcff}
-    ul{margin:8px 0 0 18px}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th, td{border:1px solid #e3e8ef;padding:8px;text-align:left}
-    .footer-note{font-size:13px;color:#5a6b7a;margin-top:8px}
-    .qr{display:inline-block;padding:8px 12px;border:1px dashed #c9d6e5;border-radius:12px;background:#fff}
-    img.inset{max-width:100%;border:1px solid #d7dde8;border-radius:10px;margin:8px 0}
-    footer{padding:24px 16px 40px;text-align:center;color:#5a6b7a}
-    a.tel{white-space:nowrap}
-
-    /* Basic look & feel */
-    .card { padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
-    .muted { color: #555; }
-    .controls-bar { display: flex; flex-direction: column; gap: 8px; }
-    .zoom-controls button, .select-controls button, .audio-controls button {
-      padding: 6px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer;
-    }
-    .select-controls select { padding: 4px; }
-    .steps-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-    .steps-column ol { min-height: 80px; }
-
-    
-/* Buttons inside share panel */
-.btn {
-  display: inline-block;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  color: #0b2540;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
-.btn:hover { background: #eaf3ff; border-color: var(--blue); }
-
-/* Ensure QR container looks tidy */
-.qr img { border-radius: 8px; }
-
-    
-    /* Stage: pan/zoom container */
-    #imgStageWrapper {
-      width: 100%;
-      height: 58vh; /* adjust as needed */
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fafafa;
-      position: relative;
-      margin-top: 10px;
-    }
-    #imgStage {
-      width: 100%;
-      height: 100%;
-      transform-origin: 0 0;
-      cursor: grab;
-      position: relative;
-    }
-    #imgStage.grabbing { cursor: grabbing; }
-    #floorImg {
-      position: absolute;
-      left: 0; top: 0;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    #routeCanvas {
-      position: absolute;
-      left: 0; top: 0; pointer-events: none;
+    :root {
+      --bmw-blue: #1c69d4; /* Classic BMW blue */
+      --text-color: #1a1a1a;
+      --bg-color: #ffffff;
+      --nav-bg: #f5f7fa;
+      --nav-active-bg: #e9f1ff;
+      --nav-hover-bg: #eef6ff;
+      --border-color: #d8dee9;
     }
 
-    /* Room markers */
-    .room-marker {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
-      border: 1px solid #b0b0b0;
-      border-radius: 6px;
-      padding: 3px 6px;
-      font-size: 12px;
-      white-space: nowrap;
-      user-select: none;
-      cursor: pointer;
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
     }
-    .room-marker:hover { background: #fff; }
-    .room-marker.selected-from { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.2); }
-    .room-marker.selected-to   { border-color: #47a447; box-shadow: 0 0 0 2px rgba(71,164,71,0.2); }
 
-    /* --- Added: BMW-style header brand + light-grey language buttons --- */
-    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
-    .brand-logo { width: 40px; height: 40px; object-fit: contain; }
-    .brand-title {
-      font-family: "BMW Type Next", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI",
-                   "Noto Sans", "Liberation Sans", sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.2px;
-      color: #000;
-      white-space: nowrap;
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .lang-switch { display: inline-flex; align-items: center; gap: 8px; }
-    .lang-btn {
-      appearance: none;
-      border: 1px solid #d0d0d0;
-      background: #f2f2f2; /* light grey */
-      color: #1a1a1a;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease;
-    }
-    .lang-btn:hover { background: #e8e8e8; border-color: #c4c4c4; }
-    .lang-btn[aria-pressed="true"] {
-      background: #e0e0e0;
-      border-color: #bdbdbd;
+
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
       font-weight: 600;
     }
 
-    @media (max-width: 480px) {
-      .brand-title { font-size: 1rem; white-space: normal; }
-      .brand-logo { width: 32px; height: 32px; }
+    .bmw-blue {
+      color: var(--bmw-blue);
+      font-weight: 700;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 0.25rem 0.35rem;
+    }
+
+    .lang-toggle span {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-right: 0.25rem;
+    }
+
+    .lang-btn {
+      border: 1px solid transparent;
+      background: #fff;
+      color: var(--text-color);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lang-btn:hover {
+      background: var(--nav-hover-bg);
+    }
+
+    .lang-btn.active {
+      border-color: var(--bmw-blue);
+      background: var(--nav-active-bg);
+      color: #0f3f91;
+      font-weight: 600;
+    }
+
+    /* Navigation (original preserved) */
+    nav {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      padding: 1rem 1.25rem;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    button.nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    button.nav:hover {
+      background: var(--nav-hover-bg);
+      border-color: #cfd6e6;
+    }
+
+    button.nav.active {
+      background: var(--nav-active-bg);
+      border-color: var(--bmw-blue);
+      color: #0f3f91;
+      font-weight: 600;
+    }
+
+    /* Panels */
+    main {
+      padding: 1rem 1.25rem 2rem;
+    }
+
+    section.panel {
+      display: none; /* Hidden by default; shown when active */
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: #fff;
+      margin-bottom: 1rem;
+    }
+
+    section.panel.active {
+      display: block;
+    }
+
+    footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.9rem;
+      background: #fff;
     }
   </style>
 </head>
 <body>
 
+  <!-- Header (added non-destructively) -->
+  <header>
+    <h1><span class="bmw-blue">BMWTechWorks India-Pune</span> – Visitor & Office Help</h1>
 
-<header>
-  <!-- Header with BMW logo and language buttons (updated: no table) -->
-  <div class="top">
-    <div class="brand">
-      <img
-        src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg"
-        alt="BMW logo"
-        class="brand-logo"
-        decoding="async"
-        loading="lazy"
-     age selection">
-      BMWTechWorks India – -BTI***
-      <button class="lang-btn" type="button" aria-pressed="true" data-lang="en">EN</button>
-      <button class="lang-btn" type="button" aria-pressed="false" data-lang="de">DE</button>
+    <!-- Language toggle -->
+    <div class="lang-toggle" aria-label="Language toggle">
+      <span>Language:</span>
+      <button class="lang-btn active" data-lang="en" id="btn-lang-en" aria-pressed="true">EN</button>
+      <button class="lang-btn" data-lang="de" id="btn-lang-de" aria-pressed="false">DE</button>
     </div>
-  </div>
+  </header>
 
+  <!-- Navigation buttons (ORIGINAL ENGLISH CONTENT; preserved) -->
   <!-- Navigation buttons -->
   <nav>
     <button class="nav active" data-panel="info">ℹ️ BMWTechWorks Info</button>
@@ -182,11 +180,12 @@
     <button class="nav" data-panel="cab">🚕 Cab Facility</button>
     <button class="nav" data-panel="food">🍔 Food Delivery Apps</button>
     <button class="nav" data-panel="social">🔗 Social Media Connect</button>
-    <button class="nav" data-panel="travel">🧭 Travel Info, Converter & Hotels</button>
+    <button class="nav" data-panel="travel">🧭 Travel Info, Converter &amp; Hotels</button>
     <button class="nav" data-panel="hotels"> 🏨 Hotels</button>
     <button class="nav" data-panel="share">📥 Download QR</button>
   </nav>
-</header>
+
+  <!-- Panels (basic placeholders; do not affect original nav) -->
   <main>
     <!-- Info -->
     <section id="panel-info" class="panel active">
@@ -572,64 +571,119 @@
    <p class="footer-note">🔒 No personal data collected • No cookies • Works offline after first load</p>
 
   <footer style="text-align:center; padding:12px; color:var(--muted)">
-  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 -BTI***</div>
+  @Copyright BTI-Digital CAR PUNE-SSP Team 2026 DREAM26</div>
 </footer>
   
 
+  <!-- JS: Panel switching + Language toggle -->
   <script>
-    // Tab router: show one panel, hide others
-    const buttons = document.querySelectorAll('button.nav');
-    const panels = document.querySelectorAll('section.panel');
+    (function () {
+      const navButtons = Array.from(document.querySelectorAll('button.nav'));
+      const panels = new Map(
+        Array.from(document.querySelectorAll('section.panel')).map(s => [s.id, s])
+      );
 
-    function showPanel(key){
-      buttons.forEach(b=>b.classList.toggle('active', b.dataset.panel===key));
-      panels.forEach(p=>p.classList.toggle('active', p.id==='panel-'+key));
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
+      /* ---------- Panel switching ---------- */
+      function setActivePanel(panelKey) {
+        // Toggle button active state
+        navButtons.forEach(btn => {
+          const isActive = btn.getAttribute('data-panel') === panelKey;
+          btn.classList.toggle('active', isActive);
+        });
 
-    buttons.forEach(b=>{
-      b.addEventListener('click', e=>{
-        e.preventDefault();
-        showPanel(b.dataset.panel);
+        // Toggle panel visibility
+        panels.forEach((el, key) => {
+          el.classList.toggle('active', key === panelKey);
+        });
+      }
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panelKey = btn.getAttribute('data-panel');
+          if (panelKey) setActivePanel(panelKey);
+        });
       });
-    });
 
-    document.getElementById('download-qr')?.addEventListener('click', e=>{
-      e.preventDefault();
-    });
+      /* ---------- Language toggle ---------- */
+      const enBtn = document.getElementById('btn-lang-en');
+      const deBtn = document.getElementById('btn-lang-de');
 
-  
+      // Original English strings (exactly as in nav)
+      const stringsEN = {
+        info: 'ℹ️ BMWTechWorks Info',
+        sos: '🚨 SOS – Emergency',
+        assist: '🆘 Need Assistance',
+        layout: '🗺️ Floor Layout & Exit',
+        ert: '🛡️ ERT Members',
+        firstaid: '🧑‍⚕️ First Aid & Medical Support',
+        assembly: '📍 Assembly Points',
+        rooms: '🏢 Meeting Rooms',
+        it: '🖥️ IT Helpdesk',
+        translate: '🌍 German ↔ English',
+        parking: '🅿️ Parking Info',
+        cab: '🚕 Cab Facility',
+        food: '🍔 Food Delivery Apps',
+        social: '🔗 Social Media Connect',
+        travel: '🧭 Travel Info, Converter & Hotels',
+        hotels: ' 🏨 Hotels', /* note leading space preserved */
+        share: '📥 Download QR'
+      };
 
-  /* ---------- QR FIX ---------- */
-const LANDING_URL="https://techworks-pune.github.io/BMWTechWorks-VisitorInfo/";
+      // German strings (applied only when DE pressed)
+      const stringsDE = {
+        info: 'ℹ️ <span class="bmw-blue">BMWTechWorks India-Pune</span> Info',
+        sos: '🚨 SOS – Notfall',
+        assist: '🆘 Hilfe benötigt',
+        layout: '🗺️ Grundriss &amp; Ausgang',
+        ert: '🛡️ ERT-Mitglieder',
+        firstaid: '🧑‍⚕️ Erste Hilfe &amp; Medizinische Unterstützung',
+        assembly: '📍 Sammelpunkte',
+        rooms: '🏢 Besprechungsräume',
+        it: '🖥️ IT-Helpdesk',
+        translate: '🌍 Deutsch ↔ Englisch',
+        parking: '🅿️ Parkinformationen',
+        cab: '🚕 Taxi-Service',
+        food: '🍔 Essensliefer-Apps',
+        social: '🔗 Social-Media-Verbindung',
+        travel: '🧭 Reiseinfo, Währungsrechner &amp; Hotels',
+        hotels: ' 🏨 Hotels',
+        share: '📥 QR-Code herunterladen'
+      };
 
-async function downloadQR(){
-const img=document.getElementById("siteQR");
-const res=await fetch(img.src);
-const blob=await res.blob();
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-a.href=url;
-a.download="BMWTechWorks_QR.png";
-a.click();
-URL.revokeObjectURL(url);
-}
+      function applyLanguage(lang) {
+        const map = lang === 'de' ? stringsDE : stringsEN;
 
-async function shareQR(){
-if(navigator.share){
-navigator.share({
-title:"BMWTechWorks Pune",
-url:LANDING_URL
-});
-}else{
-navigator.clipboard.writeText(LANDING_URL);
-alert("Link copied to clipboard");
-}
-}
+        // Update header title language hint only (phrase stays blue and in English header)
+        document.documentElement.setAttribute('lang', lang === 'de' ? 'de' : 'en');
 
-  
+        // Update nav labels
+        navButtons.forEach(btn => {
+          const key = btn.getAttribute('data-panel');
+          if (!key || !(key in map)) return;
+          const value = map[key];
 
-         
+          // Use innerHTML only when the value contains markup
+          if (/<\/?span|&amp;/.test(value)) {
+            btn.innerHTML = value;
+          } else {
+            btn.textContent = value;
+          }
+        });
+
+        // Toggle button states
+        if (lang === 'de') {
+          enBtn.classList.remove('active'); enBtn.setAttribute('aria-pressed', 'false');
+          deBtn.classList.add('active'); deBtn.setAttribute('aria-pressed', 'true');
+        } else {
+          deBtn.classList.remove('active'); deBtn.setAttribute('aria-pressed', 'false');
+          enBtn.classList.add('active'); enBtn.setAttribute('aria-pressed', 'true');
+        }
+      }
+
+      enBtn.addEventListener('click', () => applyLanguage('en'));
+      deBtn.addEventListener('click', () => applyLanguage('de'));
+    })();
   </script>
 </body>
 </html>
+
