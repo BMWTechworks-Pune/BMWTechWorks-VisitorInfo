@@ -1,110 +1,212 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
- <meta charset="UTF-8" /> 
- <meta name="viewport" content="width=device-width, initial-scale=1" /> 
- <title>BMWTechWorks India-Pune </title> 
- <style> 
- :root { 
- --bmw-blue: #1c69d4; /* Classic BMW blue */ 
- --text-color: #1a1a1a; 
- --bg-color: #ffffff; 
- --nav-bg: #f5f7fa; 
- --nav-active-bg: #e9f1ff; 
- --nav-hover-bg: #eef6ff; 
- --border-color: #d8dee9; 
- } 
- html, body { 
- margin: 0; 
- padding: 0; 
- background: var(--bg-color); 
- color: var(--text-color); 
- font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; 
- line-height: 1.5; 
- } 
- header { 
- padding: 1rem 1.25rem; 
- border-bottom: 1px solid var(--border-color); 
- background: #fff; 
- display: flex; 
- align-items: center; 
- justify-content: space-between; 
- gap: 1rem; 
- flex-wrap: wrap; 
- } 
- header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; } 
- .bmw-blue { color: var(--bmw-blue); font-weight: 700; } 
- .lang-toggle { display: inline-flex; gap: 0.4rem; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 999px; padding: 0.25rem 0.35rem; } 
- .lang-toggle span { font-size: 0.9rem; color: #6b7280; margin-right: 0.25rem; } 
- .lang-btn { border: 1px solid transparent; background: #fff; color: var(--text-color); padding: 0.25rem 0.6rem; border-radius: 999px; cursor: pointer; font-size: 0.9rem; } 
- .lang-btn:hover { background: var(--nav-hover-bg); } 
- .lang-btn.active { border-color: var(--bmw-blue); background: var(--nav-active-bg); color: #0f3f91; font-weight: 600; } 
- /* Navigation */ 
- nav { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 1rem 1.25rem; background: var(--nav-bg); border-bottom: 1px solid var(--border-color); } 
- button.nav { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: #fff; color: var(--text-color); cursor: pointer; font-size: 0.95rem; transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; } 
- button.nav:hover { background: var(--nav-hover-bg); border-color: #cfd6e6; } 
- button.nav.active { background: var(--nav-active-bg); border-color: var(--bmw-blue); color: #0f3f91; font-weight: 600; } 
- /* Panels */ 
- main { padding: 1rem 1.25rem 2rem; } 
- section.panel { display: none; /* Hidden by default; shown when active */ padding: 1rem; border: 1px solid var(--border-color); border-radius: 10px; background: #fff; margin-bottom: 1rem; } 
- section.panel.active { display: block; } 
- footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border-color); color: #6b7280; font-size: 0.9rem; background: #fff; text-align:center; } 
- .inset { max-width: 100%; height: auto; border-radius: 8px; margin: 6px 0; } 
- /* Small professional controls for rooms */
- .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
- .btn { font-size:14px; padding:6px 10px; border:1px solid #cdd6e0; border-radius:8px; background:#fff; cursor:pointer; }
- .btn:hover { border-color:#bfcad8; }
- .selector label { font-size:13px; color:#667085; }
- .selector select { font-size:14px; padding:6px 10px; border:1px solid #d9e0e8; border-radius:8px; background:#fff; min-width:220px; }
- .route-box { margin-top:8px; background:#f6f7fb; border:1px solid #d8def0; border-radius:6px; padding:8px; }
- 
-/* --- Brand logo styles and two-column nav --- */
-.brand{display:flex;align-items:center;gap:10px;}
-.brand img.logo{width:40px;height:40px;object-fit:cover;border-radius:50%;border:1px solid var(--border-color);background:#fff;}
-/* Split nav into two columns */
-.nav-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;align-items:start;}
-.nav-col{display:grid;gap:8px;}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BMWTechWorks India-Pune</title>
+  <style>
+    :root {
+      --bmw-blue: #1c69d4; /* Classic BMW blue */
+      --text-color: #1a1a1a;
+      --bg-color: #ffffff;
+      --nav-bg: #f5f7fa;
+      --nav-active-bg: #e9f1ff;
+      --nav-hover-bg: #eef6ff;
+      --border-color: #d8dee9;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+    }
 
-</style> 
-</head> 
-<body> 
- <!-- Header --> 
- <header> 
- <h1><div class=\"brand\"><img class=\"logo\" src=\"https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg\" alt=\"BMW logo\" /> <h1><span class="bmw-blue">BMWTechWorks India-Pune</span> BTI</h1></div> 
- <!-- Language toggle --> 
- <div class="lang-toggle" aria-label="Language toggle"> 
- <span>Language:</span> 
- <button class="lang-btn active" data-lang="en" id="btn-lang-en" aria-pressed="true">EN</button> 
- <button class="lang-btn" data-lang="de" id="btn-lang-de" aria-pressed="false">DE</button> 
- </div> 
- </header> 
- <!-- Navigation buttons --> 
- <nav>
-  <div class="nav-wrap">
-    <div class="nav-col">
-      <button class="nav" data-panel="info" aria-controls="panel-info">ℹ️ BMWTechWorks Info</button>
-      <button class="nav" data-panel="sos" aria-controls="panel-sos">🚨 SOS – Emergency</button>
-      <button class="nav" data-panel="assist" aria-controls="panel-assist">🆘 Need Assistance</button>
-      <button class="nav" data-panel="layout" aria-controls="panel-layout">🗺️ Floor Layout & Exit</button>
-      <button class="nav" data-panel="ert" aria-controls="panel-ert">🛡️ ERT Members</button>
-      <button class="nav" data-panel="firstaid" aria-controls="panel-firstaid">🧑‍⚕️ First Aid & Medical Support</button>
-      <button class="nav" data-panel="assembly" aria-controls="panel-assembly">📍 Assembly Points</button>
-      <button class="nav" data-panel="travel" aria-controls="panel-travel">🧭 Travel Info, Converter & Hotels</button>
+    /* Header */
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    header h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    .bmw-blue { color: var(--bmw-blue); font-weight: 700; }
+
+    /* Brand logo styles */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand img.logo {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: #fff;
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 0.25rem 0.35rem;
+    }
+    .lang-toggle span { font-size: 0.9rem; color: #6b7280; margin-right: 0.25rem; }
+    .lang-btn {
+      border: 1px solid transparent;
+      background: #fff;
+      color: var(--text-color);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .lang-btn:hover { background: var(--nav-hover-bg); }
+    .lang-btn.active {
+      border-color: var(--bmw-blue);
+      background: var(--nav-active-bg);
+      color: #0f3f91;
+      font-weight: 600;
+    }
+
+    /* Navigation */
+    nav {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      padding: 1rem 1.25rem;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Two-column grouping for better visual structure */
+    .nav-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 16px;
+      align-items: start;
+      width: 100%;
+    }
+    .nav-col { display: grid; gap: 8px; }
+
+    /* Updated compact navigation button styles */
+    button.nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.6rem;      /* compact padding */
+      border: 1px solid var(--border-color);
+      border-radius: 6px;            /* smaller radius for neat look */
+      background: #fff;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 0.85rem;            /* smaller font */
+      font-weight: 500;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    button.nav:hover {
+      background: var(--nav-hover-bg);
+      border-color: #cfd6e6;
+    }
+    button.nav.active {
+      background: var(--nav-active-bg);
+      border-color: var(--bmw-blue);
+      color: #0f3f91;
+      font-weight: 600;
+      box-shadow: 0 0 0 2px rgba(28, 105, 212, 0.12);
+    }
+
+    /* Panels */
+    main { padding: 1rem 1.25rem 2rem; }
+    section.panel {
+      display: none; /* Hidden by default; shown when active */
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: #fff;
+      margin-bottom: 1rem;
+    }
+    section.panel.active { display: block; }
+
+    /* Footer */
+    footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.9rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    /* Utilities & controls */
+    .inset { max-width: 100%; height: auto; border-radius: 8px; margin: 6px 0; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .btn { font-size: 14px; padding: 6px 10px; border: 1px solid #cdd6e0; border-radius: 8px; background: #fff; cursor: pointer; }
+    .btn:hover { border-color: #bfcad8; }
+    .selector label { font-size: 13px; color: #667085; }
+    .selector select { font-size: 14px; padding: 6px 10px; border: 1px solid #d9e0e8; border-radius: 8px; background: #fff; min-width: 220px; }
+    .route-box { margin-top: 8px; background: #f6f7fb; border: 1px solid #d8def0; border-radius: 6px; padding: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <img
+        src="https://raw.githubusercontent.com/BMWTechworks-Pune/BMWTechWorks-VisitorInfo/main/BMW.jpeg"
+        alt="BMW logo"
+        class="logo"
+           </div>
+
+    <!-- Language toggle -->
+    <div class="lang-toggle" aria-label="Language toggle">
+      <span>Language:</span>
+      <button class="lang-btn active" data-lang="en" id="btn-lang-en" aria-pressed="true">EN</button>
+      <button class="lang-btn" data-lang="de" id="btn-lang-de" aria-pressed="false">DE</button>
     </div>
-    <div class="nav-col">
-      <button class="nav" data-panel="rooms" aria-controls="panel-rooms">🏢 Meeting Rooms</button>
-      <button class="nav" data-panel="it" aria-controls="panel-it">🖥️ IT Helpdesk</button>
-      <button class="nav" data-panel="translate" aria-controls="panel-translate">🌍 German ↔ English</button>
-      <button class="nav" data-panel="parking" aria-controls="panel-parking">🅿️ Parking Info</button>
-      <button class="nav" data-panel="cab" aria-controls="panel-cab">🚕 Cab Facility</button>
-      <button class="nav" data-panel="food" aria-controls="panel-food">🍔 Food Delivery Apps</button>
-      <button class="nav" data-panel="social" aria-controls="panel-social">🔗 Social Media Connect</button>
-      <button class="nav" data-panel="hotels" aria-controls="panel-hotels"> 🏨 Hotels</button>
+  </header>
+
+  <!-- Navigation buttons -->
+  <nav aria-label="Primary">
+    <div class="nav-wrap">
+      <div class="nav-col">
+        <button class="nav" data-panel="info" aria-controls="panel-info">ℹ️ BMWTechWorks Info</button>
+        <button class="nav" data-panel="sos" aria-controls="panel-sos">🚨 SOS – Emergency</button>
+        <button class="nav" data-panel="assist" aria-controls="panel-assist">🆘 Need Assistance</button>
+        <button class="nav" data-panel="layout" aria-controls="panel-layout">🗺️ Floor Layout &amp; Exit</button>
+        <button class="nav" data-panel="ert" aria-controls="panel-ert">🛡️ ERT Members</button>
+        <button class="nav" data-panel="firstaid" aria-controls="panel-firstaid">🧑‍⚕️ First Aid &amp; Medical Support</button>
+        <button class="nav" data-panel="assembly" aria-controls="panel-assembly">📍 Assembly Points</button>
+        <button class="nav" data-panel="travel" aria-controls="panel-travel">🧭 Travel Info, Converter &amp; Hotels</button>
+      </div>
+      <div class="nav-col">
+        <button class="nav" data-panel="rooms" aria-controls="panel-rooms">🏢 Meeting Rooms</button>
+        <button class="nav" data-panel="it" aria-controls="panel-it">🖥️ IT Helpdesk</button>
+        <button class="nav" data-panel="translate" aria-controls="panel-translate">🌍 German ↔ English</button>
+        <button class="nav" data-panel="parking" aria-controls="panel-parking">🅿️ Parking Info</button>
+        <button class="nav" data-panel="cab" aria-controls="panel-cab">🚕 Cab Facility</button>
+        <button class="nav" data-panel="food" aria-controls="panel-food">🍔 Food Delivery Apps</button>
+        <button class="nav" data-panel="social" aria-controls="panel-social">🔗 Social Media Connect</button>
+        <button class="nav" data-panel="hotels" aria-controls="panel-hotels">🏨 Hotels</button>
+        <button class="nav" data-panel="safety" aria-controls="panel-safety">🧭 Safety Evacuation Earthquake, Fire</button>
+      </div>
     </div>
-  </div>
-</nav> 
- <!-- Panels --> 
- <main> 
+  </nav>
+
+  <!-- Panels -->
+  <main>
  <!-- Info --> 
  <section id="panel-info" class="panel"> 
  <h2>BMWTechWorks India</h2> 
@@ -243,20 +345,8 @@
  <img class="inset" src="Assembly Point No.1 Near Gate No-4.jpg" alt="Assembly Point 1" /> 
  <img class="inset" src="Assembly Point No.2 Near Gate No-3.jpg" alt="Assembly Point 2" /> 
  <p> 
- <strong>General Evacuation Procedure – Earthquake</strong><br> 
- When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:<br> 
- <em>DROP</em>: Get down on your hands and knees to prevent being knocked over.<br> 
- <em>COVER</em>: Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture.<br> 
- <em>HOLD</em>: Stay in position and hold onto your shelter until the shaking stops.<br> 
- <em>If You Get Trapped</em>: Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures. 
- </p> 
- <p> 
- <strong>General Evacuation Procedure – FIRE</strong><br> 
- 1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper.<br> 
- 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit.<br> 
- 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly.<br> 
- 4. Use stairs only. Do not use lifts & assemble at the designated safe assembly area.<br> 
- 5. Do not re-enter until the all-clear is given by the ERT. 
+ <strong>General Evacuation Procedure – Earthquake and Fire Follow to go at safe place </strong>
+  <strong>Use stairs only. Do not use lifts & assemble at the designated safe assembly area.</strong>
  </p> 
  </section> 
  <!-- IT Helpdesk --> 
@@ -355,6 +445,28 @@
  <li><a href="https://www.tripadvisor.in/Attractions-g297654-Activities.html" target="_blank" rel="noopener">Local Sightseeing in Pune (Tripadvisor)</a></li> 
  </ul> 
  </section> 
+  
+  <section id="panel-safety" class="panel"> 
+ <h2>Assembly Points</h2> 
+
+ <p> 
+ <strong>General Evacuation Procedure – Earthquake</strong><br> 
+ When you feel the tremors, protect yourself as quickly as possible. The National Disaster Management Division (NDMD), Ministry of Home Affairs, recommends the following three actions, known as Drop – Cover – Hold:<br> 
+ <em>DROP</em>: Get down on your hands and knees to prevent being knocked over.<br> 
+ <em>COVER</em>: Protect your head and neck with your arms, take shelter under a sturdy table or near an interior wall, and stay away from windows, glass, and heavy furniture.<br> 
+ <em>HOLD</em>: Stay in position and hold onto your shelter until the shaking stops.<br> 
+ <em>If You Get Trapped</em>: Stay calm, cover your nose and mouth to protect yourself from dust, shout, whistle, or tap on nearby objects to attract attention, and remain alert for fallen electrical lines, gas leaks, or unstable structures. 
+ </p> 
+ <p> 
+ <strong>General Evacuation Procedure – FIRE</strong><br> 
+ 1. If you notice a fire, activate the nearest red Manual Call Point (MCP) by breaking the glass & a fire alarm sounds as an audible beeper.<br> 
+ 2. On hearing the alarm and PA announcement, evacuate immediately using the nearest emergency exit.<br> 
+ 3. Do not collect bags, laptops, or valuables & Do not run, move quickly and calmly.<br> 
+ 4. Use stairs only. Do not use lifts & assemble at the designated safe assembly area.<br> 
+ 5. Do not re-enter until the all-clear is given by the ERT. 
+ </p> 
+ </section> 
+  
  <!-- Hotels --> 
  <section id="panel-hotels" class="panel"> 
  <h2>Nearby Hotels & Restaurants</h2> 
