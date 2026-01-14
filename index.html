@@ -150,16 +150,16 @@
  <button class="btn" id="replay-layout">Replay</button> 
  <button class="btn" id="mute-layout">Mute</button> 
  <button class="btn" id="resetView-layout">Reset</button> 
+ <button class="btn" id="clear-layout">Clear</button>
  </div> 
  </header> 
  <!-- Guidance text display --> 
- <div id="routeText-layout" class="routeText" aria-live="polite" class="route-box"> 
- Select an exit to see guidance. 
- </div> 
- <!-- Hidden audio element driven by the controls --> 
- <audio id="routeAudio-layout" preload="auto" style="display:none;"></audio> 
- <noscript><div style="padding:12px;color:#e11d48;">JavaScript is required for interactive routes and audio guidance.</div></noscript> 
- </div> 
+
+        <div id="routeText-layout" class="routeText route-box" aria-live="polite">Select an exit to see guidance.</div>
+        <!-- Hidden audio element driven by the controls (not used when speechSynthesis is available) -->
+        <audio id="routeAudio-layout" preload="auto" style="display:none;"></audio>
+        <noscript><div style="padding:12px;color:#e11d48;">JavaScript is required for interactive routes and audio guidance.</div></noscript>
+      </div>
  </section> 
  <!-- Meeting Rooms --> 
  <section id="panel-rooms" class="panel"> 
@@ -458,6 +458,75 @@
    routeBoxRooms.style.display = 'none';
    meetingSelect.focus();
  });
+
+   /* ===== Exit Routes + Audio (matches your IDs & options) ===== */
+    const exitRoutes = {
+      EXIT1: [
+        "From YOU ARE HERE, head LEFT towards the central aisle",
+        "Turn LEFT at the first junction and continue STRAIGHT along the top corridor",
+        "Follow the red arrows to the LEFT wing",
+        "EXIT 1 is on the TOP‑LEFT near the collaboration area"
+      ],
+      EXIT2: [
+        "From YOU ARE HERE, go LEFT and then DOWN along the main corridor",
+        "Keep following the red arrows towards the far LEFT‑BOTTOM of the floor",
+        "EXIT 2 is at the LOWER‑LEFT corner near the service lift lobby"
+      ],
+      EXIT3: [
+        "From YOU ARE HERE, move STRAIGHT DOWN to the south corridor",
+        "Turn LEFT and follow the green path across the corridor",
+        "EXIT 3 is MID‑BOTTOM, beside the lab and storage rooms"
+      ],
+      EXIT4: [
+        "From YOU ARE HERE, head RIGHT along the central corridor",
+        "Continue STRAIGHT towards the far RIGHT wing",
+        "Follow the arrows to the LOWER‑RIGHT corner",
+        "EXIT 4 is at the BOTTOM‑RIGHT near the discussion rooms"
+      ],
+      EXIT5: [
+        "From YOU ARE HERE, go RIGHT along the upper corridor",
+        "Continue STRAIGHT towards the top‑right wing",
+        "EXIT 5 is at the TOP‑RIGHT near the cafeteria cluster"
+      ]
+    };
+    (function exitInit(){
+      const sel = document.getElementById('exitSelect');
+      const play = document.getElementById('play-layout');
+      const replay = document.getElementById('replay-layout');
+      const mute = document.getElementById('mute-layout');
+      const clearBtn = document.getElementById('clear-layout');
+      const txt = document.getElementById('routeText-layout');
+      let lastText = '';
+
+      function update(){
+        const key = sel.value; if(!key || key==='None'){ txt.textContent='Select an exit to see guidance.'; lastText=''; return; }
+        const steps = exitRoutes[key]; if(!steps){ txt.textContent=''; lastText=''; return; }
+        lastText = `Guidance to ${key}. ${steps.join('. ')}.`;
+        txt.textContent = steps.join(' → ');
+      }
+      function say(text){
+        try{
+          if('speechSynthesis' in window){
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = (document.documentElement.getAttribute('lang')||'en')==='de' ? 'de-DE' : 'en-IN';
+            u.rate = 1.0; u.pitch = 1.0; u.volume = 1.0;
+            window.speechSynthesis.speak(u);
+          }
+        }catch(e){}
+      }
+      function stop(){ try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
+      function clearAll(){ stop(); sel.value='None'; update(); sel.focus(); }
+
+      sel && sel.addEventListener('change', update);
+      play && play.addEventListener('click', ()=>{ if(!lastText){ update(); } if(lastText) say(lastText); });
+      replay && replay.addEventListener('click', ()=>{ if(lastText) say(lastText); });
+      mute && mute.addEventListener('click', stop);
+      clearBtn && clearBtn.addEventListener('click', clearAll);
+
+      update(); // initialize default text
+    })();
+  
  </script> 
 </body> 
 </html>
