@@ -446,6 +446,32 @@
     link.click();
     document.body.removeChild(link);
   }
+
+  /* ---------- ROUTES ---------- */
+const routes={
+Success:["From Reception go left","Board Room is Success"],
+Inspire:["From Reception go left","Training Room beside Success"],
+Joy:["From Reception go left","Joy near Visitor Room"],
+Debug:["From Reception straight","Middle section"],
+iDrive:["From Reception straight","Opposite Debug"],
+"M-Mode":["From Reception straight","Right corner"],
+Drift:["From Reception right wing","Near xDrive"],
+xDrive:["From Reception far right","Next to Torque"],
+Torque:["From Reception far right","Last room"]
+};
+
+function showRoute(){
+const r=document.getElementById("roomSel").value;
+const ol=document.getElementById("routeText");
+ol.innerHTML="";
+if(!r)return;
+routes[r].forEach(s=>{
+const li=document.createElement("li");
+li.innerText=s;
+ol.appendChild(li);
+});
+}
+    
   </script>
 </body>
 </html>
